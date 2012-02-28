@@ -1,0 +1,72 @@
+<html>
+<head>
+    <script>
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-28095206-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = 'https://ssl.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+</head>
+<body>
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<link rel="stylesheet" href="css/page.css" media="screen">
+</body>
+<script type="text/javascript">
+    // i18n
+    function localizePage() {
+        $("[i18n]:not(.i18n-replaced)").each(function () {
+            $(this).html(translate($(this).attr("i18n")));
+        });
+    }
+
+    function translate(messageID, args) {
+        return chrome.i18n.getMessage(messageID, args);
+    }
+
+    $(document).ready(function () {
+        localizePage();
+    });
+</script>
+</html>
+
+<div id="pageBox">
+    <div class="pageTitle" i18n="donationTitle"></div>
+
+    <hr/>
+    <div class="pageSubTitle" i18n="donationThanks"></div>
+    <br/>
+
+    <div i18n="donationPart1"></div>
+    <br/>
+
+    <div i18n="donationPart2">
+        <br/>
+        <br/>
+        <div i18n="donationPart3">
+        </div>
+    </div>
+    <br/>
+
+    <div i18n="donationPart4"></div>
+    <div>Laurent</div>
+    <br/>
+
+    <div>
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+            <input type="hidden" name="cmd" value="_s-xclick">
+            <input type="hidden" name="hosted_button_id" value="4T8NB6ZQ2NASU">
+            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0"
+                   name="submit"
+                   alt="PayPal - The safer, easier way to pay online!">
+            <img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
+        </form>
+    </div>
+</div>

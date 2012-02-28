@@ -1,0 +1,18 @@
+{
+   "background_page": "background.html",
+   "browser_action": {
+      "default_icon": "ua-disabled.png",
+      "popup": "ua.html"
+   },
+   "default_locale": "ja",
+   "description": "__MSG_appDesc__",
+   "icons": {
+      "128": "ua128.png",
+      "48": "ua48.png"
+   },
+   "minimum_chrome_version": "17.0.963.12",
+   "name": "__MSG_appName__",
+   "options_page": "options.html",
+   "permissions": [ "tabs", "background", "webRequest", "webRequestBlocking", "*://*/*" ],
+   "version": "0.1"
+}

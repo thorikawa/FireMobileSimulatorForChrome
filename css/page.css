@@ -1,0 +1,21 @@
+body {
+    color: black;
+    background: #ffffcc;
+    margin: 0;
+    font-family: "Arial", sans-serif;
+    font-size: 14px;
+}
+
+#pageBox {
+    padding: 90px;
+}
+
+.pageTitle {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.pageSubTitle {
+    font-weight: bold;
+    color: #00008b;
+}

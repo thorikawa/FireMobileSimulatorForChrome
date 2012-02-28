@@ -1,0 +1,47 @@
+input[type="text"] {
+    width: 220px;
+}
+
+input[id="uastring"] {
+    margin-left: 37px;
+    width: 520px;
+}
+
+input[id="uaname"] {
+    margin-left: 7px;
+}
+
+input[id="uadescription"] {
+    margin-left: 70px;
+}
+
+.rowLabel {
+    font-size: 14px;
+}
+
+#wrapper {
+    padding-top: 50px;
+}
+
+.optionsUaName {
+    display: table-cell;
+}
+
+.optionsUaValue {
+    display: table-cell;
+}
+
+.optionsActions {
+    display: table-cell;
+}
+
+a {
+    color: #a9a9a9;
+    text-decoration: none;
+}
+
+
+/* override */
+#tab-container {
+    top:160px;
+}

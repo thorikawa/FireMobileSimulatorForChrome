@@ -1,0 +1,72 @@
+body {
+    color: black;
+    background: #F0F0F0;
+    margin: 0;
+    font-family: "Arial", sans-serif;
+    font-size: 14px;
+}
+
+#title {
+    font-size: 9px;
+    padding: 8px 8px 2px 0px;
+    text-align: right;
+}
+
+#ualist {
+    padding: 5px;
+    margin: 0px;
+}
+
+#options {
+    text-align: right;
+    font-size: 10px;
+    cursor:pointer;
+}
+
+#donateTitle {
+    text-align: right;
+    color: #00008b;
+    font-size: 10px;
+    font-weight: bold;
+    cursor:pointer;
+}
+
+
+#options:hover {
+    color: #00008b;
+    background-color: #add8e6;
+}
+
+ul {
+    list-style: none;
+}
+
+.shortcut {
+    float: left;
+    color: blue;
+    opacity: 0.2;
+    text-decoration: underline;
+}
+
+li a {
+    text-decoration: none;
+}
+
+li:hover {
+    color: #00008b;
+    background-color: #add8e6;
+}
+
+li {
+    font-size: 12px;
+    text-align: right;
+    width: 200px;
+}
+
+li.selected a {
+    color: white;
+}
+
+.selected {
+    background-color: #90ee90;
+}

@@ -1,0 +1,114 @@
+<html>
+
+<head>
+    <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="ua.css"/>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#donateTitle").html(chrome.i18n.getMessage("donateTitle") + "<br/>");
+            $("#addDevice").html(chrome.i18n.getMessage("addDevice") + "<br/>");
+            BG.loadUserAgents();
+        });
+    </script>
+    <script>
+
+        var BG = chrome.extension.getBackgroundPage();
+        chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
+            renderUaList(request)
+        });
+
+        function selectUa(e) {
+            BG.changeUserAgent(e);
+            window.close();
+        }
+
+        var currentUa = BG.getUa();
+
+        function renderUaList(arrayOfUa) {
+            var ul = document.getElementById("ualist");
+            var ii = 1;
+            for (var i = 0; i < arrayOfUa.length; i++) {
+                var name = arrayOfUa[i].name;
+                var uastring = arrayOfUa[i].string;
+                var liclass = "";
+                if (currentUa == uastring) {
+                    liclass = "selected";
+                }
+                var li = document.createElement("li");
+                li.className = liclass;
+                var a = document.createElement("a");
+                a.setAttribute("onclick", "selectUa('" + uastring + "');");
+                a.href = "#";
+                a.textContent = name;
+                if(ii <= 9) {
+                    var shortcut = document.createElement("div");
+                    shortcut.textContent = ii;
+                    shortcut.className = "shortcut";
+                    a.id = "ua" + ii;
+                    li.appendChild(shortcut);
+                }
+                ii += 1;
+                li.appendChild(a);
+                ul.appendChild(li);
+            }
+        }
+
+        $(document).keydown(function (event) {
+            var keymap = new Array();
+            var base = 49;
+            for (var i = 1; i <= 9; i++) {
+                keymap[base] = i;
+                base += 1;
+            }
+            if (event.keyCode >= 49 && event.keyCode <= 57) {
+                $("#ua" + keymap[event.keyCode]).click();
+            }
+        });
+
+
+    </script>
+    <script>
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-28095206-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = 'https://ssl.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+</head>
+<body>
+<div id="title">User-Agent Selector</div>
+
+<ul id="ualist">
+</ul>
+
+<hr/>
+<div id="options">
+    Options
+</div>
+<hr/>
+<div id="addDevice">
+</div>
+<div id="donateTitle">
+</div>
+</body>
+<script>
+    $("#options").click(function () {
+        window.close();
+        chrome.tabs.create({url:chrome.extension.getURL("options.html")});
+    });
+    $("#addDevice").click(function () {
+        chrome.tabs.create({url:chrome.extension.getURL("html/device_add.html")});
+    });
+    $("#donateTitle").click(function () {
+        window.close();
+        chrome.tabs.create({url:chrome.extension.getURL("donate.html")});
+    });
+</script>
+</html>
