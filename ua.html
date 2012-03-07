@@ -2,27 +2,32 @@
 
 <head>
     <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/js/pref.js"></script>
+    <script type="text/javascript" src="/js/core.js"></script>
+    <script type="text/javascript" src="/js/popup.js"></script>
     <link rel="stylesheet" type="text/css" href="ua.css"/>
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#donateTitle").html(chrome.i18n.getMessage("donateTitle") + "<br/>");
             $("#addDevice").html(chrome.i18n.getMessage("addDevice") + "<br/>");
-            BG.loadUserAgents();
+            $("#options").click(function () {
+                window.close();
+                chrome.tabs.create({url:chrome.extension.getURL("options.html")});
+            });
+            $("#addDevice").click(function () {
+                chrome.tabs.create({url:chrome.extension.getURL("html/device_add.html")});
+            });
+            $("#device-default").click(function () {
+                fms.core.resetDevice();
+            });
+            fms.overlay.displayDeviceSwitcherMenu($("#ualist"));
         });
     </script>
     <script>
 
-        var BG = chrome.extension.getBackgroundPage();
         chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
-            renderUaList(request)
+            //renderUaList(request);
+            console.log("onReqeust");
         });
-
-        function selectUa(e) {
-            BG.changeUserAgent(e);
-            window.close();
-        }
-
-        var currentUa = BG.getUa();
 
         function renderUaList(arrayOfUa) {
             var ul = document.getElementById("ualist");
@@ -65,7 +70,6 @@
             }
         });
 
-
     </script>
 <script type="text/javascript">
   var _gaq = _gaq || [];
@@ -82,29 +86,17 @@
 <div id="title">User-Agent Selector</div>
 
 <ul id="ualist">
+<li id="device-default">Default</li>
+<div id="separator2">---</div>
 </ul>
 
 <hr/>
-<div id="options">
-    Options
-</div>
+
+<div id="options">Options</div>
+
 <hr/>
-<div id="addDevice">
-</div>
-<div id="donateTitle">
-</div>
+
+<div id="addDevice"></div>
+
 </body>
-<script>
-    $("#options").click(function () {
-        window.close();
-        chrome.tabs.create({url:chrome.extension.getURL("options.html")});
-    });
-    $("#addDevice").click(function () {
-        chrome.tabs.create({url:chrome.extension.getURL("html/device_add.html")});
-    });
-    $("#donateTitle").click(function () {
-        window.close();
-        chrome.tabs.create({url:chrome.extension.getURL("donate.html")});
-    });
-</script>
 </html>

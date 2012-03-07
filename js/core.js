@@ -22,15 +22,12 @@ if (!firemobilesimulator) firemobilesimulator = {};
 var fms;
 if (!fms) fms = firemobilesimulator;
 if (!fms.core) fms.core = {};
+core = fms.core;
 
 fms.core.resetDevice = function (e) {
   var tabselect_enabled = fms.common.pref.getPref("msim.config.tabselect.enabled");
   if (tabselect_enabled) {
-    var browser = gBrowser || parent.gBrowser;
-    var tab = browser.selectedTab;
-    var ss = Components.classes["@mozilla.org/browser/sessionstore;1"].getService(Components.interfaces.nsISessionStore);
-    ss.setTabValue(tab, "firemobilesimulator-device-id", null);
-    firemobilesimulator.overlay.rewrite();
+    // TODO tab specific setting
   } else {
     fms.common.pref.deletePref("msim.current.carrier");
     fms.common.pref.deletePref("msim.current.id");
@@ -49,11 +46,7 @@ fms.core.setDevice = function (id) {
   
   var tabselect_enabled = fms.common.pref.getPref("msim.config.tabselect.enabled");
   if (tabselect_enabled) {
-    var tab = gBrowser.selectedTab;
-    var ss = Components.classes["@mozilla.org/browser/sessionstore;1"].getService(Components.interfaces.nsISessionStore);
-    ss.setTabValue(tab, "firemobilesimulator-device-id", id);
-    
-    firemobilesimulator.overlay.rewrite();
+    // TODO tab specific setting
   } else {
     var pref_prefix = "msim.devicelist." + id;
     var carrier = fms.common.pref.getPref(pref_prefix + ".carrier");
@@ -109,27 +102,7 @@ fms.core.deleteDevice = function (deletedId) {
   // 現在選択されている端末IDの付け替え、または既に使われている端末だったら設定をリセット  
   var tabselect_enabled = fms.common.pref.getBoolPref("msim.config.tabselect.enabled");
   if (tabselect_enabled) {
-    var windowEnumeration = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-      .getService(Components.interfaces.nsIWindowMediator)
-      .getEnumerator("navigator:browser");
-    while (windowEnumeration.hasMoreElements()) {
-      var win = windowEnumeration.getNext();
-      var tabCount = win.getBrowser().browsers.length;
-      console.log("[msim]tabCount:"+tabCount+"\n");
-      for (var i=0; i<tabCount; i++) {
-        //var tab = win.getBrowser().getBrowserAtIndex(i);
-        var tab = win.getBrowser().tabContainer.childNodes[i];
-        var ss = Components.classes["@mozilla.org/browser/sessionstore;1"].getService(Components.interfaces.nsISessionStore);
-        var id = ss.getTabValue(tab, "firemobilesimulator-device-id");
-        console.log("[msim]getId:"+id+"\n");
-        if (id > deletedId) {
-          ss.setTabValue(tab, "firemobilesimulator-device-id", id-1);
-        } else if (id == deletedId) {
-          ss.setTabValue(tab, "firemobilesimulator-device-id", null);
-        }
-      }
-    }
-    parent.firemobilesimulator.overlay.rewrite();
+  	// TODO tab specific setting
   } else {
     var id = fms.common.pref.getPref("msim.current.id");
     if (id > deletedId) {
@@ -169,10 +142,8 @@ fms.core.deleteLimitHost = function (deletedId) {
 };
 
 fms.core.updateIcon = function () {
-  var windowEnumeration = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-      .getService(Components.interfaces.nsIWindowMediator)
-      .getEnumerator("navigator:browser");
-
+  //TODO notify update icon
+/*
   while (windowEnumeration.hasMoreElements()) {
     var windowObj = windowEnumeration.getNext();
     var msimButton = windowObj.document.getElementById("msim-button");
@@ -189,6 +160,7 @@ fms.core.updateIcon = function () {
       }
     });
   }
+*/
 };
 
 fms.core.parseDeviceListXML = function (filePath, postData) {
@@ -266,6 +238,7 @@ fms.core.LoadDevices = function (devices, overwrite) {
   var currentId = 0;
   if (!overwrite) {
     currentId = fms.common.pref.getPref("msim.devicelist.count");
+    if (isNaN(currentId)) currentId = 0;
   }
   // update preference
   overwrite && firemobilesimulator.options.clearAllDeviceSettings();

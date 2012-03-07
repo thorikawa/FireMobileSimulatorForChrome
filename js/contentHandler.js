@@ -24,10 +24,10 @@ if (!firemobilesimulator.contentHandler)
 	firemobilesimulator.contentHandler = {};
 
 firemobilesimulator.contentHandler.factoryMap = {};
-firemobilesimulator.contentHandler.factoryMap[firemobilesimulator.common.carrier.DOCOMO] = firemobilesimulator.contentHandler.docomo;
-firemobilesimulator.contentHandler.factoryMap[firemobilesimulator.common.carrier.AU] = firemobilesimulator.contentHandler.au;
-firemobilesimulator.contentHandler.factoryMap[firemobilesimulator.common.carrier.SOFTBANK] = firemobilesimulator.contentHandler.softbank;
-firemobilesimulator.contentHandler.factoryMap[firemobilesimulator.common.carrier.OTHER] = firemobilesimulator.contentHandler.common;
+firemobilesimulator.contentHandler.factoryMap[fms.carrier.DOCOMO] = firemobilesimulator.contentHandler.docomo;
+firemobilesimulator.contentHandler.factoryMap[fms.carrier.AU] = firemobilesimulator.contentHandler.au;
+firemobilesimulator.contentHandler.factoryMap[fms.carrier.SOFTBANK] = firemobilesimulator.contentHandler.softbank;
+firemobilesimulator.contentHandler.factoryMap[fms.carrier.OTHER] = firemobilesimulator.contentHandler.common;
 
 firemobilesimulator.contentHandler.factory = function (carrier) {
 	return firemobilesimulator.contentHandler.factoryMap[carrier];

@@ -1,7 +1,12 @@
 <html>
 
-<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="js/db.js"></script>
+<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="/js/pref.js"></script>
+<script type="text/javascript" src="/js/carrier.js"></script>
+<script type="text/javascript" src="/js/util.js"></script>
+<script type="text/javascript" src="/js/core.js"></script>
+<script type="text/javascript" src="/js/webRequestHandler.js"></script>
+<script type="text/javascript" src="/js/db.js"></script>
 
 <script>
 
@@ -19,7 +24,12 @@
     }
 
     $(document).ready(function () {
+        console.log("ready");
         checkDb();
+        chrome.webRequest.onBeforeSendHeaders.addListener(
+                onBeforeSendHeaders,
+                opt_filter,
+                blockingInfoSpec);
 
         // Check if the version has changed.
         var currVersion = getVersion();
@@ -164,10 +174,6 @@
         else {
             chrome.browserAction.setTitle({title:userAgent});
             chrome.browserAction.setIcon({path:'ua.png'});
-            chrome.webRequest.onBeforeSendHeaders.addListener(
-                    updateUa,
-                    opt_filter,
-                    blockingInfoSpec);
         }
         currentUa = userAgent;
     }
@@ -213,6 +219,45 @@
     chrome.tabs.onUpdated.addListener(tabUpdated);
     */
 
+    chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
+        console.log("onRequest");
+        server[request.name](request, sender, sendResponse);
+    });
+
+var server = {
+    deviceInfo: function (request, sender, sendResponse) {
+        var carrier;
+        var id;
+        var width;
+        var tabselect_enabled = fms.pref.getPref("msim.config.tabselect.enabled");
+        if (tabselect_enabled) {
+            // TODO get carrier and id for this tab
+        } else {
+            carrier = fms.pref.getPref("msim.current.carrier");
+            id = fms.pref.getPref("msim.current.id");
+            width = fms.pref.getPref("msim.devicelist." + id + ".screen-width")
+                        || fms.pref.getPref("msim.config.general.screen-width-default");
+
+            console.log(carrier+":"+id);
+            //ホスト制限に指定された端末があれば、その端末を使用する
+            if (document.contentType == "text/html") {
+                if(id){
+                    //ホスト制限に指定された端末を取得する
+                    var deviceObj = fms.core.getDeviceByLimitHost(document.location.hostname);
+                    if(deviceObj){
+                        id = deviceObj.index;
+                        carrier = fms.pref.getPref("msim.devicelist." + id + ".carrier");
+                    }
+                }
+            }
+        }
+        sendResponse({
+            carrier: carrier,
+            id: id,
+            width: width
+        });
+    }
+};
 
 </script>
 </html>

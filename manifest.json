@@ -1,18 +1,24 @@
 {
-   "background_page": "background.html",
-   "browser_action": {
-      "default_icon": "ua-disabled.png",
-      "popup": "ua.html"
-   },
-   "default_locale": "ja",
-   "description": "__MSG_appDesc__",
-   "icons": {
-      "128": "ua128.png",
-      "48": "ua48.png"
-   },
-   "minimum_chrome_version": "17.0.963.12",
-   "name": "__MSG_appName__",
-   "options_page": "options.html",
-   "permissions": [ "tabs", "background", "webRequest", "webRequestBlocking", "*://*/*" ],
-   "version": "0.1"
+  "background_page": "background.html",
+  "browser_action": {
+    "default_icon": "ua-disabled.png",
+    "popup": "ua.html"
+  },
+  "default_locale": "ja",
+  "description": "__MSG_appDesc__",
+  "icons": {
+    "128": "ua128.png",
+    "48": "ua48.png"
+  },
+  "minimum_chrome_version": "17.0.963.12",
+  "name": "__MSG_appName__",
+  "options_page": "options.html",
+  "permissions": [ "tabs", "background", "webRequest", "webRequestBlocking", "*://*/*" ],
+  "content_scripts": [
+   {
+    "matches": ["*://*/*"],
+    "js": ["js/pref.js", "js/carrier.js", "js/util.js", "js/core.js", "js/content.js", "js/mpc/common.js", "js/mpc/docomo.js", "js/mpc/ezweb.js", "js/mpc/softbank.js", "js/mpc.js", "js/contentHandler/common.js", "js/contentHandler/parser.js", "js/contentHandler/docomo.js", "js/contentHandler/au.js", "js/contentHandler/softbank.js", "js/contentHandler.js"]
+   }
+  ],
+  "version": "0.1"
 }
