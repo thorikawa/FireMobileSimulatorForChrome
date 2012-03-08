@@ -24,9 +24,9 @@ if (!firemobilesimulator.mpc)
 	firemobilesimulator.mpc = {};
 
 firemobilesimulator.mpc.factoryMap = {};
-firemobilesimulator.mpc.factoryMap[firemobilesimulator.common.carrier.DOCOMO] = firemobilesimulator.mpc.docomo;
-firemobilesimulator.mpc.factoryMap[firemobilesimulator.common.carrier.AU] = firemobilesimulator.mpc.ezweb;
-firemobilesimulator.mpc.factoryMap[firemobilesimulator.common.carrier.SOFTBANK] = firemobilesimulator.mpc.softbank;
+firemobilesimulator.mpc.factoryMap[fms.carrier.DOCOMO] = firemobilesimulator.mpc.docomo;
+firemobilesimulator.mpc.factoryMap[fms.carrier.AU] = firemobilesimulator.mpc.ezweb;
+firemobilesimulator.mpc.factoryMap[fms.carrier.SOFTBANK] = firemobilesimulator.mpc.softbank;
 
 firemobilesimulator.mpc.factory = function (carrier) {
 	return new firemobilesimulator.mpc.factoryMap[carrier];

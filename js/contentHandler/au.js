@@ -24,19 +24,21 @@ if (!firemobilesimulator.contentHandler)
   firemobilesimulator.contentHandler = {};
 
 firemobilesimulator.contentHandler.au = {
-  filter : function (ndDocument, deviceId) {
-  
+  filter : function (ndDocument, deviceInfo) {
+    var deviceId = deviceInfo.id;
     var mpc = firemobilesimulator.mpc.factory("AU");
-    mpc.setImagePath("chrome://msim/content/emoji");
+    var imagePath = chrome.extension.getURL("/emoji");
+    mpc.setImagePath(imagePath);
     var parser = new fms.contentHandler.parser(ndDocument, mpc);
     parser.parse(ndDocument);
     
     var mpc2 = firemobilesimulator.mpc.factory("DC");
-    mpc2.setImagePath("chrome://msim/content/emoji");
+    var imagePath = chrome.extension.getURL("/emoji");
+    mpc2.setImagePath(imagePath);
     var parser2 = new fms.contentHandler.parser(ndDocument, mpc2);
     parser2.parse(ndDocument);
     
-    firemobilesimulator.contentHandler.common.filter(ndDocument, deviceId);    
+    firemobilesimulator.contentHandler.common.filter(ndDocument, deviceInfo);    
     // HDML暫定対応
     var hdmls = ndDocument.getElementsByTagName("hdml");
     if (hdmls.length >= 1) {
@@ -47,7 +49,7 @@ firemobilesimulator.contentHandler.au = {
           var task = actions[j].getAttribute("task");
           var dest = actions[j].getAttribute("dest");
           if (task.toUpperCase() == "GO" && dest) {
-            dump("[msim]Debug : hdml go <" + dest + ">\n");
+            console.log("[msim]Debug : hdml go <" + dest + ">\n");
             ndDocument.location.href = dest;
             return;
           }
@@ -58,17 +60,17 @@ firemobilesimulator.contentHandler.au = {
     // WML暫定対応
     var oneventTags = ndDocument.getElementsByTagName("wml:onevent");
     for (var i = 0; i < oneventTags.length; i++) {
-      dump("wml:onevent found:" + i + "\n");
+      console.log("wml:onevent found:" + i + "\n");
       var onevent = oneventTags[i];
       var type = onevent.getAttribute("type");
       if (type == "onenterforward") {
         var goTags = onevent.getElementsByTagName("wml:go");
         for (var j = 0; j < goTags.length; j++) {
-          dump("wml:go found:" + j + "\n");
+          console.log("wml:go found:" + j + "\n");
           var go = goTags[j];
           var href = go.getAttribute("href");
           if (href) {
-            dump("onenterforward go:" + href + "\n");
+            console.log("onenterforward go:" + href + "\n");
             ndDocument.location.href = href;
           }
         }
@@ -82,7 +84,7 @@ firemobilesimulator.contentHandler.au = {
         var spawn = spawnTags[j];
         var href = spawn.getAttribute("href");
         if (href) {
-          dump("wml:anchor->wml:spawn found. set link:" + href
+          console.log("wml:anchor->wml:spawn found. set link:" + href
               + "\n");
           // spawn.addEventListener("click",
           // function() {ndDocument.location.href=href;},
@@ -94,12 +96,12 @@ firemobilesimulator.contentHandler.au = {
     }
   
     //auのみDOMロード後に絵文字変換を行う
-    var pictogramConverterEnabled = firemobilesimulator.common.pref
-        .getBoolPref("msim.config.AU.pictogram.enabled");
-    if (pictogramConverterEnabled) {
-      dump("[msim]convert pictogram in overlay.js\n");
+    //var pictogramConverterEnabled = fms.pref.getPref("msim.config.AU.pictogram.enabled");
+    //if (pictogramConverterEnabled) {
+      console.log("[msim]convert pictogram in overlay.js\n");
       var mpc = firemobilesimulator.mpc.factory(firemobilesimulator.common.carrier.AU);
-      mpc.setImagePath("chrome://msim/content/emoji");
+      var imagePath = chrome.extension.getURL("/emoji");
+      mpc.setImagePath(imagePath);
       var imgs = ndDocument.getElementsByTagName("img");
       for (var i = 0; i < imgs.length; i++) {
         var iconno = imgs[i].getAttribute("localsrc")
@@ -117,7 +119,7 @@ firemobilesimulator.contentHandler.au = {
         }
   
       }
-    }
+    //}
     
     //accesskey対応
     ndDocument.addEventListener("keypress", firemobilesimulator.contentHandler.common.createAccessKeyFunction(["accesskey"]), false);

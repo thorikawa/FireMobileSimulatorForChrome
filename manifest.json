@@ -17,7 +17,7 @@
   "content_scripts": [
    {
     "matches": ["*://*/*"],
-    "js": ["js/pref.js", "js/carrier.js", "js/util.js", "js/core.js", "js/content.js", "js/mpc/common.js", "js/mpc/docomo.js", "js/mpc/ezweb.js", "js/mpc/softbank.js", "js/mpc.js", "js/contentHandler/common.js", "js/contentHandler/parser.js", "js/contentHandler/docomo.js", "js/contentHandler/au.js", "js/contentHandler/softbank.js", "js/contentHandler.js"]
+    "js": ["js/pref.js", "js/carrier.js", "js/util.js", "js/core.js", "js/content.js", "js/ecl.js", "js/mpc/common.js", "js/mpc/docomo.js", "js/mpc/ezweb.js", "js/mpc/softbank.js", "js/mpc.js", "js/contentHandler/common.js", "js/contentHandler/parser.js", "js/contentHandler/docomo.js", "js/contentHandler/au.js", "js/contentHandler/softbank.js", "js/contentHandler.js"]
    }
   ],
   "version": "0.1"

@@ -96,7 +96,7 @@ Ext.onReady(function() {
 	var tf = new Ext.form.TextField({id : 'tf-cmp'});
 	var filteredCarrier;
 	var filterButtonHandler = function(button, state) {
-		dump("filter carrier:"+button.text+"\n");
+		console.log("filter carrier:"+button.text+"\n");
 		if (state) { //press
 			filteredCarrier = button.text;
 		} else { //depress

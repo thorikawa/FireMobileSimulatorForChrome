@@ -50,7 +50,7 @@ function onBeforeSendHeaders (details) {
       var registerFlag = fms.pref.getPref("msim.config.register.enabled");
       var useragent = fms.pref.getPref(pref_prefix + ".useragent");
       if (fms.carrier.SOFTBANK == carrier) {
-        useragent = carrier.getSoftBankUserAgent(useragent, id);
+        useragent = fms.carrier.getSoftBankUserAgent(useragent, id);
       }else if (fms.carrier.DOCOMO == carrier) {
         useragent = fms.carrier.getDoCoMoUserAgent(useragent, id);
       }

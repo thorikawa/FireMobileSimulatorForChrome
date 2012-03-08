@@ -30,7 +30,8 @@ firemobilesimulator.mpc.softbank.prototype = {
   s_img_path : "img/s/",
 
   convertBinary : function(str) {
-    // Unicodeバイナリで絵文字に亜あっちする部分をimgタグに変換する
+    // Unicodeバイナリで絵文字にマッチする部分をimgタグに変換する
+    str = this.preConvert(str);
     var a = new Array();
     var r = "";
     var n = str.length;
@@ -60,11 +61,11 @@ firemobilesimulator.mpc.softbank.prototype = {
     //Webコード: エスケープシーケンス開始(\x1B\x24) + コード + エスケープ終わり(\x0F)をimgタグ形式に変換
     var _this = this;
     var f = function(whole, s1){
-      var hexstrings = firemobilesimulator.mpc.common.unpack(s1);
+      var hexstrings = fms.mpc.common.unpack(s1);
       var r = "";
       for (var i=1; i<hexstrings.length; i++) {
         var dec = parseInt(""+hexstrings[0]+hexstrings[i], 16);
-        dump("softbank:" + dec + "->" + "&#" + _this.web2u(dec) + ";\n");
+        console.log("softbank:" + dec + "->" + "&#" + _this.web2u(dec) + ";\n");
         r += "&#" + _this.web2u(dec) + ";";
       }
       return r;
@@ -72,20 +73,20 @@ firemobilesimulator.mpc.softbank.prototype = {
     str = str.replace(re1, f);
 
     // SJISバイナリをUnicodeに変換しておく
-    dump("[mpc]SoftBank binary match start\n");
-    var hexstrings = new firemobilesimulator.mpc.common.HexStrings(firemobilesimulator.mpc.common.unpack(str), this.charset);
+    console.log("[mpc]SoftBank binary match start\n");
+    var hexstrings = new fms.mpc.common.HexStrings(fms.mpc.common.unpack(str), this.charset);
     var r = "";
     while (hexstrings.hasNextCharacter()) {
       var decs = hexstrings.getNextCharacterDecs();
-      if (this.charset == firemobilesimulator.mpc.common.MPC_SJIS) {
+      if (this.charset == fms.mpc.common.MPC_SJIS) {
         // SJISバイナリの絵文字を変換 [unofficial]
         // google.comでチェックできる
         var u = 0;
         if (decs.length==2) {
-          u = this.s2u(firemobilesimulator.mpc.common.bits2dec(decs));
+          u = this.s2u(fms.mpc.common.bits2dec(decs));
         }
         if (u) {
-          dump("softbank sjis:" + "&#" + u + ";\n");
+          console.log("softbank sjis:" + "&#" + u + ";\n");
           r += "&#" + u + ";";
         } else {
           for (var i = 0; i < decs.length; i++) {
@@ -93,7 +94,7 @@ firemobilesimulator.mpc.softbank.prototype = {
           }
         }
       } else {
-        dump("[mpc]SoftBank Unknown charset [" + this.charset + "].\n");
+        console.log("[mpc]SoftBank Unknown charset [" + this.charset + "].\n");
         return str;
       }
     }
@@ -136,7 +137,7 @@ firemobilesimulator.mpc.softbank.prototype = {
     } else if (u >= 0xE301 && u <= 0xE35A || u >= 0xE401 && u <= 0xE45A || u >= 0xE501 && u <= 0xE55A) {
       s = u-0x93E0;
     } else {
-      // dump("[mpc]Warning:Unknown SoftBank Pictogram. Unicode:"+u+"\n");
+      // console.log("[mpc]Warning:Unknown SoftBank Pictogram. Unicode:"+u+"\n");
       s = 0;
     }
     return s;
@@ -164,7 +165,7 @@ firemobilesimulator.mpc.softbank.prototype = {
     } else if (s >= 0xFB80 && s <= 0xFB8D) {
       web = s-0xAB21;
     } else {
-      // dump("[mpc]Warning:Unknown SoftBank Pictogram. SJIS code:"+s.toString(16)+"\n");
+      // console.log("[mpc]Warning:Unknown SoftBank Pictogram. SJIS code:"+s.toString(16)+"\n");
       web = 0;
     }
     return web;

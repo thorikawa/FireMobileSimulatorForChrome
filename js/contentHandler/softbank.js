@@ -24,14 +24,15 @@ if (!firemobilesimulator.contentHandler)
   firemobilesimulator.contentHandler = {};
 
 firemobilesimulator.contentHandler.softbank = {
-  filter : function (ndDocument, deviceId) {
-  
+  filter : function (ndDocument, deviceInfo) {
+    var deviceId = deviceInfo.id;
     var mpc = firemobilesimulator.mpc.factory("SB");
-    mpc.setImagePath("chrome://msim/content/emoji");
+    var imagePath = chrome.extension.getURL("/emoji");
+    mpc.setImagePath(imagePath);
     var parser = new fms.contentHandler.parser(ndDocument, mpc);
     parser.parse(ndDocument);
     
-    firemobilesimulator.contentHandler.common.filter(ndDocument, deviceId);    
+    firemobilesimulator.contentHandler.common.filter(ndDocument, deviceInfo);    
     ndDocument.addEventListener("keypress", firemobilesimulator.contentHandler.common.createAccessKeyFunction(["accesskey", "directkey"]), false);
   }
 };

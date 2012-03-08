@@ -25,7 +25,7 @@ if (!fms.overlay) fms.overlay = {};
 
 (function (objEvent) {
   console.log("[msim]BrowserOnLoad is fired.\n");
-    chrome.extension.sendRequest({name: "dviceInfo"}, function(deviceInfo) {
+    chrome.extension.sendRequest({name: "deviceInfo"}, function(deviceInfo) {
       filter(deviceInfo);
     });
 })();

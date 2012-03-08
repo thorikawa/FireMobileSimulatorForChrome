@@ -25,7 +25,8 @@ if (!firemobilesimulator.contentHandler)
 
 firemobilesimulator.contentHandler.docomo = {
 
-  filter : function (ndDocument, deviceId) {
+  filter : function (ndDocument, deviceInfo) {
+    var deviceId = deviceInfo.id;
     //
     var mpc = firemobilesimulator.mpc.factory("DC");
     var imagePath = chrome.extension.getURL("/emoji");
@@ -34,7 +35,7 @@ firemobilesimulator.contentHandler.docomo = {
     parser.parse(ndDocument);
     //
 
-    firemobilesimulator.contentHandler.common.filter(ndDocument, deviceId);    
+    firemobilesimulator.contentHandler.common.filter(ndDocument, deviceInfo);    
     var setUtnFunction = function(e) {
       dump("[msim]click utn\n");
       if (true == confirm(firemobilesimulator.overlay.strings

@@ -506,7 +506,7 @@ firemobilesimulator.mpc.ezweb.prototype = {
       _bread : 424,
       _softcream : 425,
       _potato : 426,
-      _dumpling : 427,
+      "_console.logling" : 427,
       _ricecracker : 428,
       _rice : 429,
       _spaghetti : 430,
@@ -743,7 +743,8 @@ firemobilesimulator.mpc.ezweb.prototype = {
       return false;
     }
 
-    [char1, char2] = chs;
+    char1 = chs[0];
+    char2 = chs[1];
     if (((char1 == 0xF3 || char1 == 0xF6 || char1 == 0xF7) && ((char2 >= 0x40 && char2 <= 0x7E) || (char2 >= 0x80 && char2 <= 0xFC)))
         || (char1 == 0xF4 && ((char2 >= 0x40 && char2 <= 0x7E) || (char2 >= 0x80 && char2 <= 0x8D)))) {
       result = true;
@@ -765,7 +766,7 @@ firemobilesimulator.mpc.ezweb.prototype = {
       return false;
     }
 
-    // dump("isPictogram"+chs.join(":")+"");
+    // console.log("isPictogram"+chs.join(":")+"");
     [char1, char2, char3] = chs;
     if ((char1 == 0xEE && ((char2 == 0xB1 && (char3 >= 0x80 && char3 <= 0xBE))
         || (char2 == 0xB2 && (char3 >= 0x80 && char3 <= 0xBF))
@@ -782,9 +783,9 @@ firemobilesimulator.mpc.ezweb.prototype = {
     }
 
     if (char1 == 0xEE && char2 == 0x94) {
-      dump("##probably pictogram?? "+char1+":"+char2+":"+char3+"\n")
+      console.log("##probably pictogram?? "+char1+":"+char2+":"+char3+"\n")
     }
-    // dump("=>"+result+"\n");
+    // console.log("=>"+result+"\n");
     return result;
   },
 
@@ -801,8 +802,9 @@ firemobilesimulator.mpc.ezweb.prototype = {
       return false;
     }
 
-    // dump("isPictogram"+chs.join(":")+"");
-    [char1, char2] = chs;
+    // console.log("isPictogram"+chs.join(":")+"");
+    char1 = chs[0];
+    char2 = chs[1];
     if ((char1 == 0xE4 && (char2 >= 0x68 && char2 <= 0xFF))
         || (char1 == 0xE5 && (char2 >= 0x00 && char2 <= 0xDF))
         || (char1 == 0xEA && (char2 >= 0x80 && char2 <= 0xFF))
@@ -811,7 +813,7 @@ firemobilesimulator.mpc.ezweb.prototype = {
     } else {
       result = false;
     }
-    // dump("=>"+result+"\n");
+    // console.log("=>"+result+"\n");
     return result;
   },
 
@@ -831,13 +833,13 @@ firemobilesimulator.mpc.ezweb.prototype = {
       if (this.isPictogramSJISDecs(unofficlalSjisDecs)) {
         // 裏KDDI Unicodeを変換
         // 裏KDDI Unicodeはページの文字コードUTF-8しか使用できないが、ここではUnicode解釈がうまくいっている前提で処理を進めているため、ページの文字コードは気にしない
-        dump("[mpc]Au ispictogram_unofficlal:" + unofficlalSjisDecs[0] + ":" + unofficlalSjisDecs[1] + "\n");
+        console.log("[mpc]Au ispictogram_unofficlal:" + unofficlalSjisDecs[0] + ":" + unofficlalSjisDecs[1] + "\n");
         a.push({type:0, value:r});
         r = "";
         var unofficialDec = unofficlalSjisDecs[0]*256+unofficlalSjisDecs[1];
         a.push({type:1, value:this.e_options_encode(this.getIconMapSJIS()[unofficialDec])});
       } else if (this.isPictogramUnicodeDecs(decs)) {
-        dump("[mpc]Au ispictogram:" + decs[0] + ":" + decs[1] + "\n");
+        console.log("[mpc]Au ispictogram:" + decs[0] + ":" + decs[1] + "\n");
         a.push({type:0, value:r});
         r = "";
         a.push({type:1, value:this.e_options_encode(this.getIconMapUnicode()[dec])});
@@ -850,7 +852,7 @@ firemobilesimulator.mpc.ezweb.prototype = {
   },
 
   preConvert : function(str) {
-    dump("[mpc]**Au convert start.charset = " + this.charset + "\n");
+    console.log("[mpc]**Au convert start.charset = " + this.charset + "\n");
 
     var _this = this;
 
@@ -858,13 +860,13 @@ firemobilesimulator.mpc.ezweb.prototype = {
     // 16進数値参照を、SJIS文字コードに変換
     var re1 = /\&\#x([a-f0-9]{2})([a-f0-9]{2});/ig;
     str = str.replace(re1, function(whole, s1, s2) {
-      dump("[mpc]au regmatch16:" + s1 + ":" + s2 + "\n");
+      console.log("[mpc]au regmatch16:" + s1 + ":" + s2 + "\n");
       var dec1 = parseInt(s1, 16);
       var dec2 = parseInt(s2, 16);
       var decs = [dec1, dec2];
       if (_this.isPictogramSJISDecs(decs)) {
         // decsはSJISの文字コード
-        dump("au SJIS 16 match\n");
+        console.log("au SJIS 16 match\n");
         var udec = _this.e_s2uou(decs);
         return "&#" + udec + ";";
       } else {
@@ -875,7 +877,7 @@ firemobilesimulator.mpc.ezweb.prototype = {
     // SJIS10進数値参照を、SJIS文字コードに変換
     var re2 = /\&\#([0-9]{5});/g;
     str = str.replace(re2, function(whole, s1) {
-      dump("[mpc]au regmatch10:" + s1 + "\n");
+      console.log("[mpc]au regmatch10:" + s1 + "\n");
       var bin;
       var sdec = parseInt(s1, 10);
       if (sdec >= 256) {
@@ -884,7 +886,7 @@ firemobilesimulator.mpc.ezweb.prototype = {
         var decs = [dec1, dec2];
         if (_this.isPictogramSJISDecs(decs)) {
           // decsはSJISの文字コード
-          dump("au SJIS 10 match\n");
+          console.log("au SJIS 10 match\n");
           var udec = _this.e_s2uou(decs);
           return "&#" + udec + ";";
         } else {
@@ -907,7 +909,7 @@ firemobilesimulator.mpc.ezweb.prototype = {
           }
         }
         if (u) {
-          dump("[mpc]au SJIS binary:" + "&#" + u + ";\n");
+          console.log("[mpc]au SJIS binary:" + "&#" + u + ";\n");
           r += "&#" + u + ";";
         } else {
           for (var i = 0; i < decs.length; i++) {
@@ -915,7 +917,7 @@ firemobilesimulator.mpc.ezweb.prototype = {
           }
         }
       } else {
-        dump("[mpc]au Unknown charset [" + this.charset + "].\n");
+        console.log("[mpc]au Unknown charset [" + this.charset + "].\n");
         return str;
       }
     }

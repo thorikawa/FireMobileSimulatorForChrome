@@ -37,15 +37,22 @@ firemobilesimulator.mpc.docomo.prototype = {
    * Unicodeのバイナリとして絵文字に合致するものを全て変換する
    */
   convertBinary : function(str) {
-    // Unicodeバイナリで絵文字に亜あっちする部分をimgタグに変換する
+    // Unicodeバイナリで絵文字にマッチする部分をimgタグに変換する
     var a = new Array();
     var r = "";
     var n = str.length;
     for (var i=0; i<n; i++) {
       var dec = str.charCodeAt(i);
       var decs = [parseInt(dec/256), dec%256];
-      if (this.isPictogramUnicodeDecs(decs)) {
-        console.log("[mpc]DoCoMo ispictogram:" + decs[0] + ":" + decs[1] + "\n");
+      console.log("check pict:" + decs[0] + ":" + decs[1]);
+      if (this.charset == firemobilesimulator.mpc.common.MPC_SJIS && this.isPictogramSJISDecs([decs[0], decs[1]])) {
+            var udec = firemobilesimulator.mpc.common.sdecs2udec([decs[0],decs[1]]);
+            a.push({type:0, value:r});
+            r = "";
+            a.push({type:1, value:this.i_options_encode(udec)});
+      }
+      else if (this.isPictogramUnicodeDecs(decs)) {
+        console.log("[mpc]DoCoMo ispictogram:" + decs[0] + ":" + decs[1]);
         a.push({type:0, value:r});
         r = "";
         a.push({type:1, value:this.i_options_encode(dec)});
@@ -55,34 +62,6 @@ firemobilesimulator.mpc.docomo.prototype = {
     }
     a.push({type:0, value:r});
     return a;
-  },
-
-  /**
-   * 文字列からi-mode絵文字を検出し、指定されたフォーマットに変換 基本・拡張・隠し絵文字一部対応
-   * DOM Tree展開後に絵文字解析可能なように前処理を行う
-   * @return string
-   */
-  preConvert : function(str) {
-    console.log("[mpc]DoCoMo convert start.charset = "+this.charset+"\n");
-    var _this = this;
-    // SJIS文字コードの10進数値参照は、Firefox上ではUnicode文字コードで解釈されてしまうため、あらかじめUnicodeの文字コードに変換しておく
-    if (this.charset == firemobilesimulator.mpc.common.MPC_SJIS) {
-      console.log("[mpc]DoCoMo SJIS10match start\n");
-      var regNumericReferenceDec = /&#([0-9]{5});/g;
-      str = str.replace(regNumericReferenceDec, function(whole, s1) {
-        var sdec = parseInt(s1, 10);
-        if (sdec >= 256) {
-          var dec1 = parseInt(sdec / 256);
-          var dec2 = sdec % 256;
-          if (_this.isPictogramSJISDecs([dec1, dec2])) {
-            var udec = firemobilesimulator.mpc.common.sdecs2udec([dec1,dec2]);
-            return "&#" + udec + ";";
-          }
-        }
-        return whole;
-      });
-    }
-    return str;
   },
 
   /**
@@ -102,7 +81,8 @@ firemobilesimulator.mpc.docomo.prototype = {
       return false;
     }
     //console.log("isPictogram"+chs.join(":")+"");
-    [char1, char2] = chs;
+    char1 = chs[0];
+    char2 = chs[1];
     if (((char1 == 0xF8) && (char2 >= 0x9F) && (char2 <= 0xFC))
         || ((char1 == 0xF9) && ((char2 >= 0x40 && char2 <= 0x4F)
             || (char2 >= 0x50 && char2 <= 0x7E) || (char2 >= 0x80 && char2 <= 0xFC)))) {

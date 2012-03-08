@@ -23,30 +23,30 @@ if (!firemobilesimulator)
 	firemobilesimulator = {};
 if (!firemobilesimulator.common)
 	firemobilesimulator.common = {};
-if (!firemobilesimulator.common.carrier)
-  firemobilesimulator.common.carrier = {};
+if (!fms.carrier)
+  fms.carrier = {};
 if (!fms)
   fms = {};
-fms.carrier = firemobilesimulator.common.carrier;
+fms.carrier = fms.carrier;
 
 /**
  * 各キャリアを示す定数
  * @type String
  */
-firemobilesimulator.common.carrier.DOCOMO = "DC";
-firemobilesimulator.common.carrier.AU = "AU";
-firemobilesimulator.common.carrier.SOFTBANK = "SB";
-firemobilesimulator.common.carrier.OTHER = "OT";
+fms.carrier.DOCOMO = "DC";
+fms.carrier.AU = "AU";
+fms.carrier.SOFTBANK = "SB";
+fms.carrier.OTHER = "OT";
 
 /**
  * 各キャリアを示す定数配列
  */
-firemobilesimulator.common.carrier.carrierArray = [firemobilesimulator.common.carrier.DOCOMO, firemobilesimulator.common.carrier.AU, firemobilesimulator.common.carrier.SOFTBANK, firemobilesimulator.common.carrier.OTHER];
+fms.carrier.carrierArray = [fms.carrier.DOCOMO, fms.carrier.AU, fms.carrier.SOFTBANK, fms.carrier.OTHER];
 
 /**
  * 各キャリアの正式名称を示すマップ
  */
-firemobilesimulator.common.carrier.carrierName = {
+fms.carrier.carrierName = {
   DC : "DoCoMo", // "docomo" や "NTT docomo" 等にすべき？
   AU : "au",
   SB : "SoftBank",
@@ -56,7 +56,7 @@ firemobilesimulator.common.carrier.carrierName = {
 /**
  * キャリア共通の属性
  */
-firemobilesimulator.common.carrier.deviceBasicAttribute = [
+fms.carrier.deviceBasicAttribute = [
   "label",
   "useragent",
   "carrier",
@@ -77,7 +77,7 @@ firemobilesimulator.common.carrier.deviceBasicAttribute = [
   "use-cookie"
 ];
 
-firemobilesimulator.common.carrier.xmlTagName = {
+fms.carrier.xmlTagName = {
   "label"            : "DeviceName",
   "useragent"        : "UserAgent",
   "carrier"          : "Carrier",
@@ -91,19 +91,19 @@ firemobilesimulator.common.carrier.xmlTagName = {
   "use-cookie"       : "Cookie"
 };
 
-firemobilesimulator.common.carrier.Type = {};
+fms.carrier.Type = {};
 
-firemobilesimulator.common.carrier.Type[firemobilesimulator.common.carrier.DOCOMO] = {
+fms.carrier.Type[fms.carrier.DOCOMO] = {
   DOCOMO_FOMA     : "FOMA",
   DOCOMO_MOVA     : "mova"
 };
 
-firemobilesimulator.common.carrier.Type[firemobilesimulator.common.carrier.AU] = {
+fms.carrier.Type[fms.carrier.AU] = {
   AU_WAP1         : "WAP1.0",
   AU_WAP2         : "WAP2.0"
 };
 
-firemobilesimulator.common.carrier.Type[firemobilesimulator.common.carrier.SOFTBANK] = {
+fms.carrier.Type[fms.carrier.SOFTBANK] = {
   SOFTBANK_C2     : "C2",
   SOFTBANK_C3     : "C3",
   SOFTBANK_C4     : "C4",
@@ -117,7 +117,7 @@ firemobilesimulator.common.carrier.Type[firemobilesimulator.common.carrier.SOFTB
   SOFTBANK_IPHONE : "iPhone"
 };
 
-firemobilesimulator.common.carrier.idType = {
+fms.carrier.idType = {
   DOCOMO_UID : "DOCOMO_UID",
   DOCOMO_SER : "DOCOMO_SER",
   DOCOMO_ICC : "DOCOMO_ICC",
@@ -127,7 +127,7 @@ firemobilesimulator.common.carrier.idType = {
   SB_SERIAL : "SB_SERIAL"
 };
 
-firemobilesimulator.common.carrier.idPath = {
+fms.carrier.idPath = {
   DOCOMO_UID :  { "general" : "DC.uid",    "individual" : "docomo-uid"},
   DOCOMO_SER :  { "general" : "DC.ser",    "individual" : "docomo-ser"},
   DOCOMO_ICC :  { "general" : "DC.icc",    "individual" : "docomo-icc"},
@@ -138,9 +138,9 @@ firemobilesimulator.common.carrier.idPath = {
 };
 
 
-firemobilesimulator.common.carrier.getSoftBankUserAgent = function (useragent, id) {
-  var serial = firemobilesimulator.common.carrier.getId(firemobilesimulator.common.carrier.idType.SB_SERIAL,id);
-  var notifySerial = firemobilesimulator.common.pref.getBoolPref("msim.config.SB.notifyserial");
+fms.carrier.getSoftBankUserAgent = function (useragent, id) {
+  var serial = fms.carrier.getId(fms.carrier.idType.SB_SERIAL,id);
+  var notifySerial = fms.pref.getPref("msim.config.SB.notifyserial");
   var replacement  = "";
   if (true == notifySerial) {
     replacement = "/" + serial;
@@ -150,14 +150,14 @@ firemobilesimulator.common.carrier.getSoftBankUserAgent = function (useragent, i
   return useragent;
 };
 
-//firemobilesimulator.common.carrier.getDocomoUserAgent = function (useragent, id) {
-firemobilesimulator.common.carrier.getDoCoMoUserAgent = function(useragent, id) {
-  var type1 = firemobilesimulator.common.pref.getPref("msim.devicelist."+id+".type1");
-  var cache = firemobilesimulator.common.pref.getPref("msim.devicelist."+id+".cache") || 100;
-  if (firemobilesimulator.common.carrier.Type[firemobilesimulator.common.carrier.DOCOMO].DOCOMO_FOMA == type1) {
+//fms.carrier.getDocomoUserAgent = function (useragent, id) {
+fms.carrier.getDoCoMoUserAgent = function(useragent, id) {
+  var type1 = fms.pref.getPref("msim.devicelist."+id+".type1");
+  var cache = fms.pref.getPref("msim.devicelist."+id+".cache") || 100;
+  if (fms.carrier.Type[fms.carrier.DOCOMO].DOCOMO_FOMA == type1) {
     //TODO ;TB;WxxHxxの部分も動的に組み立てられるようにする
     useragent = useragent + "(c" + cache + ";TB;W24H12)";
-  }else if (firemobilesimulator.common.carrier.Type[firemobilesimulator.common.carrier.DOCOMO].DOCOMO_MOVA == type1) {
+  }else if (fms.carrier.Type[fms.carrier.DOCOMO].DOCOMO_MOVA == type1) {
     //TODO /TB/WxxHxxの部分も動的に組み立てられるようにする
     useragent = useragent + "/c" + cache + "/TB/W24H12";
   }
@@ -169,14 +169,14 @@ firemobilesimulator.common.carrier.getDoCoMoUserAgent = function(useragent, id) 
  * IDの情報を返す
  * 個々の端末に設定されているIDを参照して、設定されていなければ、全体で設定されているIDを返す
  */
-firemobilesimulator.common.carrier.getId = function (type, deviceId) {
-  var info = firemobilesimulator.common.carrier.idPath[type];
+fms.carrier.getId = function (type, deviceId) {
+  var info = fms.carrier.idPath[type];
   if (!info) {
     throw "unknown idType:"+type;
   }
-  var id = firemobilesimulator.common.pref.getPref("msim.devicelist."+deviceId+"."+info.individual);
+  var id = fms.pref.getPref("msim.devicelist."+deviceId+"."+info.individual);
   if (!id) {
-    id = firemobilesimulator.common.pref.getPref("msim.config."+info.general);
+    id = fms.pref.getPref("msim.config."+info.general);
   }
   return id;
 }

@@ -7,7 +7,7 @@
 <script type="text/javascript" src="/js/core.js"></script>
 <script type="text/javascript" src="/js/webRequestHandler.js"></script>
 <script type="text/javascript" src="/js/db.js"></script>
-
+<script type="text/javascript" src="/js/initialData.js"></script>
 <script>
 
     function onInstall() {
@@ -45,6 +45,13 @@
         }
     });
 
+    function onInstall () {
+    	console.log("onInstall");
+    	$.each(data, function (i, e) {
+    		fms.pref.setPref(e.name, e.value);
+    	});
+    };
+    
     var dolog = false;
 
     function log(message) {
