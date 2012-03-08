@@ -1,5 +1,5 @@
-/* ***** BEGIN LICENSE BLOCK Version: GPL 3.0 ***** 
- * FireMobileFimulator is a Firefox add-on that simulate web browsers of 
+/* ***** BEGIN LICENSE BLOCK Version: GPL 3.0 *****
+ * FireMobileFimulator is a Firefox add-on that simulate web browsers of
  * japanese mobile phones.
  * Copyright (C) 2008  Takahiro Horikawa <horikawa.takahiro@gmail.com>
  *
@@ -43,7 +43,7 @@ fms.core.setDevice = function (id) {
     console.log("[msim]Error : the attribute which you have selected is insufficient.\n");
     return;
   }
-  
+
   var tabselect_enabled = fms.common.pref.getPref("msim.config.tabselect.enabled");
   if (tabselect_enabled) {
     // TODO tab specific setting
@@ -63,19 +63,19 @@ fms.core.setDevice = function (id) {
 fms.core.deleteDevice = function (deletedId) {
   var prefPrefix = "msim.devicelist." + deletedId + ".";
   var deletedDeviceId = fms.common.pref.getPref(prefPrefix+"device-id");
-  firemobilesimulator.common.carrier.deviceBasicAttribute.forEach(function(attribute) {
+  fms.carrier.deviceBasicAttribute.forEach(function (attribute) {
     fms.common.pref.deletePref(prefPrefix+attribute);
   });
 
   //ホストの端末指定も削除する
-  firemobilesimulator.core.deleteLimitHostDeviceByDeviceId(deletedDeviceId);
+  fms.core.deleteLimitHostDeviceByDeviceId(deletedDeviceId);
 
   //各端末のidを再計算
   var count = fms.common.pref.getPref("msim.devicelist.count");
   for (var i=deletedId+1; i<=count; i++) {
     var sPrefPrefix = "msim.devicelist." + i + ".";
     var ePrefPrefix = "msim.devicelist." + (i-1) + ".";
-    firemobilesimulator.common.carrier.deviceBasicAttribute.forEach(function(attribute) {
+    fms.carrier.deviceBasicAttribute.forEach(function(attribute) {
       if (attribute == "extra-header") {
         var extraHeaders = fms.common.pref.getListPref(sPrefPrefix + "extra-header", ["name", "value"]);
         extraHeaders.forEach(function (extraHeader) {
@@ -99,7 +99,7 @@ fms.core.deleteDevice = function (deletedId) {
   }
   fms.common.pref.setPref("msim.devicelist.count", count-1);
 
-  // 現在選択されている端末IDの付け替え、または既に使われている端末だったら設定をリセット  
+  // 現在選択されている端末IDの付け替え、または既に使われている端末だったら設定をリセット
   var tabselect_enabled = fms.common.pref.getBoolPref("msim.config.tabselect.enabled");
   if (tabselect_enabled) {
   	// TODO tab specific setting
@@ -197,7 +197,7 @@ fms.core.parseDeviceListXML = function (filePath, postData) {
   var i = 0;
   while ((deviceElement = deviceResults.iterateNext()) != null) {
     devices[i] = {};
-    firemobilesimulator.common.carrier.deviceBasicAttribute.forEach(function(key) {
+    fms.carrier.deviceBasicAttribute.forEach(function(key) {
       if (key == "extra-header") {
         var headerResults = xPathEvaluator.evaluate("ExtraHeaders/Header",
             deviceElement, resolver,
@@ -220,7 +220,7 @@ fms.core.parseDeviceListXML = function (filePath, postData) {
         }
         devices[i]["headers"] = headers;
       } else {
-        var tagName = firemobilesimulator.common.carrier.xmlTagName[key];
+        var tagName = fms.carrier.xmlTagName[key];
         var value = xPathEvaluator.evaluate(tagName, deviceElement,
             resolver, XPathResult.STRING_TYPE, null).stringValue;
         if (tagName == "Carrier") {
@@ -270,12 +270,12 @@ fms.core.LoadDevices = function (devices, overwrite) {
 };
 
 fms.core.getCarrierCode = function (carrierName) {
-  var carrierCode = firemobilesimulator.common.carrier[carrierName.toUpperCase()];
-  return carrierCode || firemobilesimulator.common.carrier.OTHER;
+  var carrierCode = fms.carrier[carrierName.toUpperCase()];
+  return carrierCode || fms.carrier.OTHER;
 };
 
 fms.core.isValidCarrier = function(carrierCode) {
-  return firemobilesimulator.common.carrier.carrierArray.some(function(c) { return carrierCode == c; });
+  return fms.carrier.carrierArray.some(function(c) { return carrierCode == c; });
 };
 
 fms.core.refreshRegisteredDevices = function () {
@@ -307,7 +307,7 @@ fms.core.clearAllDevice = function () {
   for (var i = 1; i <= count; i++) {
     var prefPrefix = "msim.devicelist." + i + ".";
 
-    firemobilesimulator.common.carrier.deviceBasicAttribute.forEach(function(attribute) {
+    fms.carrier.deviceBasicAttribute.forEach(function(attribute) {
       if (attribute == "extra-header") {
         fms.common.pref.deleteListPref("msim.devicelist." + i + ".extra-header", ["name", "value"]);
       } else {

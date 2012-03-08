@@ -7,37 +7,27 @@
       "description": "title",
       "message": "User-Agent Selector"
    },
-   "donateTitle": {
-      "description": "donate title",
-      "message": "Find this useful ? Consider making a donation"
-   },
-   "donationPart1": {
-      "description": "donation part1",
-      "message": "Donations are welcome. They also help me continuing work on it."
-   },
-   "donationPart2": {
-      "description": "donation part2",
-      "message": "You can use the Paypal button below to donate the amount you want."
-   },
-   "donationPart3": {
-      "description": "donation part3",
-      "message": "For every donation, I will send you a thank you note, so make sure you enter a valid e-mail address ; for big donations, I will send you a little drawing !"
-   },
-   "donationPart4": {
-      "description": "donation part4",
-      "message": "Thanks again."
-   },
-   "donationThanks": {
-      "description": "donation thanks",
-      "message": "Thank you for considering a donation !"
-   },
-   "donationTitle": {
-      "description": "donation title",
-      "message": "Making a donation"
-   },
    "editUaList": {
       "description": "options ualist",
       "message": "Edit User Agents"
+   },
+   "options_general": {
+      "message": "General"
+   },
+   "options_idno": {
+      "message": "ID"
+   },
+   "options_devices": {
+      "message": "Devices"
+   },
+   "options_gps": {
+      "message": "GPS"
+   },
+   "options_pictogram": {
+      "message": "Pictogram"
+   },
+   "options_limithost": {
+      "message": "Limited host"
    },
    "exportDownloadReady": {
       "description": "export title",

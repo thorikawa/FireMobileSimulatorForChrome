@@ -12,6 +12,7 @@
 </script>
 </head>
 <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="/js/pref.js"></script>
 <link rel="stylesheet" href="/css/options/default.css" media="screen">
 <link rel="stylesheet" href="/css/options/main.css" media="screen">
 <link rel="stylesheet" href="/css/options/setting.css" media="screen">
@@ -24,106 +25,57 @@
     <h1 style="display: none;">Options</h1>
 
     <div id="tab-container">
-        <div class="tab active" i18n="editUaList">
-        </div>
+        <div class="tab" i18n="options_general" page="general"></div>
+        <div class="tab" i18n="options_idno" page="idno"></div>
+        <div class="tab" i18n="options_devices" page="devices"></div>
+        <!--<div class="tab" i18n="options_gps" page="gps"></div>-->
+        <!--<div class="tab" i18n="options_pictogram" page="pictogram"></div>-->
+        <!--<div class="tab" i18n="options_limithost" page="limithost"></div>-->
     </div>
 </div>
 
-<div id="content">
-    <div class="tab-content show">
-        <h2 i18n="editUaList"></h2>
-        <br/>
+<div id="content" class="tab-content show">
+    <div id="uaedition">
+        <form id="uaform">
+            <label for="uaname" i18n="uaName"></label>
+            <input type="text" name="uaname" id="uaname" class="inputUaname" required/><br>
+            <label for="uastring" i18n="uaValue"></label>
+            <input type="text" name="uastring" id="uastring" required><br/>
+            <label for="uadescription">Description</label>
+            <input type="text" name="uadescription" id="uadescription"/><br/>
+            <input type="hidden" name="uaid" id="uaid" value=""/>
+            <input type="hidden" name="uamode" id="uamode" value="create"/>
+            <input type="submit"/>
+            <input type="submit" onclick="fireEvent('resetform'); return false;" value="Clear"/>
+        </form>
+    </div>
+    <output id="list"></output>
+    <script>
+        function handleFileSelect(evt) {
+            var files = evt.target.files; // FileList object
+            // Loop through the FileList and render image files as thumbnails.
+            for (var i = 0, f; f = files[i]; i++) {
+                // Only process image files.
+                //if (!f.type.match('text.*')) {
+                //  continue;
+                //}
 
-        <div class="setting group-name" i18n="uaList">
-        </div>
-        <div class="setting group">
-            <div>
-                <table style="width:100%;">
-                    <tr>
-                        <td i18n="uaName" class="rowLabel"></td>
-                        <td i18n="uaValue" class="rowLabel"></td>
-                        <td class="rowLabel" style="text-align: right">Actions</td>
-                    </tr>
-                </table>
-            </div>
-            <div>
-                <table id="ualist" style="width:100%;">
+                var reader = new FileReader();
+                // Closure to capture the file information.
+                reader.onload = (function (theFile) {
+                    return function (e) {
+                        var res = e.target.result.replace("data:text/plain;base64,", "");
+                        var useragents = window.atob(res);
+                        chrome.extension.getBackgroundPage().importUserAgents(useragents);
+                    };
+                })(f);
 
-                </table>
-            </div>
-        </div>
-        <div class="setting group-name" i18n="uaFormTitle">
-        </div>
-        <div id="uaedition">
-            <form id="uaform">
-                <label for="uaname" i18n="uaName"></label>
-                <input type="text" name="uaname" id="uaname" class="inputUaname" required/><br>
-                <label for="uastring" i18n="uaValue"></label>
-                <input type="text" name="uastring" id="uastring" required><br/>
-                <label for="uadescription">Description</label>
-                <input type="text" name="uadescription" id="uadescription"/><br/>
-                <input type="hidden" name="uaid" id="uaid" value=""/>
-                <input type="hidden" name="uamode" id="uamode" value="create"/>
-                <input type="submit"/>
-                <input type="submit" onclick="fireEvent('resetform'); return false;" value="Clear"/>
-            </form>
-        </div>
-        <div id="optionsMessage">
-
-        </div>
-        <br/>
-
-        <div class="setting group-name" i18n="exportTitle">
-        </div>
-        <div class="setting group">
-            <a onclick="exportUserAgents();" href="#" i18n="exportLabel"></a>
-
-            <div id="downloadLink">
-            </div>
-        </div>
-
-        <br/>
-
-        <div class="setting group-name" i18n="importTitle">
-        </div>
-        <div class="setting group" i18n="importLabel">
-        </div>
-        <input type="file" id="files" name="files[]" multiple/>
-        <output id="list"></output>
-        <script>
-            function handleFileSelect(evt) {
-                var files = evt.target.files; // FileList object
-                // Loop through the FileList and render image files as thumbnails.
-                for (var i = 0, f; f = files[i]; i++) {
-                    // Only process image files.
-                    //if (!f.type.match('text.*')) {
-                    //  continue;
-                    //}
-
-                    var reader = new FileReader();
-                    // Closure to capture the file information.
-                    reader.onload = (function (theFile) {
-                        return function (e) {
-                            var res = e.target.result.replace("data:text/plain;base64,", "");
-                            var useragents = window.atob(res);
-                            chrome.extension.getBackgroundPage().importUserAgents(useragents);
-                        };
-                    })(f);
-
-                    // Read in the image file as a data URL.
-                    reader.readAsDataURL(f);
-                }
+                // Read in the image file as a data URL.
+                reader.readAsDataURL(f);
             }
-
-            document.getElementById('files').addEventListener('change', handleFileSelect, false);
-        </script>
-
-
-    </div>
-
-
+        }
+    </script>
 </div>
-
 
 <span></span>
 </body>
@@ -136,127 +88,30 @@
         $("[i18n]:not(.i18n-replaced)").each(function () {
             $(this).html(translate($(this).attr("i18n")));
         });
+        $("[i18n-value]:not(.i18n-replaced)").each(function () {
+            $(this).attr("value", translate($(this).attr("i18n-value")));
+        });
     }
 
+    function initializeEvent () {
+        $(".tab").each(function () {
+            $(this).click(function () {
+                $("#content").load("options/" + $(this).attr("page") + ".html");
+                $(".tab.active").removeClass("active");
+                $(this).addClass("active");
+            });
+        });
+    }
+    
     function translate(messageID, args) {
         return chrome.i18n.getMessage(messageID, args);
     }
 
-    // utils
-    var fireEvent = function (name, data) {
-        var e = document.createEvent("Event");
-        e.initEvent(name, true, true);
-        e.data = data;
-        window.dispatchEvent(e);
-    };
-
     $(document).ready(function () {
-        fireEvent("refreshualist");
         localizePage();
+        initializeEvent();
+        $($(".tab")[0]).click();
     });
-
-    // begin
-    var ualist = "";
-
-    window.addEventListener("refreshualist", function () {
-        ualist = "";
-        BG.loadUserAgents(renderUaEditLine, displayEditableUserAgents);
-    });
-
-    window.addEventListener("resetform", function () {
-        $("#uaform :input[type='text']").val("");
-        $("#uaform #uamode").val("create");
-    });
-
-    // main listing
-    function displayEditableUserAgents() {
-        $("#ualist").html(ualist);
-    }
-
-    function deleteConfirm(key) {
-        var question = chrome.i18n.getMessage("uaConfirmDelete", key);
-        var r = confirm(question);
-        if (r) {
-            deleteUa(key);
-            return false;
-        }
-        return false;
-    }
-
-    // exporter
-    var uaExport = new Array();
-
-    function jsonBuilder(row) {
-        uaExport.push(row.value);
-    }
-
-    function uaExporter() {
-        var jex = JSON.stringify(uaExport).replace(new RegExp(' ', 'g'), "%20");
-        var dlink = document.createElement("a");
-        dlink.textContent = chrome.i18n.getMessage("exportDownloadReady");
-        // todo add date
-        dlink.download = "chromeuseragentselector-export.txt";
-        dlink.href = "data:application/json," + jex;
-        $("#downloadLink").html(dlink);
-    }
-
-    function exportUserAgents() {
-        BG.loadUserAgents(jsonBuilder, uaExporter);
-    }
-
-    // edit form
-    var uadelete = chrome.i18n.getMessage("uaDelete");
-    var uaedit = chrome.i18n.getMessage("uaEdit");
-    function renderUaEditLine(row) {
-        var uastring = row.value.string;
-        if (uastring != navigator.userAgent) {
-            var ua = '\'' + row.value.string + '\'';
-            var uaid = '\'' + row.key + '\'';
-            var name = row.value.name;
-            var line = '<tr><td width="120px;">' + name + '</td><td>' + uastring + '</td><td><a onclick="{deleteConfirm(' + uaid + ')}" data-uaid="123" href="#">' + uadelete + '</a></td>' +
-                    '<td><a onclick="editUa(' + uaid + ');" href="#">' + uaedit + '</a></td></tr>';
-            ualist += line;
-        }
-    }
-
-    // edition
-    function fillForm(useragent) {
-        BG.log("filling out edit form");
-        var loaded = useragent;
-        $("#uaform #uamode").val("update");
-        $("#uaform #uaid").val(loaded.name);
-        $("#uaform #uaname").val(loaded.name);
-        $("#uaform #uastring").val(loaded.string);
-        $("#uaform #uadescription").val(loaded.description);
-    }
-
-
-    function editUa(key) {
-        //BG.log("editUa");
-        BG.loadUserAgent(key, fillForm);
-        return false;
-    }
-
-    function deleteUa(key) {
-        //BG.log("deleteUa");
-        BG.deleteUserAgent(key, deleteSuccess);
-        return false;
-    }
-
-    function createSuccess() {
-        //BG.log("create successfull");
-        fireEvent("resetform");
-    }
-
-    function updateSuccess() {
-        //BG.log("update successfull");
-        fireEvent("resetform");
-    }
-
-    function deleteSuccess() {
-        //BG.log("delete successfull");
-        fireEvent("refreshualist");
-    }
 
     // submit
     $("#uaform").submit(function () {
@@ -271,7 +126,6 @@
         } else if (mode == 'update') {
             BG.updateUserAgent(key, useragent, updateSuccess);
         }
-        fireEvent("refreshualist");
         return false;
     })
 </script>

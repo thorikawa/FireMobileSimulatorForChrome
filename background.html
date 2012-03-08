@@ -8,24 +8,25 @@
 <script type="text/javascript" src="/js/webRequestHandler.js"></script>
 <script type="text/javascript" src="/js/db.js"></script>
 <script type="text/javascript" src="/js/initialData.js"></script>
-<script>
+<script type="text/javascript">
+  function onInstall () {
+  console.log("Extension Installed");
+  $.each(data, function (i, e) {
+  fms.pref.setPref(e.name, e.value);
+  });
+  }
 
-    function onInstall() {
-      log("Extension Installed");
+    function onUpdate () {
+      console.log("Extension Updated");
     }
 
-    function onUpdate() {
-      log("Extension Updated");
-    }
-
-    function getVersion() {
+    function getVersion () {
       var details = chrome.app.getDetails();
       return details.version;
     }
 
     $(document).ready(function () {
         console.log("ready");
-        checkDb();
         chrome.webRequest.onBeforeSendHeaders.addListener(
                 onBeforeSendHeaders,
                 opt_filter,
@@ -45,186 +46,31 @@
         }
     });
 
-    function onInstall () {
-    	console.log("onInstall");
-    	$.each(data, function (i, e) {
-    		fms.pref.setPref(e.name, e.value);
-    	});
-    };
-    
-    var dolog = false;
-
-    function log(message) {
-        if (dolog) {
-            console.log("log:" + message);
-        }
-    }
-
-    function addUserAgent(useragent, onsuccess) {
-        if (dolog) {
-            console.log("adding ua");
-        }
-        indexedDB.addUserAgent(useragent, onsuccess);
-    }
-
-    function updateUserAgent(key, useragent, onsuccess) {
-        if (dolog) {
-            console.log("updating ua, key:" + key);
-        }
-        indexedDB.updateUserAgent(key, useragent, onsuccess);
-    }
-
-    function deleteUserAgent(key, onsuccess) {
-        if (dolog) {
-            console.log("deleting ua");
-        }
-        indexedDB.deleteUserAgent(key, onsuccess);
-    }
-
-    function loadUserAgent(key, callback) {
-        if (dolog) {
-            console.log("loading ua");
-        }
-        indexedDB.loadUserAgent(key, callback);
-    }
-
-    var uaList;
-
-    function renderUaLine(row) {
-        uaList.push(row.value);
-    }
-
-    function loadUserAgents(callback, onsuccess) {
-        uaList = new Array();
-        if (dolog) {
-            console.log("loading all uas");
-        }
-        if (!callback) {
-            indexedDB.getAllUserAgents(renderUaLine, function () {
-                chrome.extension.sendRequest(uaList);
-            });
-        }
-        else {
-            indexedDB.getAllUserAgents(callback, function () {
-                onsuccess();
-            });
-        }
-    }
-
-    function importUserAgents(useragents) {
-        if (dolog) {
-            console.log("importing:" + useragents);
-        }
-        indexedDB.importUserAgents(useragents);
-    }
-
-    function getUa() {
-        return currentUa;
-    }
-
-    var currentUa;
-    var originalUa = navigator.userAgent;
+    var dolog = true;
     var uaPerTab = new Array();
-    var opt_filter = {
-        urls:["*://*/*"]
-    };
+    var opt_filter = { urls:["*://*/*"] };
     var blockingInfoSpec = ["requestHeaders", "blocking"];
     var activeTabId;
-    var lastCreatedTabId;
-
-    const HEADER_UA = "User-Agent";
-
-    function updateUa(details) {
-        var tabId = details.tabId;
-        if (dolog) {
-            console.log("updateUa for tabId:" + tabId);
-        }
-        if(tabId < 0){
-            return {requestHeaders:details.requestHeaders};
-        }
-        var headerDone = false;
-        for (var i = 0; i < details.requestHeaders.length; i++) {
-            if (headerDone) {
-                break;
-            }
-            var hname = details.requestHeaders[i].name;
-            if (hname == HEADER_UA) {
-                var uatoset = currentUa;
-                if(tabId == lastCreatedTabId && uaPerTab[tabId] == originalUa){
-                    uatoset = originalUa;
-                }
-                if (dolog) {
-                    console.log("updateUa: for tabId:" + tabId + ",setting ua to:" + uatoset);
-                }
-                details.requestHeaders[i].value = uatoset;
-                headerDone = true;
-            }
-        }
-        return {requestHeaders:details.requestHeaders};
-    }
-
-    function changeUserAgent(userAgent) {
-        if (dolog) {
-            console.log("originalUa:" + originalUa);
-            console.log("updating user-agent to:" + userAgent + " for tab:" + activeTabId);
-        }
-        uaPerTab[activeTabId] = userAgent;
-        if (dolog) {
-            console.log("updated:" + uaPerTab[activeTabId]);
-        }
-        if (userAgent == originalUa) {
-            chrome.browserAction.setTitle({title:''});
-            chrome.browserAction.setIcon({path:'ua-disabled.png'});
-            // todo remove other listeners
-            chrome.webRequest.onBeforeSendHeaders.removeListener(updateUa);
-        }
-        else {
-            chrome.browserAction.setTitle({title:userAgent});
-            chrome.browserAction.setIcon({path:'ua.png'});
-        }
-        currentUa = userAgent;
-    }
-
 
     function tabIsActive(tabId, selectInfo) {
         if (dolog) {
             console.log("(tabIsActive) tab is active:tabId" + tabId + " with selectInfo:" + selectInfo);
         }
         activeTabId = tabId;
-        var uaOfTab = uaPerTab[tabId];
+        var id = fms.pref.getPref("msim.current.id");
+        //var uaOfTab = uaPerTab[tabId];
         if (dolog) {
-            console.log("(tabIsActive) ua : " + uaOfTab);
+            //console.log("(tabIsActive) ua : " + uaOfTab);
         }
-        if (uaOfTab != undefined) {
-            chrome.browserAction.setTitle({title:uaOfTab});
-            changeUserAgent(uaOfTab);
+        if (id) {
+            chrome.browserAction.setIcon({path:'ua.png'});
+            //changeUserAgent(uaOfTab);
         } else {
-            chrome.browserAction.setTitle({title:''});
             chrome.browserAction.setIcon({path:'ua-disabled.png'});
-            changeUserAgent(originalUa);
+            //changeUserAgent(originalUa);
         }
     }
     chrome.tabs.onActiveChanged.addListener(tabIsActive);
-
-    function tabCreated(tab){
-        var tabId = tab.id;
-        if(dolog){
-            console.log("*** tab created, id:" + tabId);
-        }
-        uaPerTab[tabId] = originalUa;
-        lastCreatedTabId = tabId;
-    }
-    chrome.tabs.onCreated.addListener(tabCreated);
-
-    /*
-    function tabUpdated(tabId, changeInfo, tab){
-        var status = changeInfo.status;
-        if(dolog){
-            console.log("*** tab with id:" + tabId + " updated with status:" + status);
-        }
-    }
-    chrome.tabs.onUpdated.addListener(tabUpdated);
-    */
 
     chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
         console.log("onRequest");

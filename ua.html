@@ -6,71 +6,6 @@
     <script type="text/javascript" src="/js/core.js"></script>
     <script type="text/javascript" src="/js/popup.js"></script>
     <link rel="stylesheet" type="text/css" href="ua.css"/>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#addDevice").html(chrome.i18n.getMessage("addDevice") + "<br/>");
-            $("#options").click(function () {
-                window.close();
-                chrome.tabs.create({url:chrome.extension.getURL("options.html")});
-            });
-            $("#addDevice").click(function () {
-                chrome.tabs.create({url:chrome.extension.getURL("html/device_add.html")});
-            });
-            $("#device-default").click(function () {
-                fms.core.resetDevice();
-            });
-            fms.overlay.displayDeviceSwitcherMenu($("#ualist"));
-        });
-    </script>
-    <script>
-
-        chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
-            //renderUaList(request);
-            console.log("onReqeust");
-        });
-
-        function renderUaList(arrayOfUa) {
-            var ul = document.getElementById("ualist");
-            var ii = 1;
-            for (var i = 0; i < arrayOfUa.length; i++) {
-                var name = arrayOfUa[i].name;
-                var uastring = arrayOfUa[i].string;
-                var liclass = "";
-                if (currentUa == uastring) {
-                    liclass = "selected";
-                }
-                var li = document.createElement("li");
-                li.className = liclass;
-                var a = document.createElement("a");
-                a.setAttribute("onclick", "selectUa('" + uastring + "');");
-                a.href = "#";
-                a.textContent = name;
-                if(ii <= 9) {
-                    var shortcut = document.createElement("div");
-                    shortcut.textContent = ii;
-                    shortcut.className = "shortcut";
-                    a.id = "ua" + ii;
-                    li.appendChild(shortcut);
-                }
-                ii += 1;
-                li.appendChild(a);
-                ul.appendChild(li);
-            }
-        }
-
-        $(document).keydown(function (event) {
-            var keymap = new Array();
-            var base = 49;
-            for (var i = 1; i <= 9; i++) {
-                keymap[base] = i;
-                base += 1;
-            }
-            if (event.keyCode >= 49 && event.keyCode <= 57) {
-                $("#ua" + keymap[event.keyCode]).click();
-            }
-        });
-
-    </script>
 <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-6340134-2']);
@@ -92,11 +27,11 @@
 
 <hr/>
 
-<div id="options">Options</div>
+<div class="menuitem" id="options">Options</div>
 
 <hr/>
 
-<div id="addDevice"></div>
+<div class="menuitem" id="addDevice"></div>
 
 </body>
 </html>

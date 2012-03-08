@@ -1,5 +1,5 @@
-/* ***** BEGIN LICENSE BLOCK Version: GPL 3.0 ***** 
- * FireMobileFimulator is a Firefox add-on that simulate web browsers of 
+/* ***** BEGIN LICENSE BLOCK Version: GPL 3.0 *****
+ * FireMobileFimulator is a Firefox add-on that simulate web browsers of
  * japanese mobile phones.
  * Copyright (C) 2008  Takahiro Horikawa <horikawa.takahiro@gmail.com>
  *
@@ -26,13 +26,15 @@ if (!firemobilesimulator.contentHandler)
 firemobilesimulator.contentHandler.softbank = {
   filter : function (ndDocument, deviceInfo) {
     var deviceId = deviceInfo.id;
+    console.log(ndDocument.charset);
     var mpc = firemobilesimulator.mpc.factory("SB");
     var imagePath = chrome.extension.getURL("/emoji");
     mpc.setImagePath(imagePath);
+    mpc.charset = ndDocument.charset;
     var parser = new fms.contentHandler.parser(ndDocument, mpc);
     parser.parse(ndDocument);
-    
-    firemobilesimulator.contentHandler.common.filter(ndDocument, deviceInfo);    
+
+    firemobilesimulator.contentHandler.common.filter(ndDocument, deviceInfo);
     ndDocument.addEventListener("keypress", firemobilesimulator.contentHandler.common.createAccessKeyFunction(["accesskey", "directkey"]), false);
   }
 };

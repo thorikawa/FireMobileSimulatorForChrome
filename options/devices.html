@@ -1,0 +1,36 @@
+<h2 i18n="options_devices"></h2>
+<groupbox>
+	<grid>
+		<rows>
+			<listbox flex="1" id="msim-listbox" rows="5" onselect="fms.options.deviceSelected()">
+				<listhead>
+					<listheader value="&msim.options.devices.value;"/>
+				</listhead>
+			</listbox>
+			<div>
+				<input type="button" id="msim-add" i18n-value="options_add" onclick="fms.options.addDevice()" accesskey="n"/>
+				<input type="button" id="msim-edit" i18n-value="options_edit" onclick="fms.options.editDevice()" accesskey="e"/>
+				<input type="button" id="msim-delete" i18n-value="options_delete" onclick="fms.options.deleteDevice()" accesskey="d"/>
+				<input type="button" id="msim-clearall" i18n-value="options_clearall" onclick="fms.options.clearAllDeviceSettings()" accesskey="c"/>
+			</div>
+		</rows>
+	</grid>
+</groupbox>
+
+<script>
+localizePage();
+</script>
+
+<!--
+<groupbox>
+	<caption value="&msim.options.import-export;"/>
+	<hbox align="top">
+		<checkbox id="msim.import.overwrite" value="&msim.import.overwrite;"/>
+		<spacer flex="1"/>
+		<vbox>
+			<button id="msim-import" value="&msim.options.import;" oncommand="fms.options.importDevices()" accesskey="i"/>
+			<button id="msim-export" value="&msim.options.export;" oncommand="fms.options.exportDevices()" accesskey="x"/>
+		</vbox>
+	</hbox>
+</groupbox>
+-->

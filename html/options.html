@@ -1,0 +1,29 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="options.css" />
+  <script type="application/x-javascript" src="/js/core.js"></script>
+  <script type="application/x-javascript" src="/js/pref.js"></script>
+  <script type="application/x-javascript" src="/js/carrier.js"></script>
+  <script type="application/x-javascript" src="options.js"></script>
+</head>
+<body>
+
+	<stringbundleset id="stringbundleset">
+		<stringbundle id="msim-string-bundle" src="chrome://msim/locale/msim.properties"/>
+	</stringbundleset>
+  
+	<hbox flex="1">
+		<listbox id="msim-page-list" onselect="firemobilesimulator.options.changePage(this)">
+			<listitem label="&msim.options.general.label;" selected="true" value="chrome://msim/content/options/pages/general.xul" accesskey="g"/>
+			<listitem label="&msim.options.idno.label;" value="chrome://msim/content/options/pages/idno.xul" accesskey="i"/>
+			<listitem label="&msim.options.devices.label;" value="chrome://msim/content/options/pages/devices.xul" accesskey="d"/>
+			<listitem label="&msim.options.gps.label;" value="chrome://msim/content/options/pages/gps.xul" accesskey="G"/>
+			<listitem label="&msim.options.pictogram.label;" value="chrome://msim/content/options/pages/pictogram.xul" accesskey="p"/>
+			<listitem label="&msim.options.limitHost.label;" value="chrome://msim/content/options/pages/limitHost.xul" accesskey="h"/>
+		</listbox>
+		<vbox flex="1">
+			<iframe flex="1" id="msim-options-iframe" src="chrome://msim/content/options/pages/general.xul"/>
+		</vbox>
+	</hbox>
+</body>
+</html>

@@ -1,5 +1,5 @@
-/* ***** BEGIN LICENSE BLOCK Version: GPL 3.0 ***** 
- * FireMobileFimulator is a Firefox add-on that simulate web browsers of 
+/* ***** BEGIN LICENSE BLOCK Version: GPL 3.0 *****
+ * FireMobileFimulator is a Firefox add-on that simulate web browsers of
  * japanese mobile phones.
  * Copyright (C) 2008  Takahiro Horikawa <horikawa.takahiro@gmail.com>
  *
@@ -23,18 +23,49 @@ var fms;
 if (!fms) fms = firemobilesimulator;
 if (!fms.overlay) fms.overlay = {};
 
+var currentMenu;
+const selected = "selected";
+
+$(document).ready(function () {
+  $("#addDevice").text(chrome.i18n.getMessage("addDevice"));
+  $("#options").click(function () {
+    window.close();
+    chrome.tabs.create({url:chrome.extension.getURL("options.html")});
+  });
+  $("#addDevice").click(function () {
+    chrome.tabs.create({url:chrome.extension.getURL("html/device_add.html")});
+  });
+  $("#device-default").click(function () {
+    fms.core.resetDevice();
+    currentMenu.removeClass(selected);
+    $(this).addClass(selected);
+    currentMenu = $(this);
+  });
+  fms.overlay.displayDeviceSwitcherMenu($("#ualist"));
+});
+
+$(document).keydown(function (event) {
+  var keymap = new Array();
+  var base = 49;
+  for (var i = 1; i <= 9; i++) {
+    keymap[base] = i;
+    base += 1;
+  }
+  if (event.keyCode >= 49 && event.keyCode <= 57) {
+    $("#ua" + keymap[event.keyCode]).click();
+  }
+});
+
 /**
  * 端末選択のポップアップメニューを選択したときのイベントハンドラ
  */
-fms.overlay.displayDeviceSwitcherMenu = function(menu, suffix) {
+fms.overlay.displayDeviceSwitcherMenu = function (menu, suffix) {
   var optionsSeparator = menu.find("#separator2");
-  console.log(optionsSeparator);
 
   this.removeGeneratedMenuItems(menu, ["msim-default-" + suffix,
           "msim-options-" + suffix, "msim-devicedb-" + suffix, "msim-about-" + suffix]);
 
   var deviceCount = fms.common.pref.getPref("msim.devicelist.count");
-  console.log("get [" + deviceCount + "] devices");
   for (var i = 1; i <= deviceCount; i++) {
     var device = fms.common.pref.getPref("msim.devicelist." + i + ".label");
     if (!device) continue;
@@ -43,15 +74,17 @@ fms.overlay.displayDeviceSwitcherMenu = function(menu, suffix) {
     var useragent = fms.common.pref.getPref("msim.devicelist." + i + ".useragent");
 
     var menuItem = $("<li>")
-    .text(carrier + " " + device)
-    .attr("id", "msim-device-" + suffix + "-" + i)
-    .click({id:i}, function (e) {
+      .text(carrier + " " + device)
+      .attr("id", "msim-device-" + suffix + "-" + i)
+      .click( {id:i} , function (e) {
         fms.core.setDevice(e.data.id);
-    });
-    console.log(menuItem);
+        currentMenu.removeClass("selected");
+        $(this).addClass("selected");
+        currentMenu = $(this);
+      });
     menuItem.insertBefore(optionsSeparator);
   }
-  
+
   // 現在選択されている端末にチェックをつける
   var currentId;
   var tabselect_enabled = fms.common.pref.getPref("msim.config.tabselect.enabled");
@@ -61,14 +94,12 @@ fms.overlay.displayDeviceSwitcherMenu = function(menu, suffix) {
     currentId = fms.common.pref.getPref("msim.current.id");
   }
 
-  var currentMenu;  
   if (currentId) {
-    currentMenu = menu.find("#msim-device-" + suffix + "-" + currentId);
+    currentMenu = $("#msim-device-" + suffix + "-" + currentId);
   }
   if (!currentMenu) {
-    currentMenu = menu.find("#device-default");
-    console.log(currentMenu);
-  }  
+    currentMenu = $("#device-default");
+  }
   currentMenu.addClass("selected");
 
 };
@@ -76,8 +107,7 @@ fms.overlay.displayDeviceSwitcherMenu = function(menu, suffix) {
 /**
  * 端末選択メニューのDOMをXUL上から削除する
  */
-fms.overlay.removeGeneratedMenuItems = function(menu,
-    permanentMenus) {
+fms.overlay.removeGeneratedMenuItems = function (menu, permanentMenus) {
   var menuItem = null;
 
   // radioMenuItems = menu.getElementsByAttribute("type", "radio");
@@ -124,12 +154,12 @@ fms.overlay.rewrite = function () {
   var tabselect_enabled = fms.common.pref.getPref("msim.config.tabselect.enabled");
   if (!tabselect_enabled) {
     // タブごとに端末選択モードでない場合は、下部ステータスバーの端末選択メニューを非表示にする
-    
+
     console.log("[msim]tabselect is not enabled\n");
     statusPanel.setAttribute("style","visibility: collapse");
     return;
   }
-  
+
   statusPanel.setAttribute("style","visibility: visible");
   var tab = gBrowser.selectedTab;
   var ss = Components.classes["@mozilla.org/browser/sessionstore;1"].getService(Components.interfaces.nsISessionStore);

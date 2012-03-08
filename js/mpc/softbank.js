@@ -1,5 +1,5 @@
-/* ***** BEGIN LICENSE BLOCK Version: GPL 3.0 ***** 
- * FireMobileFimulator is a Firefox add-on that simulate web browsers of 
+/* ***** BEGIN LICENSE BLOCK Version: GPL 3.0 *****
+ * FireMobileFimulator is a Firefox add-on that simulate web browsers of
  * japanese mobile phones.
  * Copyright (C) 2008  ryster <ryster@php-develop.org>
  *
@@ -29,8 +29,9 @@ firemobilesimulator.mpc.softbank.prototype = {
    */
   s_img_path : "img/s/",
 
-  convertBinary : function(str) {
+  convertBinary : function (str) {
     // Unicodeバイナリで絵文字にマッチする部分をimgタグに変換する
+    console.log(str);
     str = this.preConvert(str);
     var a = new Array();
     var r = "";
@@ -38,6 +39,7 @@ firemobilesimulator.mpc.softbank.prototype = {
     for (var i=0; i<n; i++) {
       var dec = str.charCodeAt(i);
       var webcode = this.u2web(dec);
+      console.log(String.fromCharCode(dec)+":"+dec+":"+webcode);
       if (webcode) {
         a.push({type:0, value:r});
         r = "";
@@ -49,13 +51,12 @@ firemobilesimulator.mpc.softbank.prototype = {
     a.push({type:0, value:r});
     return a;
   },
-  
+
   /**
    * 文字列からSoftBank絵文字を検出し、指定されたフォーマットに変換
    * @return string
    */
-  preConvert : function(str)
-  {
+  preConvert : function (str) {
     var re1 = /\x1B\x24(\x47[\x21-\x7A]+|\x45[\x21-\x7A]+|\x46[\x21-\x7A]+|\x4F[\x21-\x6D]+|\x50[\x21-\x6C]+|\x51[\x21-\x5E]+)\x0F?/g;
 
     //Webコード: エスケープシーケンス開始(\x1B\x24) + コード + エスケープ終わり(\x0F)をimgタグ形式に変換
@@ -65,38 +66,51 @@ firemobilesimulator.mpc.softbank.prototype = {
       var r = "";
       for (var i=1; i<hexstrings.length; i++) {
         var dec = parseInt(""+hexstrings[0]+hexstrings[i], 16);
-        console.log("softbank:" + dec + "->" + "&#" + _this.web2u(dec) + ";\n");
-        r += "&#" + _this.web2u(dec) + ";";
+        var u = _this.web2u(dec);
+        //console.log("softbank:" + dec + "->" + "&#" + _this.web2u(dec) + ";\n");
+        r += String.fromCharCode(u);
       }
+      console.log("r="+fms.mpc.common.unpack(r));
       return r;
     };
     str = str.replace(re1, f);
 
     // SJISバイナリをUnicodeに変換しておく
-    console.log("[mpc]SoftBank binary match start\n");
+    // console.log("[mpc]SoftBank binary match start:" + str);
+    return str;
+
     var hexstrings = new fms.mpc.common.HexStrings(fms.mpc.common.unpack(str), this.charset);
+    if (this.charset.toUpperCase() != fms.mpc.common.MPC_SJIS &&
+        this.charset.toUpperCase() != fms.mpc.common.MPC_SHIFT_JIS) {
+      console.log("[mpc]SoftBank Unknown charset [" + this.charset + "].\n");
+      return str;
+    }
+
     var r = "";
     while (hexstrings.hasNextCharacter()) {
       var decs = hexstrings.getNextCharacterDecs();
-      if (this.charset == fms.mpc.common.MPC_SJIS) {
         // SJISバイナリの絵文字を変換 [unofficial]
         // google.comでチェックできる
         var u = 0;
-        if (decs.length==2) {
-          u = this.s2u(fms.mpc.common.bits2dec(decs));
-        }
-        if (u) {
-          console.log("softbank sjis:" + "&#" + u + ";\n");
-          r += "&#" + u + ";";
-        } else {
-          for (var i = 0; i < decs.length; i++) {
-            r += String.fromCharCode(decs[i]);
-          }
-        }
-      } else {
-        console.log("[mpc]SoftBank Unknown charset [" + this.charset + "].\n");
-        return str;
-      }
+        //if (decs.length==2) {
+          //u = this.s2u(fms.mpc.common.bits2dec(decs));
+          //u = fms.mpc.common.bits2dec(decs);
+        //}
+        //console.log(String.fromCharCode(decs));
+        //var web = this.u2web(u);
+        //if (web) {
+        //  console.log("this is web");
+        //  r += this.s_options_encode(web);
+        //}
+        //if (u) {
+        //  console.log("softbank sjis:" + "&#" + u + ";\n");
+        //  r += "&#" + u + ";";
+        //} else {
+        //else {
+        //for (var i = 0; i < decs.length; i++) {
+        //r += String.fromCharCode(decs);
+        //}
+        //}
     }
     return r;
   },
@@ -104,7 +118,7 @@ firemobilesimulator.mpc.softbank.prototype = {
   /**
    * WebコードをUnicodeに変換する
    */
-  web2u : function(web) {
+  web2u : function (web) {
     var u = 0;
     if (web == 0) {
       return u;
@@ -120,12 +134,11 @@ firemobilesimulator.mpc.softbank.prototype = {
     }
     return u;
   },
-  
+
   /**
    * Unicode値(10進)を指示子の最後の文字+SJISコードの10進数値に変換する
    */
-  u2web : function(u)
-  {
+  u2web : function (u) {
     var s = 0;
     if (u<=0xE000) {
       return s;
@@ -146,8 +159,7 @@ firemobilesimulator.mpc.softbank.prototype = {
   /**
    * Unicode値(10進)を指示子の最後の文字+SJISコードの10進数値に変換する
    */
-  s2web : function(s)
-  {
+  s2web : function (s) {
     var web = 0;
     if (s<=0xF000) {
       return web;
@@ -171,16 +183,15 @@ firemobilesimulator.mpc.softbank.prototype = {
     return web;
   },
 
-  s2u : function(s) {
+  s2u : function (s) {
     return this.web2u(this.s2web(s));
   },
-  
+
   /**
    * 絵文字画像格納ディレクトリの一括設定
    * @param string path
    */
-  setImagePath : function(path)
-  {
+  setImagePath : function (path) {
     path.replace(/\/+$/, '');
     this.s_img_path = path+'/s/';
   },
@@ -190,8 +201,7 @@ firemobilesimulator.mpc.softbank.prototype = {
    * @param  integer dec
    * @return string
    */
-  s_options_encode : function(dec)
-  {
+  s_options_encode : function (dec) {
     var width = (dec >= 20828 && dec <= 20830) ? 18 : 15;
     var buf = this.s_img_path.replace(/\/+$/, "") + '/' + dec + '.gif';
     return buf;

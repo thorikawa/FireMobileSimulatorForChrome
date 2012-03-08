@@ -1,5 +1,5 @@
-/* ***** BEGIN LICENSE BLOCK Version: GPL 3.0 ***** 
- * FireMobileFimulator is a Firefox add-on that simulate web browsers of 
+/* ***** BEGIN LICENSE BLOCK Version: GPL 3.0 *****
+ * FireMobileFimulator is a Firefox add-on that simulate web browsers of
  * japanese mobile phones.
  * Copyright (C) 2008  Takahiro Horikawa <horikawa.takahiro@gmail.com>
  *
@@ -26,12 +26,15 @@ if(!firemobilesimulator.mpc.common) firemobilesimulator.mpc.common = {};
 fms.mpc.common = firemobilesimulator.mpc.common;
 
 fms.mpc.common.MPC_SJIS = "SJIS";
+fms.mpc.common.MPC_SHIFT_JIS = "SHIFT_JIS";
 fms.mpc.common.MPC_UTF8 = "UTF-8";
 fms.mpc.common.MPC_EUCJP = "EUC_JP";
 fms.mpc.common.UNICODE = "UNICODE";
 
-fms.mpc.common.HexStrings = function(hexstrings, charset) {
+fms.mpc.common.HexStrings = function (hexstrings, charset) {
+  console.log(hexstrings);
 	this.hexstrings = hexstrings || "";
+  console.log(this.hexstrings);
 	this.charset = charset || fms.mpc.common.MPC_SJIS;
 	this.i = 0;
 };
@@ -40,20 +43,21 @@ fms.mpc.common.HexStrings.prototype = {
 	hexstring : "",
 	charset : "",
 	i : 0,
-	hasNextCharacter : function() {
-		return this.i < (this.hexstrings.length - 1);
+	hasNextCharacter : function () {
+		return this.i < this.hexstrings.length;
 	},
 
-	getNextCharacterDecs : function() {
+	getNextCharacterDecs : function () {
 		var ds = parseInt(this.hexstrings[this.i], 16);
-		if (ds >= 0x00 && ds <= 0x7F || this.charset == fms.mpc.common.MPC_SJIS && ds >= 0xA0
-				&& ds <= 0xDF) {
+    console.log(ds);
+		if (ds >= 0x00 && ds <= 0x7F ||
+        (fms.mpc.common.isShiftJIS(this.charset) && ds >= 0xA0 && ds <= 0xDF)) {
 			// 1バイト文字
 			this.i += 1;
 			return [ds];
-		} else if (this.charset == fms.mpc.common.MPC_SJIS || this.charset == fms.mpc.common.UNICODE) {
+		} else if (fms.mpc.common.isShiftJIS(this.charset) || this.charset == fms.mpc.common.UNICODE) {
 			// 2バイト文字
-			console.log("return unicode\n");
+			console.log("return 2bytes code\n");
 			var ds2 = parseInt(this.hexstrings[this.i + 1], 16);
 			this.i += 2;
 			return [ds, ds2];
@@ -75,7 +79,7 @@ fms.mpc.common.HexStrings.prototype = {
 	}
 };
 
-fms.mpc.common.unpack = function(str) {
+fms.mpc.common.unpack = function (str) {
 	// console.log("unpack start:"+str+"\n");
 	var last = str.length;
 	var ret = Array(last);
@@ -86,7 +90,7 @@ fms.mpc.common.unpack = function(str) {
 	return ret;
 };
 
-fms.mpc.common.sdecs2udec = function(chs) {
+fms.mpc.common.sdecs2udec = function (chs) {
 	var hex = "";
 	for (var i = 0; i < chs.length; i++) {
 		var temp = "0" + chs[i].toString(16);
@@ -101,7 +105,7 @@ fms.mpc.common.sdecs2udec = function(chs) {
 	}
 };
 
-fms.mpc.common.u8decs2udec = function(chs) {
+fms.mpc.common.u8decs2udec = function (chs) {
 	var hex = "";
 	for (var i = 0; i < chs.length; i++) {
 		var temp = "0" + chs[i].toString(16);
@@ -116,7 +120,7 @@ fms.mpc.common.u8decs2udec = function(chs) {
 	}
 };
 
-fms.mpc.common.utf82unicode = function(bits) {
+fms.mpc.common.utf82unicode = function (bits) {
 	var rbits = new Array(2);
 	if (bits.length == 3) {
 		var x = bits[0] & 0x0F;
@@ -130,7 +134,7 @@ fms.mpc.common.utf82unicode = function(bits) {
 	return rbits;
 };
 
-fms.mpc.common.unicode2utf8 = function(bits) {
+fms.mpc.common.unicode2utf8 = function (bits) {
 	var rbits = new Array(3);
 	if (bits.length == 2) {
 		rbits[0] = 0xE0 + (bits[0] >> 4);
@@ -142,7 +146,12 @@ fms.mpc.common.unicode2utf8 = function(bits) {
 	return rbits;
 };
 
-fms.mpc.common.bits2dec = function(bits) {
+fms.mpc.common.isShiftJIS = function (charset) {
+  return charset.toUpperCase() == fms.mpc.common.MPC_SJIS ||
+    charset.toUpperCase() == fms.mpc.common.MPC_SHIFT_JIS;
+};
+
+fms.mpc.common.bits2dec = function (bits) {
 	var r = 0;
 	for (var i=0; i<bits.length; i++) {
 		r += bits[i] << (8*(bits.length-i-1));
