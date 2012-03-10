@@ -15,6 +15,7 @@
 </head>
 <script type="text/javascript" charset="UTF-8" src="/js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/js/jquery-ui-1.8.18.custom.min.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/js/i18n.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/js/pref.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/js/carrier.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/js/core.js"></script>
@@ -49,16 +50,6 @@
 
     var BG = chrome.extension.getBackgroundPage();
 
-    // i18n
-    function localizePage() {
-        $("[i18n]:not(.i18n-replaced)").each(function () {
-            $(this).html(translate($(this).attr("i18n")));
-        });
-        $("[i18n-value]:not(.i18n-replaced)").each(function () {
-            $(this).attr("value", translate($(this).attr("i18n-value")));
-        });
-    }
-
     function initializeEvent () {
         $(".tab").each(function () {
             $(this).click(function () {
@@ -71,10 +62,6 @@
               $(this).addClass("active");
             });
         });
-    }
-
-    function translate(messageID, args) {
-        return chrome.i18n.getMessage(messageID, args);
     }
 
     $(document).ready(function () {

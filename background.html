@@ -26,24 +26,31 @@
     }
 
     $(document).ready(function () {
-        console.log("ready");
-        chrome.webRequest.onBeforeSendHeaders.addListener(
-                onBeforeSendHeaders,
-                opt_filter,
-                blockingInfoSpec);
-
-        // Check if the version has changed.
-        var currVersion = getVersion();
-        var prevVersion = localStorage['version']
-        if (currVersion != prevVersion) {
-          // Check if we just installed this extension.
-          if (typeof prevVersion == 'undefined') {
-            onInstall();
-          } else {
-            onUpdate();
-          }
-          localStorage['version'] = currVersion;
+      console.log("ready");
+      chrome.webRequest.onBeforeRequest.addListener(
+        onBeforeRequest,
+        opt_filter,
+        ["blocking"]);
+      chrome.webRequest.onBeforeSendHeaders.addListener(
+        onBeforeSendHeaders,
+        opt_filter,
+        blockingInfoSpec);
+      chrome.webRequest.onHeadersReceived.addListener(
+        onHeadersReceived,
+        opt_filter,
+        ["responseHeaders", "blocking"]);
+      // Check if the version has changed.
+      var currVersion = getVersion();
+      var prevVersion = localStorage['version']
+      if (currVersion != prevVersion) {
+        // Check if we just installed this extension.
+        if (typeof prevVersion == 'undefined') {
+          onInstall();
+        } else {
+          onUpdate();
         }
+        localStorage['version'] = currVersion;
+      }
     });
 
     var dolog = true;

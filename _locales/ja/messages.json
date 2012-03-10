@@ -3,10 +3,10 @@
     "message": "携帯端末・スマートフォンの動作をシミュレートする開発補助ツールです"
   },
   "appName": {
-    "message": "Chrome Mobile Simulator"
+    "message": "ChromeMobileSimulator"
   },
   "addDevice": {
-    "message": "端末を追加"
+    "message": "最新端末リストから端末を追加"
   },
   "editUaList": {
     "description": "options ualist",
@@ -78,5 +78,14 @@
   },
   "add_extra_header_row": {
     "message": "行を追加する"
+  },
+  "set_default_device": {
+    "message": "端末選択解除"
+  },
+  "option": {
+    "message": "オプション設定"
+  },
+  "about": {
+    "message": "FireMobileSimulatorについて"
   }
 }

@@ -1,10 +1,11 @@
 <html>
 
 <head>
-    <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
-    <script type="text/javascript" src="/js/pref.js"></script>
-    <script type="text/javascript" src="/js/core.js"></script>
-    <script type="text/javascript" src="/js/popup.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="/js/i18n.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="/js/pref.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="/js/core.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="/js/popup.js"></script>
     <link rel="stylesheet" type="text/css" href="ua.css"/>
 <script type="text/javascript">
   var _gaq = _gaq || [];
@@ -18,20 +19,26 @@
 </script>
 </head>
 <body>
-<div id="title">User-Agent Selector</div>
+<div i18n="appName" id="title"></div>
 
-<ul id="ualist">
-<li id="device-default">Default</li>
-<div id="separator2">---</div>
+<ul class="menulist">
+  <li i18n="set_default_device" id="device-default"></li>
+  <li i18n="option" id="options"></li>
+  <li i18n="addDevice" id="addDevice"></li>
 </ul>
 
 <hr/>
 
-<div class="menuitem" id="options">Options</div>
+<ul class="menulist" id="ualist"></ul>
 
 <hr/>
 
-<div class="menuitem" id="addDevice"></div>
+<ul class="menulist">
+  <li i18n="about" id="about"></li>
+</ul>
 
+<script>
+  localizePage();
+</script>
 </body>
 </html>

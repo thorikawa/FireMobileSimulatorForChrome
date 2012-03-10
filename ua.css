@@ -7,19 +7,18 @@ body {
 }
 
 #title {
-    font-size: 9px;
+    font-size: 14px;
     padding: 8px 8px 2px 0px;
     text-align: right;
 }
 
-#ualist {
+.menulist {
     padding: 5px;
     margin: 0px;
 }
 
-.menuitem {
+.menulist li {
     text-align: right;
-    font-size: 10px;
     cursor:pointer;
 }
 

@@ -17,20 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * ***** END LICENSE BLOCK ***** */
 
-var firemobilesimulator;
-if (!firemobilesimulator) firemobilesimulator = {};
-var fms;
-if (!fms) fms = firemobilesimulator;
-if (!fms.overlay) fms.overlay = {};
+fms = fms || {};
+fms.overlay = fms.overlay || {};
 
 var currentMenu;
 const selected = "selected";
 
 $(document).ready(function () {
-  $("#addDevice").text(chrome.i18n.getMessage("addDevice"));
   $("#options").click(function () {
     window.close();
     chrome.tabs.create({url:chrome.extension.getURL("options.html")});
+  });
+  $("#about").click(function () {
+    window.close();
+    chrome.tabs.create({url:"http://firemobilesimulator.org/"});
   });
   $("#addDevice").click(function () {
     chrome.tabs.create({url:chrome.extension.getURL("html/device_add.html")});
@@ -60,8 +60,6 @@ $(document).keydown(function (event) {
  * 端末選択のポップアップメニューを選択したときのイベントハンドラ
  */
 fms.overlay.displayDeviceSwitcherMenu = function (menu, suffix) {
-  var optionsSeparator = menu.find("#separator2");
-
   this.removeGeneratedMenuItems(menu, ["msim-default-" + suffix,
           "msim-options-" + suffix, "msim-devicedb-" + suffix, "msim-about-" + suffix]);
 
@@ -82,7 +80,7 @@ fms.overlay.displayDeviceSwitcherMenu = function (menu, suffix) {
         $(this).addClass("selected");
         currentMenu = $(this);
       });
-    menuItem.insertBefore(optionsSeparator);
+    $("#ualist").append(menuItem);
   }
 
   // 現在選択されている端末にチェックをつける
