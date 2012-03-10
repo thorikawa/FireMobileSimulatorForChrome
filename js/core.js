@@ -142,31 +142,12 @@ fms.core.deleteLimitHost = function (deletedId) {
 };
 
 fms.core.updateIcon = function () {
-  //TODO notify update icon
   var id = fms.pref.getPref("msim.current.id");
   if (id) {
-    
+    chrome.browserAction.setIcon({path:'ua.png'});
   } else {
-
+    chrome.browserAction.setIcon({path:'ua-disabled.png'});
   }
-/*
-  while (windowEnumeration.hasMoreElements()) {
-    var windowObj = windowEnumeration.getNext();
-    var msimButton = windowObj.document.getElementById("msim-button");
-    var menu = windowObj.document.getElementById("msim-menu");
-    var target = [msimButton, menu];
-    target.forEach(function(item) {
-      if (item) {
-        var id = fms.pref.getPref("msim.current.id");
-        if (!id) {
-          item.removeAttribute("device");
-        } else {
-          item.setAttribute("device", "on");
-        }
-      }
-    });
-  }
-*/
 };
 
 fms.core.parseDeviceListXML = function (filePath, postData) {
