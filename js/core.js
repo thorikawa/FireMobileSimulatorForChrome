@@ -143,6 +143,12 @@ fms.core.deleteLimitHost = function (deletedId) {
 
 fms.core.updateIcon = function () {
   //TODO notify update icon
+  var id = fms.pref.getPref("msim.current.id");
+  if (id) {
+    
+  } else {
+
+  }
 /*
   while (windowEnumeration.hasMoreElements()) {
     var windowObj = windowEnumeration.getNext();
