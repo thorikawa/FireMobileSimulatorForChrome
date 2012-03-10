@@ -12,8 +12,11 @@ label {
   text-align: left;
 }
 
-.rowLabel {
-    font-size: 14px;
+.button-cell {
+  text-align: center;
+}
+.button-in-cell {
+  font-size: 10px;
 }
 
 #wrapper {

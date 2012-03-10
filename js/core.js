@@ -83,7 +83,7 @@ fms.core.deleteDevice = function (deletedId) {
           }
         });
         fms.pref.setPref(ePrefPrefix + "extra-header.count", extraHeaders.length);
-        fms.pref.setPref(sPrefPrefix + "extra-header.count", 0);
+        fms.pref.deletePref(sPrefPrefix + "extra-header.count");
       } else if (attribute == "use-cookie") {
         fms.pref.setPref(ePrefPrefix+attribute, fms.pref.getPref(sPrefPrefix+attribute));
         fms.pref.deletePref(sPrefPrefix+attribute);

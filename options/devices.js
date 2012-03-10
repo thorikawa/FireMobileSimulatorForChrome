@@ -16,24 +16,26 @@ fms.options.initializeDevices = function () {
         // make this block as an anonymous function to refer "i" as "id"
         var id = i;
         var tr = $("<tr>").addClass("device-row");
-        var edit = $("<input>")
+        var edit = $("<div>")
+          .addClass("button-in-cell")
           .attr("type", "button")
-          .attr("value", chrome.i18n.getMessage("options_edit"))
+          .text(chrome.i18n.getMessage("options_edit"))
           .click(function () {
             fms.options.editDevice(id)
-          });
-        var del = $("<input>")
+          }).button();
+        var del = $("<div>")
+          .addClass("button-in-cell")
           .attr("type", "button")
-          .attr("value", chrome.i18n.getMessage("options_delete"))
+          .text(chrome.i18n.getMessage("options_delete"))
           .click(function () {
             fms.options.deleteDevice(id, function () {
               // reload all data because ids are changed
               fms.options.initializeDevices();
             })
-          });
+          }).button();
         tr.append($("<td>").text(carrier + " " + device))
-          .append($("<td>").append(edit))
-          .append($("<td>").append(del));
+          .append($("<td>").addClass("button-cell").append(edit))
+          .append($("<td>").addClass("button-cell").append(del));
         $("#msim-listbox").append(tr);
       })();
     }
@@ -149,12 +151,14 @@ fms.options.addExtraHeaderRow = function (headerObj) {
   if(headerObj && headerObj.value) headervalue.attr("value", headerObj.value);
   tr.append($("<td>").append(headername));
   tr.append($("<td>").append(headervalue));
-  tr.append($("<td>").append(
-    $("<input>").attr("type", "button")
-      .attr("value", chrome.i18n.getMessage("delete_button"))
+  tr.append($("<td>").addClass("button-cell").append(
+    $("<div>")
+      .addClass("button-in-cell")
+      .text(chrome.i18n.getMessage("delete_button"))
       .click(function () {
         tr.remove();
       })
+      .button()
   ));
   targetNode.append(tr);
 };
@@ -214,7 +218,12 @@ fms.options.saveDevice = function () {
       }
     }
     fms.pref.setPref("msim.devicelist." + saveId + ".extra-header.count", headerId);
-
+    
+    confirm(chrome.i18n.getMessage("save_complete"));
+    
+    fms.options.initializeDevices();
+    fms.options.addDevice();
+    
     /* TODO
     var docomoUid = document.getElementById("msim-textbox-docomo-uid").value;
     var docomoSer = document.getElementById("msim-textbox-docomo-ser").value;

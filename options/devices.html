@@ -3,15 +3,32 @@
 tr:nth-child(odd) {
   background-color: #ededed;
 }
+.sec {
+  margin-top: 10px;
+  width: 80%;
+  padding: 10px;
+  border: 2px solid #cccccc;
+  -webkit-border-radius: 5px;
+}
+.well {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background-color: #f3f3f3;
+  padding: 5px;
+  border: 2px solid #cccccc;
+  -webkit-border-radius: 5px;
+}
+.table {
+}
 </style>
 <table style="border:0px; width:80%;" id="msim-listbox">
 <tr><th>name</th><th></th><th></th></tr>
 </table>
 <div>
-	<input type="button" id="msim-add" i18n-value="options_add" onclick="fms.options.addDevice()" accesskey="n"/>
-	<input type="button" id="msim-clearall" i18n-value="options_clearall" onclick="fms.options.clearAllDeviceSettings()" accesskey="c"/>
+	<input type="button" id="add-device-button" i18n-value="options_add" onclick="fms.options.addDevice()" accesskey="n"/>
+	<input type="button" id="clear-all-devices-button" i18n-value="options_clearall" onclick="fms.options.clearAllDeviceSettings()" accesskey="c"/>
 </div>
-<div id="device-form">
+<div id="device-form" class="sec">
   <div>
   	<label for="options-device-label" i18n="device_label" width="150" />
   	<input type="text" id="options-device-label" width="270" />
@@ -40,18 +57,20 @@ tr:nth-child(odd) {
   	<input type="checkbox" id="options-device-use-cookie" />
   	<label i18n="use_cookie" />
   </div>
-  <h3 i18n="options_device_extra_headers" />
-  <table id="options-device-extra-headers-rows"></table>
-  
-  <div><input type="button" i18n-value="add_extra_header_row" onclick="fms.options.addExtraHeaderRow()" /></div>
+  <div class="well">
+    <h3 i18n="options_device_extra_headers" />
+    <table class="table" id="options-device-extra-headers-rows"></table>
+    
+    <div><input type="button" id="add-extra-header-button" i18n-value="add_extra_header_row" onclick="fms.options.addExtraHeaderRow()" /></div>
+  </div>
   <div><input type="button" id="device-save-button" i18n-value="save" onclick="fms.options.saveDevice()" /></div>
-
 </div>
 
 <script type="text/javascript" charset="UTF-8" src="/options/devices.js" />
 <script type="text/javascript" charset="UTF-8">
 fms.options.initializeDevices()
 fms.options.createCarrierMenuList();
+fms.options.addDevice();
 </script>
 
 <!--

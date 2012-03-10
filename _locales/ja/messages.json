@@ -87,5 +87,8 @@
   },
   "about": {
     "message": "FireMobileSimulatorについて"
+  },
+  "save_complete": {
+    "message": "保存しました"
   }
 }
