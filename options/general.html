@@ -1,25 +1,27 @@
+<form action="#">
+
 <h2 i18n="options_general"></h2>
 
 <div class="setting group-name" i18n="options_general_display"></div>
 <div class="setting group">
-  <input type="checkbox" id="msim-checkbox-general-force-screen-width" />
+  <input type="checkbox" bind="msim.config.general.force-screen-width" />
 	<label for="msim-checkbox-general-force-screen-width" i18n="force_screen_width"></label>
 </div>
 
 <div class="setting group-name" i18n="options_general_quit"></div>
 <div class="setting group">
-  <input type="checkbox" id="msim-checkbox-general-reset-device-onquit" />
+  <input type="checkbox" bind="msim.config.general.reset-device-onquit" />
 	<label for="msim-checkbox-general-reset-device-onquit" i18n="reset_device_on_quit"></label>
 </div>
 
 <!--
 <div class="setting group-name" i18n="options_deviceselect"></div>
 <div class="setting group">
-  <input type="checkbox" id="msim-checkbox-general-tabselect" />
+  <input type="checkbox" bind="msim.config.tabselect.enabled" />
 	<label for="msim-checkbox-general-tabselect" i18n="tabselect"></label>
 </div>
 -->
 
-<script>
-  localizePage();
-</script>
+<input type="submit" />
+
+</form>

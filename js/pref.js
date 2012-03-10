@@ -25,53 +25,73 @@ if(!fms.common) fms.common = {};
 
 firemobilesimulator.common.pref = {
 
-	getPref : function (key) {
-		var value = localStorage[key];
-		if (value == "null") return null;
-		if (typeof value == "string" && value.toUpperCase() == "TRUE") return true;
-		if (typeof value == "string" && value.toUpperCase() == "FALSE") return false;
-		return value;
-	},
-	
-	setPref : function (key, value) {
-		console.log("setPref["+key+"]=["+value+"]");
-		localStorage[key] = value;
-	},
-	
-	deletePref : function (key) {
-		if (localStorage[key]) {
-			localStorage.removeItem(key);
-		}
-	},
+  getPref : function (key) {
+    var value = localStorage[key];
+    if (value == "null") return null;
+    if (typeof value == "string" && value.toUpperCase() == "TRUE") return true;
+    if (typeof value == "string" && value.toUpperCase() == "FALSE") return false;
+    return value;
+  },
+  
+  getIntPref : function (key) {
+    var value = localStorage[key];
+    if (!isNaN(value)) return parseInt(value);
+    return 0;
+  },
+  
+  setPref : function (key, value) {
+    console.log("setPref["+key+"]=["+value+"]");
+    localStorage[key] = value;
+  },
+  
+  /**
+   * delete preference whose key completely matches the input
+   */
+  deletePref : function (key) {
+    if (localStorage[key]) {
+      localStorage.removeItem(key);
+    }
+  },
 
-	getListPref : function (parentPreferenceName, childPreferenceNameArray) {
-		var count = localStorage[parentPreferenceName+".count"] || 0;
-		var resultArray = new Array(count);
-		for (var i = 1; i <= count; i++){
-			var o = {};
-			o.id = i;
-			childPreferenceNameArray.forEach(function (childPreferenceName) {
-				var childPreferenceValue = localStorage[parentPreferenceName + "." + i + "." + childPreferenceName];
-				o[childPreferenceName] = childPreferenceValue;
-			});
-			resultArray[i-1] = o;
-		}
-		return resultArray;
-	},
+  /**
+   * delete preference whose key matches the input as regular expression
+   */
+  deleteAllPref : function (keyRegExp) {
+    for (var key in localStorage) {
+      if (key.match(keyRegExp)) {
+        this.deletePref(key);
+      }
+    }
+  },
 
-	deleteListPref : function (parentPreferenceName, childPreferenceNameArray) {
-		var count = localStorage[parentPreferenceName+".count"];
-		for (var i = 1; i <= count; i++) {
-			for (var j = 0; j < childPreferenceNameArray.length; j++) {
-				var childPreferenceName = childPreferenceNameArray[j];
-				console.log("delete:"+parentPreferenceName+"."+i+"."+childPreferenceName+"\n");
-				this.deletePref(parentPreferenceName+"."+i+"."+childPreferenceName);
-			}
-		}
-		console.log("delete:"+parentPreferenceName+".count"+"\n");
-		this.deletePref(parentPreferenceName+".count");
-		return;
-	}
+  getListPref : function (parentPreferenceName, childPreferenceNameArray) {
+    var count = localStorage[parentPreferenceName+".count"] || 0;
+    var resultArray = new Array(count);
+    for (var i = 1; i <= count; i++){
+      var o = {};
+      o.id = i;
+      childPreferenceNameArray.forEach(function (childPreferenceName) {
+        var childPreferenceValue = localStorage[parentPreferenceName + "." + i + "." + childPreferenceName];
+        o[childPreferenceName] = childPreferenceValue;
+      });
+      resultArray[i-1] = o;
+    }
+    return resultArray;
+  },
+
+  deleteListPref : function (parentPreferenceName, childPreferenceNameArray) {
+    var count = localStorage[parentPreferenceName+".count"];
+    for (var i = 1; i <= count; i++) {
+      for (var j = 0; j < childPreferenceNameArray.length; j++) {
+        var childPreferenceName = childPreferenceNameArray[j];
+        console.log("delete:"+parentPreferenceName+"."+i+"."+childPreferenceName+"\n");
+        this.deletePref(parentPreferenceName+"."+i+"."+childPreferenceName);
+      }
+    }
+    console.log("delete:"+parentPreferenceName+".count"+"\n");
+    this.deletePref(parentPreferenceName+".count");
+    return;
+  }
 };
 
 fms.pref = firemobilesimulator.common.pref;

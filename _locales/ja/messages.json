@@ -12,26 +12,71 @@
     "description": "options ualist",
     "message": "Edit User Agents"
   },
-  "options_general": { "message": "一般設定" },
+  "options_general": { "message": "全般" },
   "options_idno": { "message": "ID情報" },
-  "options_devices": { "message": "端末管理" },
-  "options_gps": { "message": "位置情報" },
-  "options_pictogram": { "message": "絵文字" },
-  "options_limithost": { "message": "ホスト制限" },
-  "options_add": { "message": "追加" },
-  "options_edit": { "message": "編集" },
-  "options_delete": { "message": "削除" },
-  "options_clearall": { "message": "初期化" },
+  "options_devices": { "message": "端末設定" },
+  "options_gps": { "message": "位置情報設定" },
+  "options_pictogram": { "message": "絵文字表示設定" },
+  "options_limithost": { "message": "ホスト制限設定" },
+  "options_add": { "message": "追加する" },
+  "options_edit": { "message": "編集する" },
+  "options_delete": { "message": "削除する" },
+  "options_clearall": { "message": "初期設定に戻す" },
   "options_general_display": {
-    "message": "表示設定"
+    "message": "表示"
   },
   "options_general_quit": {
-    "message": "終了時設定"
+    "message": "終了"
+  },
+  "save": {
+    "message": "保存"
+  },
+  "device_label": {
+    "message": "端末名"
+  },
+  "carrier": {
+    "message": "キャリア"
+  },
+  "user_agent": {
+    "message": "User-Agent"
+  },
+  "device_type": {
+    "message": "端末タイプ"
+  },
+  "screen_width": {
+    "message": "スクリーン横幅"
+  },
+  "screen_height": {
+    "message": "スクリーン高さ"
+  },
+  "use_cookie": {
+    "message": "クッキー使用可否"
+  },
+  "options_device_extra_headers": {
+    "message": "追加HTTPヘッダー"
+  },
+  "select_carrier": {
+    "message": "キャリアを選択してください(必須)"
+  },
+  "delete_confirm": {
+    "message": "本当に削除してよろしいですか？"
+  },
+  "confirm_clear_all_devices": {
+    "message": "端末設定を全て初期設定にリセットします。よろしいですか？"
+  },
+  "delete_button": {
+    "message": "削除"
   },
   "force_screen_width": {
-    "message": "画面横幅を端末ディスプレイサイズに合わせる"
+    "message": "表示領域の横幅を端末に合わせる"
   },
   "reset_device_on_quit": {
-    "message": "終了時に端末選択をリセットする"
+    "message": "ブラウザ終了時に端末選択を解除する"
+  },
+  "required_field_is_blank": {
+    "message": "必須項目が入力されていません"
+  },
+  "add_extra_header_row": {
+    "message": "行を追加する"
   }
 }

@@ -1,35 +1,68 @@
 <h2 i18n="options_devices"></h2>
-<groupbox>
-	<grid>
-		<rows>
-			<listbox flex="1" id="msim-listbox" rows="5" onselect="fms.options.deviceSelected()">
-				<listhead>
-					<listheader value="&msim.options.devices.value;"/>
-				</listhead>
-			</listbox>
-			<div>
-				<input type="button" id="msim-add" i18n-value="options_add" onclick="fms.options.addDevice()" accesskey="n"/>
-				<input type="button" id="msim-edit" i18n-value="options_edit" onclick="fms.options.editDevice()" accesskey="e"/>
-				<input type="button" id="msim-delete" i18n-value="options_delete" onclick="fms.options.deleteDevice()" accesskey="d"/>
-				<input type="button" id="msim-clearall" i18n-value="options_clearall" onclick="fms.options.clearAllDeviceSettings()" accesskey="c"/>
-			</div>
-		</rows>
-	</grid>
-</groupbox>
+<style>
+tr:nth-child(odd) {
+  background-color: #ededed;
+}
+</style>
+<table style="border:0px; width:80%;" id="msim-listbox">
+<tr><th>name</th><th></th><th></th></tr>
+</table>
+<div>
+	<input type="button" id="msim-add" i18n-value="options_add" onclick="fms.options.addDevice()" accesskey="n"/>
+	<input type="button" id="msim-clearall" i18n-value="options_clearall" onclick="fms.options.clearAllDeviceSettings()" accesskey="c"/>
+</div>
+<div id="device-form">
+  <div>
+  	<label for="options-device-label" i18n="device_label" width="150" />
+  	<input type="text" id="options-device-label" width="270" />
+  </div>
+  <div id="options-device-carrier-row">
+  	<label for="options-device-carrier" i18n="carrier" />
+  	<select id="options-device-carrierlist"></select>
+  </div>
+  <div id="options-device-useragent-row">
+  	<label for="options-device-useragent" i18n="user_agent" />
+  	<input type="text" id="options-device-useragent" />
+  </div>
+  <div id="options-device-type-row">
+  	<label for="options-device-type" i18n="device_type" />
+  	<select id="options-device-type-menupopup"></select>
+  </div>
+  <div id="options-device-screen-width-row">
+  	<label for="options-device-screen-width" i18n="screen_width" />
+  	<input type="text" id="options-device-screen-width" />
+  </div>
+  <div id="options-device-screen-height-row">
+  	<label for="options-device-screen-height" i18n="screen_height" />
+  	<input type="text" id="options-device-screen-height" />
+  </div>
+  <div id="options-device-use-cookie-row">
+  	<input type="checkbox" id="options-device-use-cookie" />
+  	<label i18n="use_cookie" />
+  </div>
+  <h3 i18n="options_device_extra_headers" />
+  <table id="options-device-extra-headers-rows"></table>
+  
+  <div><input type="button" i18n-value="add_extra_header_row" onclick="fms.options.addExtraHeaderRow()" /></div>
+  <div><input type="button" id="device-save-button" i18n-value="save" onclick="fms.options.saveDevice()" /></div>
 
-<script>
-localizePage();
+</div>
+
+<script type="text/javascript" charset="UTF-8" src="/options/devices.js" />
+<script type="text/javascript" charset="UTF-8">
+fms.options.initializeDevices()
+fms.options.createCarrierMenuList();
 </script>
 
 <!--
 <groupbox>
-	<caption value="&msim.options.import-export;"/>
+	<caption i18n="msim.options.import-export;"/>
 	<hbox align="top">
-		<checkbox id="msim.import.overwrite" value="&msim.import.overwrite;"/>
+		<checkbox id="msim.import.overwrite" i18n="msim.import.overwrite;"/>
 		<spacer flex="1"/>
 		<vbox>
-			<button id="msim-import" value="&msim.options.import;" oncommand="fms.options.importDevices()" accesskey="i"/>
-			<button id="msim-export" value="&msim.options.export;" oncommand="fms.options.exportDevices()" accesskey="x"/>
+			<button id="msim-import" i18n="msim.options.import;" oncommand="fms.options.importDevices()" accesskey="i"/>
+			<button id="msim-export" i18n="msim.options.export;" oncommand="fms.options.exportDevices()" accesskey="x"/>
 		</vbox>
 	</hbox>
 </groupbox>

@@ -1,5 +1,7 @@
+<!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8"/>
 <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-6340134-2']);
@@ -11,12 +13,18 @@
   })();
 </script>
 </head>
-<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="/js/pref.js"></script>
-<link rel="stylesheet" href="/css/options/default.css" media="screen">
-<link rel="stylesheet" href="/css/options/main.css" media="screen">
-<link rel="stylesheet" href="/css/options/setting.css" media="screen">
-<link rel="stylesheet" href="/css/options/custom.css" media="screen">
+<script type="text/javascript" charset="UTF-8" src="/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/js/jquery-ui-1.8.18.custom.min.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/js/pref.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/js/carrier.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/js/core.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/js/initialData.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/options/bind.js"></script>
+<link type="text/css" rel="stylesheet" href="/css/jquery-ui-1.8.18.custom.css" />
+<link type="text/css" rel="stylesheet" href="/css/options/default.css" media="screen" />
+<link type="text/css" rel="stylesheet" href="/css/options/main.css" media="screen" />
+<link type="text/css" rel="stylesheet" href="/css/options/setting.css" media="screen" />
+<link type="text/css" rel="stylesheet" href="/css/options/custom.css" media="screen" />
 <body>
 
 <div id="sidebar" class="fancy">
@@ -35,50 +43,8 @@
 </div>
 
 <div id="content" class="tab-content show">
-    <div id="uaedition">
-        <form id="uaform">
-            <label for="uaname" i18n="uaName"></label>
-            <input type="text" name="uaname" id="uaname" class="inputUaname" required/><br>
-            <label for="uastring" i18n="uaValue"></label>
-            <input type="text" name="uastring" id="uastring" required><br/>
-            <label for="uadescription">Description</label>
-            <input type="text" name="uadescription" id="uadescription"/><br/>
-            <input type="hidden" name="uaid" id="uaid" value=""/>
-            <input type="hidden" name="uamode" id="uamode" value="create"/>
-            <input type="submit"/>
-            <input type="submit" onclick="fireEvent('resetform'); return false;" value="Clear"/>
-        </form>
-    </div>
-    <output id="list"></output>
-    <script>
-        function handleFileSelect(evt) {
-            var files = evt.target.files; // FileList object
-            // Loop through the FileList and render image files as thumbnails.
-            for (var i = 0, f; f = files[i]; i++) {
-                // Only process image files.
-                //if (!f.type.match('text.*')) {
-                //  continue;
-                //}
-
-                var reader = new FileReader();
-                // Closure to capture the file information.
-                reader.onload = (function (theFile) {
-                    return function (e) {
-                        var res = e.target.result.replace("data:text/plain;base64,", "");
-                        var useragents = window.atob(res);
-                        chrome.extension.getBackgroundPage().importUserAgents(useragents);
-                    };
-                })(f);
-
-                // Read in the image file as a data URL.
-                reader.readAsDataURL(f);
-            }
-        }
-    </script>
 </div>
 
-<span></span>
-</body>
 <script type="text/javascript">
 
     var BG = chrome.extension.getBackgroundPage();
@@ -96,13 +62,17 @@
     function initializeEvent () {
         $(".tab").each(function () {
             $(this).click(function () {
-                $("#content").load("options/" + $(this).attr("page") + ".html");
-                $(".tab.active").removeClass("active");
-                $(this).addClass("active");
+              $("#content").load("options/" + $(this).attr("page") + ".html", function () {
+                // localize again after loading individual page
+                bind();
+                localizePage();
+              });
+              $(".tab.active").removeClass("active");
+              $(this).addClass("active");
             });
         });
     }
-    
+
     function translate(messageID, args) {
         return chrome.i18n.getMessage(messageID, args);
     }
@@ -113,20 +83,7 @@
         $($(".tab")[0]).click();
     });
 
-    // submit
-    $("#uaform").submit(function () {
-        var uaname = $("#uaname").val();
-        var uastring = $("#uastring").val();
-        var uadescription = $("#uadescription").val();
-        var key = $("#uaid").val();
-        var mode = $("#uamode").val();
-        var useragent = {"name":uaname, "string":uastring, "description":uadescription};
-        if (mode == 'create') {
-            BG.addUserAgent(useragent, createSuccess);
-        } else if (mode == 'update') {
-            BG.updateUserAgent(key, useragent, updateSuccess);
-        }
-        return false;
-    })
 </script>
+
+</body>
 </html>

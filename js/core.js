@@ -25,12 +25,12 @@ if (!fms.core) fms.core = {};
 core = fms.core;
 
 fms.core.resetDevice = function (e) {
-  var tabselect_enabled = fms.common.pref.getPref("msim.config.tabselect.enabled");
+  var tabselect_enabled = fms.pref.getPref("msim.config.tabselect.enabled");
   if (tabselect_enabled) {
     // TODO tab specific setting
   } else {
-    fms.common.pref.deletePref("msim.current.carrier");
-    fms.common.pref.deletePref("msim.current.id");
+    fms.pref.deletePref("msim.current.carrier");
+    fms.pref.deletePref("msim.current.id");
     fms.core.updateIcon();
   }
 };
@@ -44,15 +44,15 @@ fms.core.setDevice = function (id) {
     return;
   }
 
-  var tabselect_enabled = fms.common.pref.getPref("msim.config.tabselect.enabled");
+  var tabselect_enabled = fms.pref.getPref("msim.config.tabselect.enabled");
   if (tabselect_enabled) {
     // TODO tab specific setting
   } else {
     var pref_prefix = "msim.devicelist." + id;
-    var carrier = fms.common.pref.getPref(pref_prefix + ".carrier");
+    var carrier = fms.pref.getPref(pref_prefix + ".carrier");
 
-    fms.common.pref.setPref("msim.current.carrier", carrier);
-    fms.common.pref.setPref("msim.current.id", id);
+    fms.pref.setPref("msim.current.carrier", carrier);
+    fms.pref.setPref("msim.current.id", id);
     fms.core.updateIcon();
   }
 };
@@ -62,51 +62,51 @@ fms.core.setDevice = function (id) {
  */
 fms.core.deleteDevice = function (deletedId) {
   var prefPrefix = "msim.devicelist." + deletedId + ".";
-  var deletedDeviceId = fms.common.pref.getPref(prefPrefix+"device-id");
+  var deletedDeviceId = fms.pref.getPref(prefPrefix+"device-id");
   fms.carrier.deviceBasicAttribute.forEach(function (attribute) {
-    fms.common.pref.deletePref(prefPrefix+attribute);
+    fms.pref.deletePref(prefPrefix+attribute);
   });
 
   //ホストの端末指定も削除する
   fms.core.deleteLimitHostDeviceByDeviceId(deletedDeviceId);
 
   //各端末のidを再計算
-  var count = fms.common.pref.getPref("msim.devicelist.count");
+  var count = fms.pref.getPref("msim.devicelist.count");
   for (var i=deletedId+1; i<=count; i++) {
     var sPrefPrefix = "msim.devicelist." + i + ".";
     var ePrefPrefix = "msim.devicelist." + (i-1) + ".";
     fms.carrier.deviceBasicAttribute.forEach(function(attribute) {
       if (attribute == "extra-header") {
-        var extraHeaders = fms.common.pref.getListPref(sPrefPrefix + "extra-header", ["name", "value"]);
+        var extraHeaders = fms.pref.getListPref(sPrefPrefix + "extra-header", ["name", "value"]);
         extraHeaders.forEach(function (extraHeader) {
           if (extraHeader.value) {
-            fms.common.pref.setPref(ePrefPrefix + "extra-header." + extraHeader.id + ".name", extraHeader.name);
-            fms.common.pref.setPref(ePrefPrefix + "extra-header." + extraHeader.id + ".value", extraHeader.value);
-            fms.common.pref.deletePref(sPrefPrefix + "extra-header." + extraHeader.id + ".name");
-            fms.common.pref.deletePref(sPrefPrefix + "extra-header." + extraHeader.id + ".value");
+            fms.pref.setPref(ePrefPrefix + "extra-header." + extraHeader.id + ".name", extraHeader.name);
+            fms.pref.setPref(ePrefPrefix + "extra-header." + extraHeader.id + ".value", extraHeader.value);
+            fms.pref.deletePref(sPrefPrefix + "extra-header." + extraHeader.id + ".name");
+            fms.pref.deletePref(sPrefPrefix + "extra-header." + extraHeader.id + ".value");
           }
         });
-        fms.common.pref.setPref(ePrefPrefix + "extra-header.count", extraHeaders.length);
-        fms.common.pref.setPref(sPrefPrefix + "extra-header.count", 0);
+        fms.pref.setPref(ePrefPrefix + "extra-header.count", extraHeaders.length);
+        fms.pref.setPref(sPrefPrefix + "extra-header.count", 0);
       } else if (attribute == "use-cookie") {
-        fms.common.pref.setPref(ePrefPrefix+attribute, fms.common.pref.getBoolPref(sPrefPrefix+attribute));
-        fms.common.pref.deletePref(sPrefPrefix+attribute);
+        fms.pref.setPref(ePrefPrefix+attribute, fms.pref.getPref(sPrefPrefix+attribute));
+        fms.pref.deletePref(sPrefPrefix+attribute);
       } else {
-        fms.common.pref.setPref(ePrefPrefix+attribute, fms.common.pref.getPref(sPrefPrefix+attribute));
-        fms.common.pref.deletePref(sPrefPrefix+attribute);
+        fms.pref.setPref(ePrefPrefix+attribute, fms.pref.getPref(sPrefPrefix+attribute));
+        fms.pref.deletePref(sPrefPrefix+attribute);
       }
     });
   }
-  fms.common.pref.setPref("msim.devicelist.count", count-1);
+  fms.pref.setPref("msim.devicelist.count", count-1);
 
   // 現在選択されている端末IDの付け替え、または既に使われている端末だったら設定をリセット
-  var tabselect_enabled = fms.common.pref.getBoolPref("msim.config.tabselect.enabled");
+  var tabselect_enabled = fms.pref.getPref("msim.config.tabselect.enabled");
   if (tabselect_enabled) {
   	// TODO tab specific setting
   } else {
-    var id = fms.common.pref.getPref("msim.current.id");
+    var id = fms.pref.getPref("msim.current.id");
     if (id > deletedId) {
-      fms.common.pref.setPref("msim.current.id", id-1);
+      fms.pref.setPref("msim.current.id", id-1);
     } else if (id == deletedId) {
       fms.core.resetDevice();
     }
@@ -116,29 +116,29 @@ fms.core.deleteDevice = function (deletedId) {
 fms.core.deleteLimitHost = function (deletedId) {
 
   var prefKey = "msim.limitHost." + deletedId + ".value";
-  fms.common.pref.deletePref(prefKey);
+  fms.pref.deletePref(prefKey);
 
   //ホスト制限に指定している端末IDも削除する
   var prefKey = "msim.limitHost." + deletedId + ".device-id";
-  fms.common.pref.deletePref(prefKey);
+  fms.pref.deletePref(prefKey);
 
   //idを再計算
-  var count = fms.common.pref.getPref("msim.limitHost.count");
+  var count = fms.pref.getPref("msim.limitHost.count");
   for (var i=deletedId+1; i<=count; i++) {
     var sPrefKey = "msim.limitHost." + i + ".value";
     var ePrefKey = "msim.limitHost." + (i-1) + ".value";
 
-    fms.common.pref.setPref(ePrefKey, fms.common.pref.getPref(sPrefKey));
-    fms.common.pref.deletePref(sPrefKey);
+    fms.pref.setPref(ePrefKey, fms.pref.getPref(sPrefKey));
+    fms.pref.deletePref(sPrefKey);
 
     //ホスト制限に指定している端末IDも移動させる
     sPrefKey = "msim.limitHost." + i + ".device-id";
     ePrefKey = "msim.limitHost." + (i-1) + ".device-id";
 
-    fms.common.pref.setPref(ePrefKey, fms.common.pref.getPref(sPrefKey));
-    fms.common.pref.deletePref(sPrefKey);
+    fms.pref.setPref(ePrefKey, fms.pref.getPref(sPrefKey));
+    fms.pref.deletePref(sPrefKey);
   }
-  fms.common.pref.setPref("msim.limitHost.count", count-1);
+  fms.pref.setPref("msim.limitHost.count", count-1);
 };
 
 fms.core.updateIcon = function () {
@@ -151,7 +151,7 @@ fms.core.updateIcon = function () {
     var target = [msimButton, menu];
     target.forEach(function(item) {
       if (item) {
-        var id = fms.common.pref.getPref("msim.current.id");
+        var id = fms.pref.getPref("msim.current.id");
         if (!id) {
           item.removeAttribute("device");
         } else {
@@ -197,7 +197,7 @@ fms.core.parseDeviceListXML = function (filePath, postData) {
   var i = 0;
   while ((deviceElement = deviceResults.iterateNext()) != null) {
     devices[i] = {};
-    fms.carrier.deviceBasicAttribute.forEach(function(key) {
+    fms.carrier.deviceBasicAttribute.forEach(function (key) {
       if (key == "extra-header") {
         var headerResults = xPathEvaluator.evaluate("ExtraHeaders/Header",
             deviceElement, resolver,
@@ -237,35 +237,35 @@ fms.core.parseDeviceListXML = function (filePath, postData) {
 fms.core.LoadDevices = function (devices, overwrite) {
   var currentId = 0;
   if (!overwrite) {
-    currentId = fms.common.pref.getPref("msim.devicelist.count");
+    currentId = fms.pref.getPref("msim.devicelist.count");
     if (isNaN(currentId)) currentId = 0;
   }
   // update preference
   overwrite && firemobilesimulator.options.clearAllDeviceSettings();
-  devices.forEach(function(device) {
+  devices.forEach(function (device) {
     var id = ++currentId;
     var carrier = device.carrier;
     for (var key in device) {
       var value = device[key];
       if (key == "headers") {
         var i = 1;
-        value.forEach(function(header) {
-          fms.common.pref.setPref("msim.devicelist." + id + ".extra-header." + i + ".name", header.name);
-          fms.common.pref.setPref("msim.devicelist." + id + ".extra-header." + i + ".value", header.value);
+        value.forEach(function (header) {
+          fms.pref.setPref("msim.devicelist." + id + ".extra-header." + i + ".name", header.name);
+          fms.pref.setPref("msim.devicelist." + id + ".extra-header." + i + ".value", header.value);
           i++;
         });
-        fms.common.pref.setPref("msim.devicelist." + id + ".extra-header.count", value.length);
+        fms.pref.setPref("msim.devicelist." + id + ".extra-header.count", value.length);
       } else if (key == "id") {
       } else if (key == "use-cookie") {
-        fms.common.pref.setPref("msim.devicelist." + id + "." + key, value);
+        fms.pref.setPref("msim.devicelist." + id + "." + key, value);
       } else {
-        fms.common.pref.setPref("msim.devicelist." + id + "." + key, value);
+        fms.pref.setPref("msim.devicelist." + id + "." + key, value);
       }
     }
   });
 
   //set device count
-  fms.common.pref.setPref("msim.devicelist.count", currentId);
+  fms.pref.setPref("msim.devicelist.count", currentId);
   return true;
 };
 
@@ -274,15 +274,15 @@ fms.core.getCarrierCode = function (carrierName) {
   return carrierCode || fms.carrier.OTHER;
 };
 
-fms.core.isValidCarrier = function(carrierCode) {
-  return fms.carrier.carrierArray.some(function(c) { return carrierCode == c; });
+fms.core.isValidCarrier = function (carrierCode) {
+  return fms.carrier.carrierArray.some(function (c) { return carrierCode == c; });
 };
 
 fms.core.refreshRegisteredDevices = function () {
-  var deviceCount = fms.common.pref.getPref("msim.devicelist.count");
+  var deviceCount = fms.pref.getPref("msim.devicelist.count");
   fms.core.deviceIdArray = new Array();
   for (var i = 1; i <= deviceCount; i++) {
-    var deviceId = fms.common.pref.getPref("msim.devicelist." + i + ".device-id");
+    var deviceId = fms.pref.getPref("msim.devicelist." + i + ".device-id");
     if(deviceId) {
       fms.core.deviceIdArray.push(deviceId);
     }
@@ -296,37 +296,35 @@ fms.core.getRegisteredDevices = function () {
   return fms.core.deviceIdArray;
 };
 
-fms.core.isRegistered = function(deviceId, refreshFlag) {
-  return fms.core.getRegisteredDevices().some(function(_deviceId) {
+fms.core.isRegistered = function (deviceId, refreshFlag) {
+  return fms.core.getRegisteredDevices().some(function (_deviceId) {
     return _deviceId == deviceId;
   });
 };
 
 fms.core.clearAllDevice = function () {
-  var count = fms.common.pref.getPref("msim.devicelist.count");
-  for (var i = 1; i <= count; i++) {
-    var prefPrefix = "msim.devicelist." + i + ".";
-
-    fms.carrier.deviceBasicAttribute.forEach(function(attribute) {
-      if (attribute == "extra-header") {
-        fms.common.pref.deleteListPref("msim.devicelist." + i + ".extra-header", ["name", "value"]);
-      } else {
-        fms.common.pref.deletePref(prefPrefix + attribute);
-      }
-    });
+  var reg = new RegExp("^msim\.devicelist\..+");
+  fms.pref.deleteAllPref(reg);
+  fms.pref.deletePref("msim.current.carrier");
+  fms.pref.deletePref("msim.current.id");
+  // load initial data again
+  // "data" is a global variable from /js/initialData.js
+  var len = data.length;
+  for (var i = 0; i<len; i++) {
+    var name = data[i].name;
+    if (name.match(reg)) {
+      fms.pref.setPref(data[i].name, data[i].value);
+    }
   }
-  fms.common.pref.deletePref("msim.devicelist.count");
-  fms.common.pref.deletePref("msim.current.carrier");
-  fms.common.pref.deletePref("msim.current.id");
   fms.core.resetDevice();
 };
 
 fms.core.isSimulate = function (hostName) {
   var isSimulate = true;
-  var limithost_enabled = fms.common.pref.getPref("msim.limitHost.enabled");
+  var limithost_enabled = fms.pref.getPref("msim.limitHost.enabled");
   if (limithost_enabled) {
-    var id = fms.common.pref.getPref("msim.current.id");
-    var limitHosts = fms.common.pref.getListPref("msim.limitHost",new Array("value"));
+    var id = fms.pref.getPref("msim.current.id");
+    var limitHosts = fms.pref.getListPref("msim.limitHost",new Array("value"));
     isSimulate = limitHosts.some(function (limitHost, index, array) {
       // console.log("[msim]compare:"+limitHost.value+":"+hostName+"\n");
       return (limitHost.value && hostName.match(limitHost.value));
@@ -336,12 +334,12 @@ fms.core.isSimulate = function (hostName) {
 }
 
 //msim.devicelist.X.device-idが一致するデバイスを返す
-fms.core.getDeviceByDeviceId = function(deviceId){
-  var deviceCount = fms.common.pref.getPref("msim.devicelist.count");
+fms.core.getDeviceByDeviceId = function (deviceId){
+  var deviceCount = fms.pref.getPref("msim.devicelist.count");
   var deviceIndex = -1;
 
   for(var i = 1; i <= deviceCount; i++){
-    var _deviceId = fms.common.pref.getPref("msim.devicelist." + i + ".device-id");
+    var _deviceId = fms.pref.getPref("msim.devicelist." + i + ".device-id");
     if(_deviceId == deviceId){
       deviceIndex = i;
       break;
@@ -355,24 +353,24 @@ fms.core.getDeviceByDeviceId = function(deviceId){
   var ret = {};
   ret.id = deviceId;
   ret.index = deviceIndex;
-  ret.label = fms.common.pref.getPref("msim.devicelist." + deviceIndex + ".label");
-  ret.carrier = fms.common.pref.getPref("msim.devicelist." + deviceIndex + ".carrier");
+  ret.label = fms.pref.getPref("msim.devicelist." + deviceIndex + ".label");
+  ret.carrier = fms.pref.getPref("msim.devicelist." + deviceIndex + ".carrier");
   return ret;
 }
 
 //msim.limithost.X.valueがhostNameに一致するものをを探して、
 //そのホスト制限に指定されている端末情報を返す
-fms.core.getDeviceByLimitHost = function(hostName){
-  var limithost_enabled = fms.common.pref.getPref("msim.limitHost.enabled");
+fms.core.getDeviceByLimitHost = function (hostName) {
+  var limithost_enabled = fms.pref.getPref("msim.limitHost.enabled");
   if(! limithost_enabled){
     return null;
   }
 
-  var count = fms.common.pref.getPref("msim.limitHost.count");
+  var count = fms.pref.getPref("msim.limitHost.count");
   for(var i = 1; i <= count; i++){
-   var host = fms.common.pref.getPref("msim.limitHost." + i + ".value");
+   var host = fms.pref.getPref("msim.limitHost." + i + ".value");
    if(hostName.match(host)){
-     var deviceId = fms.common.pref.getPref("msim.limitHost." + i + ".device-id");
+     var deviceId = fms.pref.getPref("msim.limitHost." + i + ".device-id");
      return fms.core.getDeviceByDeviceId(deviceId);
    }
   }
@@ -381,12 +379,12 @@ fms.core.getDeviceByLimitHost = function(hostName){
 }
 
 //ホスト制限に指定されている端末でdeviceIdと一致する物を削除する
-fms.core.deleteLimitHostDeviceByDeviceId = function(deviceId){
-  var count = fms.common.pref.getPref("msim.limitHost.count");
+fms.core.deleteLimitHostDeviceByDeviceId = function (deviceId) {
+  var count = fms.pref.getPref("msim.limitHost.count");
   for(var i = 1; i <= count; i++){
-    var _deviceId = fms.common.pref.getPref("msim.limitHost." + i + ".device-id");
+    var _deviceId = fms.pref.getPref("msim.limitHost." + i + ".device-id");
     if(_deviceId == deviceId){
-      fms.common.pref.setPref("msim.limitHost." + i + ".device-id", "-1");
+      fms.pref.setPref("msim.limitHost." + i + ".device-id", "-1");
     }
   }
 }
