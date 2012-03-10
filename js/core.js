@@ -17,12 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * ***** END LICENSE BLOCK ***** */
 
-var firemobilesimulator;
-if (!firemobilesimulator) firemobilesimulator = {};
-var fms;
-if (!fms) fms = firemobilesimulator;
+if (!fms) fms = {};
 if (!fms.core) fms.core = {};
-core = fms.core;
 
 fms.core.resetDevice = function (e) {
   var tabselect_enabled = fms.pref.getPref("msim.config.tabselect.enabled");
