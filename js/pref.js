@@ -17,13 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * ***** END LICENSE BLOCK ***** */
 
-var firemobilesimulator;
-if(!firemobilesimulator) firemobilesimulator = {};
 var fms;
-if(!fms) fms = firemobilesimulator;
-if(!fms.common) fms.common = {};
+if(!fms) fms = {};
 
-firemobilesimulator.common.pref = {
+fms.pref = {
 
   getPref : function (key) {
     var value = localStorage[key];
@@ -93,5 +90,3 @@ firemobilesimulator.common.pref = {
     return;
   }
 };
-
-fms.pref = firemobilesimulator.common.pref;

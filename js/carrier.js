@@ -18,16 +18,8 @@
  * ***** END LICENSE BLOCK ***** */
 
 // キャリア別の端末の設定
-var firemobilesimulator;
-if (!firemobilesimulator)
-	firemobilesimulator = {};
-if (!firemobilesimulator.common)
-	firemobilesimulator.common = {};
-if (!fms.carrier)
-  fms.carrier = {};
-if (!fms)
-  fms = {};
-fms.carrier = fms.carrier;
+if (!fms) fms = {};
+if (!fms.carrier) fms.carrier = {};
 
 /**
  * 各キャリアを示す定数

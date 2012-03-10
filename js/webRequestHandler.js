@@ -30,11 +30,11 @@ function onBeforeSendHeaders (details) {
       id = fms.pref.getPref("msim.current.id");
       var pref_prefix = "msim.devicelist." + id;
       carrier = fms.pref.getPref(pref_prefix + ".carrier");
-      console.log(carrier+":"+id);
+      //console.log(carrier+":"+id);
       //ホスト制限に端末が指定されていればそれを優先する
       if(id){
         //ホスト制限に設定されている端末情報を取得する
-        var deviceObj = firemobilesimulator.core.getDeviceByLimitHost(util.getHost(details.url));
+        var deviceObj = fms.core.getDeviceByLimitHost(util.getHost(details.url));
         if(deviceObj){
           id = deviceObj.index;
           pref_prefix = "msim.devicelist." + id;

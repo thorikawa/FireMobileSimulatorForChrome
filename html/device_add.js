@@ -90,7 +90,7 @@ Ext.onReady(function() {
 		singleSelect : false
 	});
 	sm.on('beforerowselect', function(sm, index, keepExisting, record) {
-		return !firemobilesimulator.core.isRegistered(record.id);
+		return !fms.core.isRegistered(record.id);
 	});
 
 	var tf = new Ext.form.TextField({id : 'tf-cmp'});
@@ -111,7 +111,7 @@ Ext.onReady(function() {
 		text : '選択した端末を追加2',
 		handler : function() {
 			firemobilesimulator.addDevice();
-			firemobilesimulator.core.refreshRegisteredDevices();
+			fms.core.refreshRegisteredDevices();
 			grid.getView().refresh();
 		}
 	});
@@ -195,7 +195,7 @@ Ext.onReady(function() {
 			text : '選択した端末を追加',
 			handler : function() {
 				firemobilesimulator.addDevice();
-				firemobilesimulator.core.refreshRegisteredDevices();
+				fms.core.refreshRegisteredDevices();
 				grid.getView().refresh();
 			},
 			cls : "add-button"
@@ -203,7 +203,7 @@ Ext.onReady(function() {
 		floating : false
 	});
 	grid.getView().getRowClass = function(record, index) {
-		if (firemobilesimulator.core.isRegistered(record.id)) {
+		if (fms.core.isRegistered(record.id)) {
 			return 'registered-row';
 		}
 		return;
@@ -254,8 +254,8 @@ firemobilesimulator.addDevice = function() {
 		idArray.push(record.id);
 	}
 	var filePath = devicedbUrl + "?result=large&id=" + idArray.join(",");
-	var devices = firemobilesimulator.core.parseDeviceListXML(filePath);
-	var result = firemobilesimulator.core.LoadDevices(devices, false);
+	var devices = fms.core.parseDeviceListXML(filePath);
+	var result = fms.core.LoadDevices(devices, false);
 	if (result) {
 		Ext.Msg.show({
 			title : "登録完了",

@@ -65,13 +65,13 @@ fms.overlay.displayDeviceSwitcherMenu = function (menu, suffix) {
   this.removeGeneratedMenuItems(menu, ["msim-default-" + suffix,
           "msim-options-" + suffix, "msim-devicedb-" + suffix, "msim-about-" + suffix]);
 
-  var deviceCount = fms.common.pref.getPref("msim.devicelist.count");
+  var deviceCount = fms.pref.getPref("msim.devicelist.count");
   for (var i = 1; i <= deviceCount; i++) {
-    var device = fms.common.pref.getPref("msim.devicelist." + i + ".label");
+    var device = fms.pref.getPref("msim.devicelist." + i + ".label");
     if (!device) continue;
 
-    var carrier = fms.common.pref.getPref("msim.devicelist." + i + ".carrier");
-    var useragent = fms.common.pref.getPref("msim.devicelist." + i + ".useragent");
+    var carrier = fms.pref.getPref("msim.devicelist." + i + ".carrier");
+    var useragent = fms.pref.getPref("msim.devicelist." + i + ".useragent");
 
     var menuItem = $("<li>")
       .text(carrier + " " + device)
@@ -87,11 +87,11 @@ fms.overlay.displayDeviceSwitcherMenu = function (menu, suffix) {
 
   // 現在選択されている端末にチェックをつける
   var currentId;
-  var tabselect_enabled = fms.common.pref.getPref("msim.config.tabselect.enabled");
+  var tabselect_enabled = fms.pref.getPref("msim.config.tabselect.enabled");
   if (tabselect_enabled) {
     // TODO tab specific setting
   } else {
-    currentId = fms.common.pref.getPref("msim.current.id");
+    currentId = fms.pref.getPref("msim.current.id");
   }
 
   if (currentId) {
@@ -151,7 +151,7 @@ fms.overlay.openAbout = function() {
 fms.overlay.rewrite = function () {
   	("[msim]rewrite tab\n");
   var statusPanel = document.getElementById("msim-status-panel");
-  var tabselect_enabled = fms.common.pref.getPref("msim.config.tabselect.enabled");
+  var tabselect_enabled = fms.pref.getPref("msim.config.tabselect.enabled");
   if (!tabselect_enabled) {
     // タブごとに端末選択モードでない場合は、下部ステータスバーの端末選択メニューを非表示にする
 
@@ -165,8 +165,8 @@ fms.overlay.rewrite = function () {
   var ss = Components.classes["@mozilla.org/browser/sessionstore;1"].getService(Components.interfaces.nsISessionStore);
   var id = ss.getTabValue(tab, "firemobilesimulator-device-id");
   var pref_prefix = "msim.devicelist." + id;
-  var carrier = fms.common.pref.getPref(pref_prefix + ".carrier");
-  var name = fms.common.pref.getPref(pref_prefix + ".label");
+  var carrier = fms.pref.getPref(pref_prefix + ".carrier");
+  var name = fms.pref.getPref(pref_prefix + ".label");
 
   var statusImage = document.getElementById("msim-status-image");
   var statusLabel = document.getElementById("msim-status-label");

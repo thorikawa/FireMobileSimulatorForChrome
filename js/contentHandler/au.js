@@ -99,7 +99,7 @@ firemobilesimulator.contentHandler.au = {
     //var pictogramConverterEnabled = fms.pref.getPref("msim.config.AU.pictogram.enabled");
     //if (pictogramConverterEnabled) {
       console.log("[msim]convert pictogram in overlay.js\n");
-      var mpc = firemobilesimulator.mpc.factory(firemobilesimulator.common.carrier.AU);
+      var mpc = firemobilesimulator.mpc.factory(fms.carrier.AU);
       var imagePath = chrome.extension.getURL("/emoji");
       mpc.setImagePath(imagePath);
       var imgs = ndDocument.getElementsByTagName("img");

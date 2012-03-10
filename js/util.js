@@ -25,6 +25,7 @@ if(!fms.common) fms.common = {};
 if(!fms.common.util) fms.common.util = {};
 var util;
 util = fms.common.util;
+fms.util = util;
 
 // Opens the URL in a new tab
 fms.common.util.openURL = function(url) {
@@ -55,7 +56,7 @@ fms.common.util.getParamsFromPath = function(path, func) {
   var params = {};
   var qindex = path.indexOf("?");
   if (qindex >= 0) {
-    params = firemobilesimulator.common.util.getParamsFromQuery(path.substring(qindex+1), func);
+    params = fms.util.getParamsFromQuery(path.substring(qindex+1), func);
   }
   return params;
 };
@@ -111,15 +112,15 @@ fms.common.util.Point.prototype = {
   UNIT_DEGREE : "1",
   toDms : function() {
     if (this.unit == this.UNIT_DEGREE) {
-      this.lat = firemobilesimulator.common.util.degree2dms(this.lat);
-      this.lon = firemobilesimulator.common.util.degree2dms(this.lon);
+      this.lat = fms.util.degree2dms(this.lat);
+      this.lon = fms.util.degree2dms(this.lon);
       this.unit = this.UNIT_DMS;
     }
   },
   toDegree : function() {
     if (this.unit == this.UNIT_DMS) {
-      this.lat = firemobilesimulator.common.util.dms2degree(this.lat);
-      this.lon = firemobilesimulator.common.util.dms2degree(this.lon);
+      this.lat = fms.util.dms2degree(this.lat);
+      this.lon = fms.util.dms2degree(this.lon);
       this.unit = this.UNIT_DEGREE;
     }
   },
@@ -197,7 +198,7 @@ fms.common.util.getHiddenTag = function(params, deviceId) {
   var r = "";
   for (var i in params) {
     if (i.toUpperCase() == "UID" && params[i].toUpperCase() == "NULLGWDOCOMO") {
-      var uid = firemobilesimulator.common.carrier.getId(firemobilesimulator.common.carrier.idType.DOCOMO_UID, deviceId);
+      var uid = fms.carrier.getId(fms.carrier.idType.DOCOMO_UID, deviceId);
       params[i] = uid;
     }
     // dump("generate hidden tag key=[" + i + "] value=[" + params[i] + "]\n");
