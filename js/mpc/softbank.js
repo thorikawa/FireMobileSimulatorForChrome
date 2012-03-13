@@ -31,7 +31,6 @@ firemobilesimulator.mpc.softbank.prototype = {
 
   convertBinary : function (str) {
     // Unicodeバイナリで絵文字にマッチする部分をimgタグに変換する
-    console.log(str);
     str = this.preConvert(str);
     var a = new Array();
     var r = "";
@@ -39,7 +38,7 @@ firemobilesimulator.mpc.softbank.prototype = {
     for (var i=0; i<n; i++) {
       var dec = str.charCodeAt(i);
       var webcode = this.u2web(dec);
-      console.log(String.fromCharCode(dec)+":"+dec+":"+webcode);
+      //console.log(String.fromCharCode(dec)+":"+dec+":"+webcode);
       if (webcode) {
         a.push({type:0, value:r});
         r = "";

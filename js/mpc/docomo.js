@@ -44,7 +44,7 @@ firemobilesimulator.mpc.docomo.prototype = {
     for (var i=0; i<n; i++) {
       var dec = str.charCodeAt(i);
       var decs = [parseInt(dec/256), dec%256];
-      console.log("check pict:" + decs[0] + ":" + decs[1]);
+      //console.log("check pict:" + decs[0] + ":" + decs[1]);
       if (this.charset == firemobilesimulator.mpc.common.MPC_SJIS && this.isPictogramSJISDecs([decs[0], decs[1]])) {
             var udec = firemobilesimulator.mpc.common.sdecs2udec([decs[0],decs[1]]);
             a.push({type:0, value:r});
