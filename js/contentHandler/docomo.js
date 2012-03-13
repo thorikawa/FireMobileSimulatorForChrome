@@ -37,7 +37,7 @@ firemobilesimulator.contentHandler.docomo = {
 
     firemobilesimulator.contentHandler.common.filter(ndDocument, deviceInfo);    
     var setUtnFunction = function(e) {
-      dump("[msim]click utn\n");
+      dump("[msim]click utn");
       if (true == confirm(firemobilesimulator.overlay.strings
           .getString("msim_utnConfirmation"))) {
         fms.pref.setPref("msim.temp.utnflag", true);
@@ -46,7 +46,7 @@ firemobilesimulator.contentHandler.docomo = {
     };
   
     var setLcsFunction = function(e) {
-      dump("[msim]click lcs\n");
+      dump("[msim]click lcs");
       if (true == confirm(firemobilesimulator.overlay.strings
           .getString("msim_lcsConfirmation"))) {
         fms.pref.setPref("msim.temp.lcsflag", true);
@@ -69,7 +69,7 @@ firemobilesimulator.contentHandler.docomo = {
   
       var lcs = anchorTag.getAttribute("lcs");
       if (null != lcs) {
-        dump("setlcs for a tag\n");
+        dump("setlcs for a tag");
         anchorTag.addEventListener("click", setLcsFunction, false);
       }
     }
@@ -93,7 +93,7 @@ firemobilesimulator.contentHandler.docomo = {
   
       var lcs = formTag.getAttribute("lcs");
       if (null != lcs) {
-        dump("setlcs for form tag\n");
+        dump("setlcs for form tag");
         formTag.addEventListener("submit", setLcsFunction, false);
       }
   
@@ -113,7 +113,7 @@ firemobilesimulator.contentHandler.docomo = {
           var value = inputTag.value;
           if (key && value && key.toUpperCase() == "UID"
               && value.toUpperCase() == "NULLGWDOCOMO") {
-            dump("replace uid\n");
+            dump("replace uid");
             var uid = fms.carrier.getId(fms.carrier.idType.DOCOMO_UID,deviceId);
             inputTag.value = uid;
           }
