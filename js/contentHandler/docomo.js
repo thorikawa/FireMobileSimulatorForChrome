@@ -38,18 +38,20 @@ firemobilesimulator.contentHandler.docomo = {
     firemobilesimulator.contentHandler.common.filter(ndDocument, deviceInfo);    
     var setUtnFunction = function(e) {
       dump("[msim]click utn");
-      if (true == confirm(firemobilesimulator.overlay.strings
-          .getString("msim_utnConfirmation"))) {
-        fms.pref.setPref("msim.temp.utnflag", true);
+      if (true == confirm(chrome.i18n.getMessage("utn_confirmation"))) {
+        chrome.extension.sendRequest({name: "setUtnFlag"}, function () {
+          // FIXME: don't wait for response
+        });
       }
       return true;
     };
   
     var setLcsFunction = function(e) {
       dump("[msim]click lcs");
-      if (true == confirm(firemobilesimulator.overlay.strings
-          .getString("msim_lcsConfirmation"))) {
-        fms.pref.setPref("msim.temp.lcsflag", true);
+      if (true == confirm(chrome.i18n.getMessage("lcs_confirmation"))) {
+        chrome.extension.sendRequest({name: "setLcsFlag"}, function () {
+          // FIXME: don't wait for response
+        });
         return true;
       } else {
         return false;

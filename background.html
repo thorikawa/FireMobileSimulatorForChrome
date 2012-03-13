@@ -118,6 +118,12 @@ var server = {
       width: width,
       forceScreenWidth: forceScreenWidth
     });
+  },
+  setUtnFlag: function (request, sender, sendResponse) {
+    fms.pref.setPref("msim.temp.utnflag", true);
+  },
+  setLcsFlag: function (request, sender, sendResponse) {
+    fms.pref.setPref("msim.temp.lcsflag", true);
   }
 };
 

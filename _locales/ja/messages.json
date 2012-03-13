@@ -145,5 +145,11 @@
   },
   "save_done": {
     "message": "保存しました"
+  },
+  "utn_confirmation": {
+    "message": "携帯電話/FOMAカード(UIM)の製造番号を送信します"
+  },
+  "lcs_confirmation": {
+    "message": "今いる場所を情報提供者に送信します"
   }
 }
