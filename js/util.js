@@ -69,21 +69,21 @@ fms.common.util.getParamsFromPath = function(path, func) {
  */
 fms.common.util.getParamsFromQuery = function(q, func) {
   if (!func || !func instanceof Function) func = decodeURI;
-  //dump("##getParamsFromQuery start\n");
+  //console.log("##getParamsFromQuery start\n");
   var params = {};
   var values = q.split("&");
   values.forEach(function(v, i) {
-    //dump("###"+i+"\n");
+    //console.log("###"+i+"\n");
     var eindex = v.indexOf("=");
     if (eindex == -1) {
       return;
     }
-    //dump("decode:"+v.substring(eindex+1)+"\n");
+    //console.log("decode:"+v.substring(eindex+1)+"\n");
     var value;
     try {
       value = func(v.substring(eindex+1));
     } catch (exception) {
-      dump("[msim]Warning:decodeURI:"+v.substring(eindex+1)+"\n");
+      console.log("[msim]Warning:decodeURI:"+v.substring(eindex+1)+"\n");
       value = v.substring(eindex+1);
     }
     params["" + v.substring(0,eindex)] = "" + value;
@@ -125,7 +125,7 @@ fms.common.util.Point.prototype = {
     }
   },
   toWgs : function() {
-    dump("Point.toWgs() Error:Not implemented.Do nothing.\n");
+    console.log("Point.toWgs() Error:Not implemented.Do nothing.\n");
   },
   //wgs84測地系で与えられたdegreeを、tokyo測地系に変換する
   toTokyo : function() {
@@ -201,7 +201,7 @@ fms.common.util.getHiddenTag = function(params, deviceId) {
       var uid = fms.carrier.getId(fms.carrier.idType.DOCOMO_UID, deviceId);
       params[i] = uid;
     }
-    // dump("generate hidden tag key=[" + i + "] value=[" + params[i] + "]\n");
+    // console.log("generate hidden tag key=[" + i + "] value=[" + params[i] + "]\n");
     r += '<input type="hidden" name="' + fms.common.util.escapeAttribute(i) + '" value="' + fms.common.util.escapeAttribute(params[i]) + '" />\n';
   }
   return r;
@@ -212,7 +212,7 @@ fms.common.util.escapeUri = function (uri) {
         return uri;
     } else {
         uri = uri.replace(/:/g, "&#x3a;");
-        // dump("replaced:" + uri+"\n");
+        // console.log("replaced:" + uri+"\n");
         return uri;
     }
 };
@@ -222,7 +222,7 @@ fms.common.util.escapeHTML = function (val) {
     // if jQuery is loaded
     return $("<div/>").text(val).html();
   } else {
-    dump("jQuery is not loaded. return unescaped.\n");
+    console.log("jQuery is not loaded. return unescaped.\n");
     return val;
   }
 };
@@ -249,17 +249,17 @@ fms.common.util.getTabFromHttpChannel = function (httpChannel) {
       docShell = interfaceRequestor.getInterface(Components.interfaces.nsIDocShell);
       var targetDoc = interfaceRequestor
           .getInterface(Components.interfaces.nsIDOMWindow).document;
-      //dump("docShell:"+docShell+"\n");
-      //dump("docShell's URI:"+docShell.currentURI.asciiSpec+"\n")
+      //console.log("docShell:"+docShell+"\n");
+      //console.log("docShell's URI:"+docShell.currentURI.asciiSpec+"\n")
     } catch (e) {
       //fav.iconとか<link rel=prefetch>のリクエストの場合、getInterfaceできない模様
-      //dump("if:"+interfaceRequestor+"\n");
-      dump("[msim][Error]"+e+"\n");
-      dump("[msim]targetURI:"+httpChannel.URI.asciiSpec+"\n");
+      //console.log("if:"+interfaceRequestor+"\n");
+      console.log("[msim][Error]"+e+"\n");
+      console.log("[msim]targetURI:"+httpChannel.URI.asciiSpec+"\n");
       return null;
     }
     if (!targetDoc) {
-      dump("[msim][Error]targetDoc is undefined\n");
+      console.log("[msim][Error]targetDoc is undefined\n");
       return null;
     }
     var webNav = httpChannel.notificationCallbacks
@@ -271,7 +271,7 @@ fms.common.util.getTabFromHttpChannel = function (httpChannel) {
     var gBrowser = mainWindow.getBrowser();
     var targetBrowserIndex = gBrowser.getBrowserIndexForDocument(targetDoc);
     if (targetBrowserIndex != -1) {
-      //dump("get tab info.index:"+targetBrowserIndex+"\n");
+      //console.log("get tab info.index:"+targetBrowserIndex+"\n");
       tab = gBrowser.tabContainer.childNodes[targetBrowserIndex];
     }
   }
