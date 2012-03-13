@@ -46,8 +46,6 @@ fms.core.setDevice = function (id) {
   } else {
     var pref_prefix = "msim.devicelist." + id;
     var carrier = fms.pref.getPref(pref_prefix + ".carrier");
-
-    fms.pref.setPref("msim.current.carrier", carrier);
     fms.pref.setPref("msim.current.id", id);
     fms.core.updateIcon();
   }
