@@ -72,10 +72,10 @@ firemobilesimulator.contentHandler.common = {
       // force font family to monospace
       ndDocument.body.style.fontFamily = "monospace";
       // currently set only width
-      //if (forceScreenWidth) {
+      if (deviceInfo.forceScreenWidth) {
         ndDocument.body.style.width = deviceInfo.width + "px";
         ndDocument.body.style.border = "2px solid black";
-      //}
+      }
     }
   },
 

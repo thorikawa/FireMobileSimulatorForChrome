@@ -1,4 +1,4 @@
-function bind () {
+function bind (saveCallback) {
   $("[bind]").each(function () {
     var type=$(this).attr("type");
     if ("text"==type) {
@@ -27,5 +27,6 @@ function bind () {
         }
       }
     });
+    if (saveCallback) saveCallback();
   });
 }

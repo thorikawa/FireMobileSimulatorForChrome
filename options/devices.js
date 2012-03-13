@@ -175,80 +175,83 @@ fms.options.addExtraHeaderRow = function (headerObj) {
 // save device
 fms.options.saveDevice = function () {
   // If the window type is add or edit
-    var saveId;
-    var carrier = $("#options-device-carrierlist").find("option:selected").attr("value");
-    var deviceName = document.getElementById("options-device-label").value;
-    var userAgent = document.getElementById("options-device-useragent").value;
-    var type1 = $("#options-device-type-menupopup").find("option:selected").attr("value");
-    var screenWidth = document.getElementById("options-device-screen-width").value;
-    var screenHeight = document.getElementById("options-device-screen-height").value;
-    var useCookie = document.getElementById("options-device-use-cookie").checked;
+  var saveId;
+  var carrier = $("#options-device-carrierlist").find("option:selected").attr("value");
+  var deviceName = document.getElementById("options-device-label").value;
+  var userAgent = document.getElementById("options-device-useragent").value;
+  var type1 = $("#options-device-type-menupopup").find("option:selected").attr("value");
+  var screenWidth = document.getElementById("options-device-screen-width").value;
+  var screenHeight = document.getElementById("options-device-screen-height").value;
+  var useCookie = document.getElementById("options-device-use-cookie").checked;
 
-    // input check
-    if (!deviceName || !carrier || !userAgent) {
-      console.log("Warning : Required field is null.");
-      alert(chrome.i18n.getMessage("required_field_is_blank"));
-      return false;
-    }
+  // input check
+  if (!deviceName || !carrier || !userAgent) {
+    console.log("Warning : Required field is null.");
+    alert(chrome.i18n.getMessage("required_field_is_blank"));
+    return false;
+  }
 
-    if (fms.options.action == "edit") {
-      saveId = fms.options.deviceid;
-    } else {
-      console.log(fms.pref.getIntPref("msim.devicelist.count"));
-      saveId = fms.pref.getIntPref("msim.devicelist.count") + 1;
-      fms.pref.setPref("msim.devicelist.count", saveId);
-      fms.pref.setPref("msim.devicelist." + saveId + ".carrier", carrier);
-    }
-
-    console.log("save-carrier:" + carrier);
-    console.log("save-id:" + saveId);
-
-    fms.pref.setPref("msim.devicelist." + saveId + ".label", deviceName);
+  if (fms.options.action == "edit") {
+    saveId = fms.options.deviceid;
+  } else {
+    console.log(fms.pref.getIntPref("msim.devicelist.count"));
+    saveId = fms.pref.getIntPref("msim.devicelist.count") + 1;
+    fms.pref.setPref("msim.devicelist.count", saveId);
     fms.pref.setPref("msim.devicelist." + saveId + ".carrier", carrier);
-    fms.pref.setPref("msim.devicelist." + saveId + ".useragent", userAgent);
-    fms.pref.setPref("msim.devicelist." + saveId + ".type1", type1);
-    fms.pref.setPref("msim.devicelist." + saveId + ".screen-width", screenWidth);
-    fms.pref.setPref("msim.devicelist." + saveId + ".screen-height", screenHeight);
-    fms.pref.setPref("msim.devicelist." + saveId + ".use-cookie", useCookie);
+  }
 
-    // save extra headers
-    var extraHeaders = $("#options-device-extra-headers-rows").find("tr.extra-header-row");
-    var headerId = 0;
-    for (var i = 0; i < extraHeaders.length; i++) {
-      var extraHeader = extraHeaders[i];
-      var extraHeaderAttributes = $(extraHeader).find("input");
-      var name = extraHeaderAttributes[0].value;
-      var value = extraHeaderAttributes[1].value;
+  console.log("save-carrier:" + carrier);
+  console.log("save-id:" + saveId);
 
-      if (name) {
-        headerId++;
-        fms.pref.setPref("msim.devicelist." + saveId + ".extra-header." + headerId + ".name", name);
-        fms.pref.setPref("msim.devicelist." + saveId + ".extra-header." + headerId + ".value", value);
-      }
+  fms.pref.setPref("msim.devicelist." + saveId + ".label", deviceName);
+  fms.pref.setPref("msim.devicelist." + saveId + ".carrier", carrier);
+  fms.pref.setPref("msim.devicelist." + saveId + ".useragent", userAgent);
+  fms.pref.setPref("msim.devicelist." + saveId + ".type1", type1);
+  fms.pref.setPref("msim.devicelist." + saveId + ".screen-width", screenWidth);
+  fms.pref.setPref("msim.devicelist." + saveId + ".screen-height", screenHeight);
+  fms.pref.setPref("msim.devicelist." + saveId + ".use-cookie", useCookie);
+
+  // save extra headers
+  var extraHeaders = $("#options-device-extra-headers-rows").find("tr.extra-header-row");
+  var headerId = 0;
+  for (var i = 0; i < extraHeaders.length; i++) {
+    var extraHeader = extraHeaders[i];
+    var extraHeaderAttributes = $(extraHeader).find("input");
+    var name = extraHeaderAttributes[0].value;
+    var value = extraHeaderAttributes[1].value;
+
+    if (name) {
+      headerId++;
+      fms.pref.setPref("msim.devicelist." + saveId + ".extra-header." + headerId + ".name", name);
+      fms.pref.setPref("msim.devicelist." + saveId + ".extra-header." + headerId + ".value", value);
     }
-    fms.pref.setPref("msim.devicelist." + saveId + ".extra-header.count", headerId);
-    
-    confirm(chrome.i18n.getMessage("save_complete"));
-    
-    fms.options.initializeDevices();
-    fms.options.addDevice();
-    
-    /* TODO
-    var docomoUid = document.getElementById("msim-textbox-docomo-uid").value;
-    var docomoSer = document.getElementById("msim-textbox-docomo-ser").value;
-    var docomoIcc = document.getElementById("msim-textbox-docomo-icc").value;
-    var docomoGuid = document.getElementById("msim-textbox-docomo-guid").value;
-    var auUid = document.getElementById("msim-textbox-au-uid").value;
-    var softbankUid = document.getElementById("msim-textbox-softbank-uid").value;
-    var softbankSerial = document.getElementById("msim-textbox-softbank-serial").value;
-    fms.pref.setPref("msim.devicelist." + saveId + ".docomo-uid", docomoUid);
-    fms.pref.setPref("msim.devicelist." + saveId + ".docomo-ser", docomoSer);
-    fms.pref.setPref("msim.devicelist." + saveId + ".docomo-icc", docomoIcc);
-    fms.pref.setPref("msim.devicelist." + saveId + ".docomo-guid", docomoGuid);
-    fms.pref.setPref("msim.devicelist." + saveId + ".au-uid", auUid);
-    fms.pref.setPref("msim.devicelist." + saveId + ".softbank-uid", softbankUid);
-    fms.pref.setPref("msim.devicelist." + saveId + ".softbank-serial", softbankSerial);
-    */
+  }
+  fms.pref.setPref("msim.devicelist." + saveId + ".extra-header.count", headerId);
+  
+  confirm(chrome.i18n.getMessage("save_complete"));
+  
+  fms.options.initializeDevices();
+  fms.options.addDevice();
+  
+  /* TODO
+  var docomoUid = document.getElementById("msim-textbox-docomo-uid").value;
+  var docomoSer = document.getElementById("msim-textbox-docomo-ser").value;
+  var docomoIcc = document.getElementById("msim-textbox-docomo-icc").value;
+  var docomoGuid = document.getElementById("msim-textbox-docomo-guid").value;
+  var auUid = document.getElementById("msim-textbox-au-uid").value;
+  var softbankUid = document.getElementById("msim-textbox-softbank-uid").value;
+  var softbankSerial = document.getElementById("msim-textbox-softbank-serial").value;
+  fms.pref.setPref("msim.devicelist." + saveId + ".docomo-uid", docomoUid);
+  fms.pref.setPref("msim.devicelist." + saveId + ".docomo-ser", docomoSer);
+  fms.pref.setPref("msim.devicelist." + saveId + ".docomo-icc", docomoIcc);
+  fms.pref.setPref("msim.devicelist." + saveId + ".docomo-guid", docomoGuid);
+  fms.pref.setPref("msim.devicelist." + saveId + ".au-uid", auUid);
+  fms.pref.setPref("msim.devicelist." + saveId + ".softbank-uid", softbankUid);
+  fms.pref.setPref("msim.devicelist." + saveId + ".softbank-serial", softbankSerial);
+  */
+  
+  // dismiss modal
+  $("#modal_device_form").modal("hide");
 };
 
 fms.options.appendTypeList = function (carrier) {

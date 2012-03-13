@@ -142,5 +142,8 @@
   },
   "http_header_value": {
     "message": "ヘッダー値"
+  },
+  "save_done": {
+    "message": "保存しました"
   }
 }

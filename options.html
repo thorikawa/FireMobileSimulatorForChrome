@@ -52,7 +52,9 @@
             $(this).click(function () {
               $("#content").load("options/" + $(this).attr("page") + ".html", function () {
                 // localize again after loading individual page
-                bind();
+                bind(function () {
+                  confirm(chrome.i18n.getMessage("save_done"));
+                });
                 localizePage();
                 // jquery ui
                 $("input:button").addClass("btn");
