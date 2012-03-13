@@ -1,9 +1,9 @@
 {
   "appDesc": {
-    "message": "携帯端末・スマートフォンの動作をシミュレートする開発補助ツールです"
+    "message": "携帯端末・スマートフォンの動作をシミュレートする拡張機能です。"
   },
   "appName": {
-    "message": "FireMobileSimulator"
+    "message": "FireMobileSimulator for Chrome"
   },
   "addDevice": {
     "message": "最新端末リストから端末を追加"
@@ -63,13 +63,13 @@
     "message": "端末タイプ"
   },
   "screen_width": {
-    "message": "スクリーン横幅"
+    "message": "スクリーン横幅(px)"
   },
   "screen_height": {
-    "message": "スクリーン高さ"
+    "message": "スクリーン高さ(px)"
   },
   "use_cookie": {
-    "message": "クッキー使用可否"
+    "message": "Cookie有効"
   },
   "options_device_extra_headers": {
     "message": "追加HTTPヘッダー"
@@ -78,10 +78,10 @@
     "message": "キャリアを選択してください(必須)"
   },
   "delete_confirm": {
-    "message": "本当に削除してよろしいですか？"
+    "message": "端末情報を削除します。よろしいですか？"
   },
   "confirm_clear_all_devices": {
-    "message": "端末設定を全て初期設定にリセットします。よろしいですか？"
+    "message": "端末情報を初期化します。設定した端末情報は全て削除されます。よろしいですか？"
   },
   "delete_button": {
     "message": "削除"
@@ -91,6 +91,9 @@
   },
   "reset_device_on_quit": {
     "message": "ブラウザ終了時に端末選択を解除する"
+  },
+  "required": {
+    "message": "必須"
   },
   "required_field_is_blank": {
     "message": "必須項目が入力されていません"
@@ -151,5 +154,44 @@
   },
   "lcs_confirmation": {
     "message": "今いる場所を情報提供者に送信します"
+  },
+  "add_device_title": {
+    "message": "FireMobileSimulator:端末追加"
+  },
+  "add_device_subtitle":{
+    "message": " : 端末追加"
+  },
+  "add_device_desc": {
+    "message": "FireMobileSimulatorに任意の端末を追加することができます。"
+  },
+  "add_selected_device": {
+    "message": "選択した端末を追加"
+  },
+  "search_by_device_label": {
+    "message": "端末名検索: "
+  },
+  "error": {
+    "message": "エラー"
+  },
+  "register_completed_title": {
+    "message": "登録完了"
+  },
+  "register_completed": {
+    "message": "選択した端末がFireMobileSimulatorに追加されました"
+  },
+  "release_date": {
+    "message": "発売日"
+  },
+  "device_code": {
+    "message": "端末略称"
+  },
+  "device_list_title": {
+    "message": "端末リスト"
+  },
+  "device_not_selected_message": {
+    "message": "端末を1つ以上選択してください"
+  },
+  "devices_are_too_much_message": {
+    "message": "1アクションで登録する端末数は30件までにしてください"
   }
 }

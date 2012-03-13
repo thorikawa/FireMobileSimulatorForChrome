@@ -19,290 +19,291 @@
 
 var firemobilesimulator;
 if (!firemobilesimulator)
-	firemobilesimulator = {};
+  firemobilesimulator = {};
 
-Ext.onReady(function() {
+Ext.onReady(function () {
 
-    Ext.Ajax.timeout = 600000;
-	Ext.BLANK_IMAGE_URL = 'ext/resources/images/default/s.gif';
+  // from i18n.js
+  localizePage();
+  
+  Ext.Ajax.timeout = 600000;
+  Ext.BLANK_IMAGE_URL = 'ext/resources/images/default/s.gif';
 
-	var q = new Ext.ToolTip({
-		autoWidth : true,
-		autoHeight : true,
-		closable : true,
-		showDelay : 50,
-		dismissDelay : 0,
-		target : 'qrcode',
-		title : '端末登録ウィザードQRコード',
-		html : '<img src="http://ke-tai.org//blog/wp-content/uploads/2007/12/wizard_qr.png" alt="" alt="">'
-	});
+  var q = new Ext.ToolTip({
+    autoWidth : true,
+    autoHeight : true,
+    closable : true,
+    showDelay : 50,
+    dismissDelay : 0,
+    target : 'qrcode',
+    title : '端末登録ウィザードQRコード',
+    html : '<img src="http://ke-tai.org//blog/wp-content/uploads/2007/12/wizard_qr.png" alt="" alt="">'
+  });
 
-	var ex1_hide = Ext.get('explanation1_hide');
-	var ex1_show = Ext.get('explanation1_show');
-	ex1_show.setStyle('display','none');
-	ex1_hide.on('click', function() {
-		ex1_show.setStyle('display','block');
-		ex1_hide.setStyle('display','none');
-	});
-	ex1_show.on('click', function() {
-		ex1_show.setStyle('display','none');
-		ex1_hide.setStyle('display','block');
-	});
-	var ex2_hide = Ext.get('explanation2_hide');
-	var ex2_show = Ext.get('explanation2_show');
-	ex2_show.setStyle('display','none');
-	ex2_hide.on('click', function() {
-		ex2_show.setStyle('display','block');
-		ex2_hide.setStyle('display','none');
-	});
-	ex2_show.on('click', function() {
-		ex2_show.setStyle('display','none');
-		ex2_hide.setStyle('display','block');
-	});
+  var ex1_hide = Ext.get('explanation1_hide');
+  var ex1_show = Ext.get('explanation1_show');
+  ex1_show.setStyle('display','none');
+  ex1_hide.on('click', function() {
+    ex1_show.setStyle('display','block');
+    ex1_hide.setStyle('display','none');
+  });
+  ex1_show.on('click', function() {
+    ex1_show.setStyle('display','none');
+    ex1_hide.setStyle('display','block');
+  });
+  var ex2_hide = Ext.get('explanation2_hide');
+  var ex2_show = Ext.get('explanation2_show');
+  ex2_show.setStyle('display','none');
+  ex2_hide.on('click', function() {
+    ex2_show.setStyle('display','block');
+    ex2_hide.setStyle('display','none');
+  });
+  ex2_show.on('click', function() {
+    ex2_show.setStyle('display','none');
+    ex2_hide.setStyle('display','block');
+  });
 
-	var filePath = devicedbUrl;
-	var ds = new Ext.data.Store({
-		proxy : new Ext.data.HttpProxy({
-			url : filePath
-		}),
-		reader : new Ext.data.XmlReader({
-				id : 'Id',
-				record : 'Device'
-			}, [{
-					name : 'name',
-					mapping : 'DeviceName'
-				}, {
-					name : 'code',
-					mapping : 'DeviceShortName'
-				}, {
-					name : 'carrier',
-					mapping : 'Carrier'
-				}, {
-					name : 'type1',
-					mapping : 'Type1'
-				}, {
-					name : 'release-date',
-					mapping : 'ReleaseDate'
-			}]
-		)
-	});
-	var sm = new Ext.grid.CheckboxSelectionModel({
-		singleSelect : false
-	});
-	sm.on('beforerowselect', function(sm, index, keepExisting, record) {
-		return !fms.core.isRegistered(record.id);
-	});
+  var filePath = devicedbUrl;
+  var ds = new Ext.data.Store({
+    proxy : new Ext.data.HttpProxy({
+      url : filePath
+    }),
+    reader : new Ext.data.XmlReader({
+        id : 'Id',
+        record : 'Device'
+      }, [{
+          name : 'name',
+          mapping : 'DeviceName'
+        }, {
+          name : 'code',
+          mapping : 'DeviceShortName'
+        }, {
+          name : 'carrier',
+          mapping : 'Carrier'
+        }, {
+          name : 'type1',
+          mapping : 'Type1'
+        }, {
+          name : 'release-date',
+          mapping : 'ReleaseDate'
+      }]
+    )
+  });
+  var sm = new Ext.grid.CheckboxSelectionModel({
+    singleSelect : false
+  });
+  sm.on('beforerowselect', function(sm, index, keepExisting, record) {
+    return !fms.core.isRegistered(record.id);
+  });
 
-	var tf = new Ext.form.TextField({id : 'tf-cmp'});
-	var filteredCarrier;
-	var filterButtonHandler = function(button, state) {
-		console.log("filter carrier:"+button.text+"\n");
-		if (state) { //press
-			filteredCarrier = button.text;
-		} else { //depress
-			filteredCarrier = null;
-		}
-		is.searchNow();
-	};
+  var tf = new Ext.form.TextField({id : 'tf-cmp'});
+  var filteredCarrier;
+  var filterButtonHandler = function(button, state) {
+    console.log("filter carrier:"+button.text+"\n");
+    if (state) { //press
+      filteredCarrier = button.text;
+    } else { //depress
+      filteredCarrier = null;
+    }
+    is.searchNow();
+  };
 
-	var addButton = new Ext.Toolbar.Button({
-		id   : "add-button2",
-		menuAlign : "r",
-		text : '選択した端末を追加2',
-		handler : function() {
-			firemobilesimulator.addDevice();
-			fms.core.refreshRegisteredDevices();
-			grid.getView().refresh();
-		}
-	});
-	var grid = new Ext.grid.GridPanel({
-		id : 'grid-device-cmp',
-		store : ds,
-		colModel : new Ext.grid.ColumnModel(
-			[sm, {
-				header : '端末名',
-				width : 160,
-				sortable : true,
-				dataIndex : 'name'
-			}, {
-				header : '端末略称',
-				width : 160,
-				sortable : true,
-				dataIndex : 'code'
-			}, {
-				header : 'キャリア',
-				width : 80,
-				sortable : true,
-				dataIndex : 'carrier'
-			}, {
-				header : 'タイプ',
-				width : 80,
-				sortable : true,
-				dataIndex : 'type1'
-			}, {
-				header : '発売日',
-				width : 80,
-				sortable : true,
-				dataIndex : 'release-date'
-			}]
-		),
-		renderTo : 'grid-device',
-		height : 380,
-		width : 600,
-		stripeRows : true,
-		title : '端末リスト',
-		frame : true,
-		sm : sm,
-		viewConfig : {
-			forceFit : true
-		},
-		loadMask : {
-			msg : "Loading..."
-		},
-		tbar : [{
-			text : 'DoCoMo', //'docomo',
-			//minWidth : 50,
-			enableToggle : true,
-			allowDepress : true,
-			toggleGroup  : 'carrierButton',
-			toggleHandler: filterButtonHandler
-		}, {
-			xtype : 'tbspacer'
-		}, {
-			text : 'au',
-			//minWidth : 50,
-			enableToggle : true,
-			allowDepress : true,
-			toggleGroup  : 'carrierButton',
-			toggleHandler: filterButtonHandler
-		}, {
-			xtype : 'tbspacer'
-		}, {
-			text : 'SoftBank',
-			//minWidth : 50,
-			enableToggle : true,
-			allowDepress : true,
-			toggleGroup  : 'carrierButton',
-			toggleHandler: filterButtonHandler
-		}, {
-			xtype : 'tbspacer'
-		}, "端末名検索: ",
-		tf, {
-			xtype : 'tbspacer'
-		}, {
-			//id   : "add-button",
-			menuAlign : "r",
-			text : '選択した端末を追加',
-			handler : function() {
-				firemobilesimulator.addDevice();
-				fms.core.refreshRegisteredDevices();
-				grid.getView().refresh();
-			},
-			cls : "add-button"
-		}],
-		floating : false
-	});
-	grid.getView().getRowClass = function(record, index) {
-		if (fms.core.isRegistered(record.id)) {
-			return 'registered-row';
-		}
-		return;
-	};
-	var getInput = function() {
-		return Ext.getCmp('tf-cmp').getValue();
-	};
-	var search = function(input) {
-		if (!input) {
-			if (filteredCarrier) {
-				ds.filter('carrier', filteredCarrier);
-			} else if (ds.isFiltered()) {
-				ds.clearFilter();
-			}
-		} else if (input) {
-			ds.filterBy(function(record, id) {
-				var name = record.get('name');
-				var carrier = record.get('carrier');
-				if ((!filteredCarrier || carrier == filteredCarrier) && name.toUpperCase().indexOf(input.toUpperCase()) != -1) {
-					return true;
-				}
-				return false;
-			});
-		} else {
-			ds.filter('name', input, true, false);
-		}
-	};
-	var is = new IncrementalSearch(getInput, search);
-	ds.on('load',function() { is.checkLoop(); });
-	ds.load();
+  var addButton = new Ext.Toolbar.Button({
+    id   : "add-button2",
+    menuAlign : "r",
+    text : '選択した端末を追加2',
+    handler : function() {
+      firemobilesimulator.addDevice();
+      fms.core.refreshRegisteredDevices();
+      grid.getView().refresh();
+    }
+  });
+  var grid = new Ext.grid.GridPanel({
+    id : 'grid-device-cmp',
+    store : ds,
+    colModel : new Ext.grid.ColumnModel(
+      [sm, {
+        header : translate("device_label"),
+        width : 160,
+        sortable : true,
+        dataIndex : 'name'
+      }, {
+        header : translate("device_code"),
+        width : 160,
+        sortable : true,
+        dataIndex : 'code'
+      }, {
+        header : translate("carrier"),
+        width : 80,
+        sortable : true,
+        dataIndex : 'carrier'
+      }, {
+        header : translate("device_type"),
+        width : 80,
+        sortable : true,
+        dataIndex : 'type1'
+      }, {
+        header : translate("release_date"),
+        width : 80,
+        sortable : true,
+        dataIndex : 'release-date'
+      }]
+    ),
+    renderTo : 'grid-device',
+    height : 380,
+    width : 600,
+    stripeRows : true,
+    title : translate("device_list_title"),
+    frame : true,
+    sm : sm,
+    viewConfig : {
+      forceFit : true
+    },
+    loadMask : {
+      msg : "Loading..."
+    },
+    tbar : [{
+      text : 'docomo',
+      //minWidth : 50,
+      enableToggle : true,
+      allowDepress : true,
+      toggleGroup  : 'carrierButton',
+      toggleHandler: filterButtonHandler
+    }, {
+      xtype : 'tbspacer'
+    }, {
+      text : 'au',
+      //minWidth : 50,
+      enableToggle : true,
+      allowDepress : true,
+      toggleGroup  : 'carrierButton',
+      toggleHandler: filterButtonHandler
+    }, {
+      xtype : 'tbspacer'
+    }, {
+      text : 'SoftBank',
+      //minWidth : 50,
+      enableToggle : true,
+      allowDepress : true,
+      toggleGroup  : 'carrierButton',
+      toggleHandler: filterButtonHandler
+    }, {
+      xtype : 'tbspacer'
+    }, translate("search_by_device_label"),
+    tf, {
+      xtype : 'tbspacer'
+    }, {
+      //id   : "add-button",
+      menuAlign : "r",
+      text : translate("add_selected_device"),
+      handler : function() {
+        firemobilesimulator.addDevice();
+        fms.core.refreshRegisteredDevices();
+        grid.getView().refresh();
+      },
+      cls : "add-button"
+    }],
+    floating : false
+  });
+  grid.getView().getRowClass = function(record, index) {
+    if (fms.core.isRegistered(record.id)) {
+      return 'registered-row';
+    }
+    return;
+  };
+  var getInput = function() {
+    return Ext.getCmp('tf-cmp').getValue();
+  };
+  var search = function(input) {
+    if (!input) {
+      if (filteredCarrier) {
+        ds.filter('carrier', filteredCarrier);
+      } else if (ds.isFiltered()) {
+        ds.clearFilter();
+      }
+    } else if (input) {
+      ds.filterBy(function(record, id) {
+        var name = record.get('name');
+        var carrier = record.get('carrier');
+        if ((!filteredCarrier || carrier == filteredCarrier) && name.toUpperCase().indexOf(input.toUpperCase()) != -1) {
+          return true;
+        }
+        return false;
+      });
+    } else {
+      ds.filter('name', input, true, false);
+    }
+  };
+  var is = new IncrementalSearch(getInput, search);
+  ds.on('load',function() { is.checkLoop(); });
+  ds.load();
 });
 
 firemobilesimulator.addDevice = function() {
-	var idArray = new Array();
-	var sm = Ext.getCmp('grid-device-cmp').getSelectionModel();
-	var records = sm.getSelections();
-	if (records.length <= 0) {
-		//TODO propertiesファイルから取得する
-		Ext.Msg.alert("エラー", "端末を1つ以上選択してください");
-		return;
-	} else if (records.length > 30) {
-		//TODO propertiesファイルから取得する
-		Ext.Msg.alert("エラー", "1アクションで登録する端末数は30件までにしてください");
-		return;
-	}
-	for (var i = 0; i < records.length; i++) {
-		var record = records[i];
-		idArray.push(record.id);
-	}
-	var filePath = devicedbUrl + "?result=large&id=" + idArray.join(",");
-	var devices = fms.core.parseDeviceListXML(filePath);
-	var result = fms.core.LoadDevices(devices, false);
-	if (result) {
-		Ext.Msg.show({
-			title : "登録完了",
-			msg : "選択した端末がFireMobileSimulatorに追加されました"
-		});
-	}
-	sm.clearSelections();
+  var idArray = new Array();
+  var sm = Ext.getCmp('grid-device-cmp').getSelectionModel();
+  var records = sm.getSelections();
+  if (records.length <= 0) {
+    Ext.Msg.alert(translate("error"), translate("device_not_selected_message"));
+    return;
+  } else if (records.length > 30) {
+    Ext.Msg.alert(translate("error"), translate("devices_are_too_much_message"));
+    return;
+  }
+  for (var i = 0; i < records.length; i++) {
+    var record = records[i];
+    idArray.push(record.id);
+  }
+  var filePath = devicedbUrl + "?result=large&id=" + idArray.join(",");
+  var devices = fms.core.parseDeviceListXML(filePath);
+  var result = fms.core.LoadDevices(devices, false);
+  if (result) {
+    Ext.Msg.show({
+      title : translate("register_completed_title"),
+      msg : translate("register_completed")
+    });
+  }
+  sm.clearSelections();
 };
 
 function IncrementalSearch() {
-	this.initialize.apply(this, arguments);
+  this.initialize.apply(this, arguments);
 };
 IncrementalSearch.prototype = {
-	initialize : function(getInputFunc, searchFunc) {
-		this.getInput = getInputFunc;
-		this.search = searchFunc;
-	},
-	delay : 100,
-	interval : 500,
-	checkLoop : function() {
-		var input = this.getInput();
-		if (!this.oldInput || input != this.oldInput) {
-			this.oldInput = input;
-			if (this.delay == 0) {
-				this.search(input);
-			} else {
-				if (this.startSearchTimer)
-					clearTimeout(this.startSearchTimer);
-				this.startSearchTimer = setTimeout(this._bind(this.search,
-								input), this.delay);
-			}
-		}
-		if (this.checkLoopTimer)
-			clearTimeout(this.checkLoopTimer);
-		this.checkLoopTimer = setTimeout(this._bind(this.checkLoop),
-				this.interval);
-	},
-	searchNow : function() {
-		var input = this.getInput();
-		this.search(input);
-	},
-	// Utils
-	_bind : function(func) {
-		var self = this;
-		var args = Array.prototype.slice.call(arguments, 1);
-		return function() {
-			func.apply(self, args);
-		};
-	}
+  initialize : function(getInputFunc, searchFunc) {
+    this.getInput = getInputFunc;
+    this.search = searchFunc;
+  },
+  delay : 100,
+  interval : 500,
+  checkLoop : function() {
+    var input = this.getInput();
+    if (!this.oldInput || input != this.oldInput) {
+      this.oldInput = input;
+      if (this.delay == 0) {
+        this.search(input);
+      } else {
+        if (this.startSearchTimer)
+          clearTimeout(this.startSearchTimer);
+        this.startSearchTimer = setTimeout(this._bind(this.search,
+                input), this.delay);
+      }
+    }
+    if (this.checkLoopTimer)
+      clearTimeout(this.checkLoopTimer);
+    this.checkLoopTimer = setTimeout(this._bind(this.checkLoop),
+        this.interval);
+  },
+  searchNow : function() {
+    var input = this.getInput();
+    this.search(input);
+  },
+  // Utils
+  _bind : function(func) {
+    var self = this;
+    var args = Array.prototype.slice.call(arguments, 1);
+    return function() {
+      func.apply(self, args);
+    };
+  }
 };

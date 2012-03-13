@@ -1,16 +1,17 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<title>ChromeMobileSimulator:端末追加</title>
-	<script type="text/javascript" src="/js/pref.js"></script>
-	<script type="text/javascript" src="/js/carrier.js"></script>
-	<script type="text/javascript" src="/js/core.js"></script>
-	<script type="text/javascript" src="/ext-2.2/adapter/ext/ext-base.js"></script>
-	<script type="text/javascript" src="/ext-2.2/ext-all.js"></script>
-	<script type="text/javascript" src="/ext-2.2/source/locale/ext-lang-ja.js"></script>
-	<script type="text/javascript" src="/js/const.js"></script>
-	<script type="text/javascript" src="device_add.js"></script>
+	<meta charset="UTF-8"/>
+	<title i18n="add_device_title"></title>
+	<script type="text/javascript" charset="UTF-8" src="/js/pref.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/js/carrier.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/js/core.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/js/i18n.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/ext-2.2/adapter/ext/ext-base.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/ext-2.2/ext-all.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/js/const.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="device_add.js"></script>
 	<link rel="stylesheet" type="text/css" href="/ext-2.2/resources/css/ext-all.css">
 	<style type="text/css">
 #tf-cmp{
@@ -81,8 +82,8 @@ body{
 	</style>
 </head>
 <body>
-<div class="head"><span class="large">ChromeMobileSimulator</span> : 端末追加</div>
-<div style="font-size:large;">ChromeMobileSimulatorに任意の端末を追加することができます。</div>
+<div class="head"><span class="large" i18n="appName">ChromeMobileSimulator</span><span i18n="add_device_subtitle"></span></div>
+<div style="font-size:large;" i18n="add_device_desc"></div>
 <div class="explanation">
 	<span id="explanation1_hide" style="color:navy;text-decoration:underline;">▼追加方法</span>
 	<div id="explanation1_show">
@@ -113,8 +114,18 @@ body{
 </div>
 <div id="grid-device" style="overflow:hidden;margin-top:10px;"></div>
 <hr>
-<div style="color: blue;"><a href="http://d.hatena.ne.jp/thorikawa/" target="_blank">&copy;Takahiro Horikawa</a>&nbsp;&nbsp;<span style="color:black;"> mailto:<a href="mailto:horikawa.takahiro@gmail.com">horikawa.takahiro@gmail.com</a></span></div>
+<div style="color: blue;"><a href="http://twitter.com/thorikawa" target="_blank">&copy;Takahiro Horikawa</a>&nbsp;&nbsp;<span style="color:black;"> mailto:<a href="mailto:horikawa.takahiro+fms@gmail.com">horikawa.takahiro+fms@gmail.com</a></span></div>
 <div>OfficialWebSite:<a href="http://firemobilesimulator.org/" target="_blank">FireMobileSimulator.org<img src="/ua128.png" style="height:20px;" alt=""></a></div>
 <div>special thanks to <a href="http://ke-tai.org/" target="_blank"><img src="http://ke-tai.org/blog/wp-content/themes/limau-orange-01/images/logo.gif" style="height:40px;" alt=""></a></div>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-6340134-2']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
 </body>
 </html>

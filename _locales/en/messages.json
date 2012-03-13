@@ -1,86 +1,197 @@
 {
-   "appDesc": {
-      "description": "description.",
-      "message": "Allows per-tab switching of the User-Agent HTTP header. You can also add, edit, export and import your own User-Agents."
-   },
-   "appName": {
-      "description": "title",
-      "message": "User-Agent Selector"
-   },
-   "editUaList": {
-      "description": "options ualist",
-      "message": "Edit User Agents"
-   },
-   "options_general": {
-      "message": "General"
-   },
-   "options_idno": {
-      "message": "ID"
-   },
-   "options_devices": {
-      "message": "Devices"
-   },
-   "options_gps": {
-      "message": "GPS"
-   },
-   "options_pictogram": {
-      "message": "Pictogram"
-   },
-   "options_limithost": {
-      "message": "Limited host"
-   },
-   "exportDownloadReady": {
-      "description": "export title",
-      "message": "User-Agents successfully exported. Click here to download the exported file."
-   },
-   "exportLabel": {
-      "description": "export label",
-      "message": "Click here to export User-Agents listing to a text file."
-   },
-   "exportTitle": {
-      "description": "export",
-      "message": "Export"
-   },
-   "importLabel": {
-      "description": "import label",
-      "message": "Click the button below to import User-Agents from a previously exported text file."
-   },
-   "importTitle": {
-      "description": "import",
-      "message": "Import"
-   },
-   "uaConfirmDelete": {
-      "description": "options ua delete confirm",
-      "message": "Are you sure you want to delete $key$ ?",
-      "placeholders": {
-         "key": {
-            "content": "$1",
-            "example": "the id."
-         }
-      }
-   },
-   "uaDelete": {
-      "description": "options ua delete",
-      "message": "delete"
-   },
-   "uaEdit": {
-      "description": "options ua edit",
-      "message": "edit"
-   },
-   "uaFormTitle": {
-      "description": "options ua form title",
-      "message": "Add or edit"
-   },
-   "uaList": {
-      "description": "options ualist",
-      "message": "User Agents listing"
-   },
-   "uaName": {
-      "description": "options uaname",
-      "message": "Name (must be unique)"
-   },
-   "uaValue": {
-      "description": "options ua value",
-      "message": "User-Agent value"
-   }
+  "appDesc": {
+    "message": "This is a Chrome Extension for simulating Japanese mobile/smart phones."
+  },
+  "appName": {
+    "message": "FireMobileSimulator for Chrome"
+  },
+  "addDevice": {
+    "message": "register devices from the latest device list"
+  },
+  "options_general": {
+    "message": "General"
+  },
+  "options_idno": {
+    "message": "ID"
+  },
+  "options_devices": {
+    "message": "Devices"
+  },
+  "options_gps": {
+    "message": "GPS"
+  },
+  "options_pictogram": {
+    "message": "Pictogram"
+  },
+  "options_limithost": {
+    "message": "Host restriction"
+  },
+  "options_add": {
+    "message": "add"
+  },
+  "options_edit": {
+    "message": "edit"
+  },
+  "options_delete": {
+    "message": "delete"
+  },
+  "options_clearall": {
+    "message": "restore"
+  },
+  "options_general_display": {
+    "message": "Display"
+  },
+  "options_general_quit": {
+    "message": "Termination"
+  },
+  "save": {
+    "message": "Save"
+  },
+  "close": {
+    "message": "Close"
+  },
+  "device_label": {
+    "message": "DeviceName"
+  },
+  "carrier": {
+    "message": "Carrier"
+  },
+  "user_agent": {
+    "message": "User-Agent"
+  },
+  "device_type": {
+    "message": "Type"
+  },
+  "screen_width": {
+    "message": "ScreenWidth(px)"
+  },
+  "screen_height": {
+    "message": "ScreenHeight(px)"
+  },
+  "use_cookie": {
+    "message": "Enable Cookie"
+  },
+  "options_device_extra_headers": {
+    "message": "Extra HTTP Headers"
+  },
+  "select_carrier": {
+    "message": "Select carrier(required)"
+  },
+  "delete_confirm": {
+    "message": "Are you sure you want to delete this device?"
+  },
+  "confirm_clear_all_devices": {
+    "message": "All devices you added will be deleted. Are you sure?"
+  },
+  "delete_button": {
+    "message": "delete"
+  },
+  "force_screen_width": {
+    "message": "fit display to the device's screen width"
+  },
+  "reset_device_on_quit": {
+    "message": "deselect device when you quit browser"
+  },
+  "required": {
+    "message": "required"
+  },
+  "required_field_is_blank": {
+    "message": "some required fields are blank"
+  },
+  "add_extra_header_row": {
+    "message": "add row"
+  },
+  "set_default_device": {
+    "message": "Default"
+  },
+  "option": {
+    "message": "Options"
+  },
+  "about": {
+    "message": "About FireMobileSimulator"
+  },
+  "save_complete": {
+    "message": "Completed"
+  },
+  "add_device_header": {
+    "message": "add device"
+  },
+  "edit_device_header": {
+    "message": "edit device"
+  },
+  "docomo_ser": {
+    "message": "device serial number"
+  },
+  "docomo_icc": {
+    "message": "FOMA card serial number"
+  },
+  "docomo_guid": {
+    "message": "i-mode ID"
+  },
+  "docomo_uid": {
+    "message": "UID"
+  },
+  "au_uid": {
+    "message": "UID"
+  },
+  "softbank_uid": {
+    "message": "UID"
+  },
+  "softbank_serial": {
+    "message": "serial number"
+  },
+  "http_header_name": {
+    "message": "header name"
+  },
+  "http_header_value": {
+    "message": "header value"
+  },
+  "save_done": {
+    "message": "Completed"
+  },
+  "utn_confirmation": {
+    "message": "Are you sure you want to send your serial number?"
+  },
+  "lcs_confirmation": {
+    "message": "Are you sure you want to send your location?"
+  },
+  "add_device_title": {
+    "message": "FireMobileSimulator:Add Device"
+  },
+  "add_device_subtitle":{
+    "message": " : Add Device"
+  },
+  "add_device_desc": {
+    "message": "You can register any devices to FireMobileSimulator."
+  },
+  "add_selected_device": {
+    "message": "register selected devices"
+  },
+  "search_by_device_label": {
+    "message": "search by device name: "
+  },
+  "error": {
+    "message": "error"
+  },
+  "register_completed_title": {
+    "message": "Completed"
+  },
+  "register_completed": {
+    "message": "Selected devices have been successfully registered to FireMobileSimulator."
+  },
+  "release_date": {
+    "message": "ReleaseDate"
+  },
+  "device_code": {
+    "message": "DeviceCode"
+  },
+  "device_list_title": {
+    "message": "DeviceList"
+  },
+  "device_not_selected_message": {
+    "message": "Please select one or more device"
+  },
+  "devices_are_too_much_message": {
+    "message": "You can select up to 30 device per action"
+  }
 }
