@@ -506,7 +506,7 @@ firemobilesimulator.mpc.ezweb.prototype = {
       _bread : 424,
       _softcream : 425,
       _potato : 426,
-      "_console.logling" : 427,
+      _dumpling : 427,
       _ricecracker : 428,
       _rice : 429,
       _spaghetti : 430,
