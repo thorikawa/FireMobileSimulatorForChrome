@@ -22,15 +22,6 @@ body {
     cursor:pointer;
 }
 
-#donateTitle {
-    text-align: right;
-    color: #00008b;
-    font-size: 10px;
-    font-weight: bold;
-    cursor:pointer;
-}
-
-
 .menuitem:hover {
     color: #00008b;
     background-color: #add8e6;
