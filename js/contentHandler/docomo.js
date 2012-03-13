@@ -37,9 +37,9 @@ firemobilesimulator.contentHandler.docomo = {
 
     firemobilesimulator.contentHandler.common.filter(ndDocument, deviceInfo);    
     var setUtnFunction = function(e) {
-      dump("[msim]click utn");
+      console.log("[msim]click utn");
       if (true == confirm(chrome.i18n.getMessage("utn_confirmation"))) {
-        chrome.extension.sendRequest({name: "setUtnFlag"}, function () {
+        chrome.extension.sendRequest({name: "setUtnFlag", value: true}, function () {
           // FIXME: don't wait for response
         });
       }
@@ -47,9 +47,9 @@ firemobilesimulator.contentHandler.docomo = {
     };
   
     var setLcsFunction = function(e) {
-      dump("[msim]click lcs");
+      console.log("[msim]click lcs");
       if (true == confirm(chrome.i18n.getMessage("lcs_confirmation"))) {
-        chrome.extension.sendRequest({name: "setLcsFlag"}, function () {
+        chrome.extension.sendRequest({name: "setLcsFlag", value: true}, function () {
           // FIXME: don't wait for response
         });
         return true;
@@ -58,8 +58,12 @@ firemobilesimulator.contentHandler.docomo = {
       }
     };
   
-    fms.pref.setPref("msim.temp.utnflag", false);
-    fms.pref.setPref("msim.temp.lcsflag", false);
+    chrome.extension.sendRequest({name: "setUtnFlag", value: false}, function () {
+      // FIXME: don't wait for response
+    });
+    chrome.extension.sendRequest({name: "setLcsFlag", value: false}, function () {
+      // FIXME: don't wait for response
+    });
   
     var anchorTags = ndDocument.getElementsByTagName("a");
     for (var i = 0; i < anchorTags.length; i++) {
@@ -71,7 +75,7 @@ firemobilesimulator.contentHandler.docomo = {
   
       var lcs = anchorTag.getAttribute("lcs");
       if (null != lcs) {
-        dump("setlcs for a tag");
+        console.log("setlcs for a tag");
         anchorTag.addEventListener("click", setLcsFunction, false);
       }
     }
@@ -95,7 +99,7 @@ firemobilesimulator.contentHandler.docomo = {
   
       var lcs = formTag.getAttribute("lcs");
       if (null != lcs) {
-        dump("setlcs for form tag");
+        console.log("setlcs for form tag");
         formTag.addEventListener("submit", setLcsFunction, false);
       }
   
@@ -115,9 +119,8 @@ firemobilesimulator.contentHandler.docomo = {
           var value = inputTag.value;
           if (key && value && key.toUpperCase() == "UID"
               && value.toUpperCase() == "NULLGWDOCOMO") {
-            dump("replace uid");
-            var uid = fms.carrier.getId(fms.carrier.idType.DOCOMO_UID,deviceId);
-            inputTag.value = uid;
+            console.log("replace uid");
+            inputTag.value = deviceInfo.uid;
           }
         }
       }

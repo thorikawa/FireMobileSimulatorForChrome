@@ -91,6 +91,7 @@ var server = {
     var width;
     var tabselect_enabled = fms.pref.getPref("msim.config.tabselect.enabled");
     var forceScreenWidth = fms.pref.getPref("msim.config.general.force-screen-width");
+    var uid;
     if (tabselect_enabled) {
       // TODO get carrier and id for this tab
     } else {
@@ -98,6 +99,7 @@ var server = {
       carrier = fms.pref.getPref("msim.devicelist." + id + ".carrier");
       width = fms.pref.getPref("msim.devicelist." + id + ".screen-width")
                   || fms.pref.getPref("msim.config.general.screen-width-default");
+      uid = fms.carrier.getId(fms.carrier.idType.DOCOMO_UID, id);
 
       console.log(carrier+":"+id);
       //ホスト制限に指定された端末があれば、その端末を使用する
@@ -116,14 +118,15 @@ var server = {
       carrier: carrier,
       id: id,
       width: width,
-      forceScreenWidth: forceScreenWidth
+      forceScreenWidth: forceScreenWidth,
+      uid: uid
     });
   },
   setUtnFlag: function (request, sender, sendResponse) {
-    fms.pref.setPref("msim.temp.utnflag", true);
+    fms.pref.setPref("msim.temp.utnflag", request.value);
   },
   setLcsFlag: function (request, sender, sendResponse) {
-    fms.pref.setPref("msim.temp.lcsflag", true);
+    fms.pref.setPref("msim.temp.lcsflag", request.value);
   }
 };
 
