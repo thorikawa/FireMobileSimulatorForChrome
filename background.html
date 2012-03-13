@@ -97,10 +97,10 @@ var server = {
                   || fms.pref.getPref("msim.config.general.screen-width-default");
 
       console.log(carrier+":"+id);
-      //ƒzƒXƒg§ŒÀ‚Éw’è‚³‚ê‚½’[––‚ª‚ ‚ê‚ÎA‚»‚Ì’[––‚ğg—p‚·‚é
+      //ãƒ›ã‚¹ãƒˆåˆ¶é™ã«æŒ‡å®šã•ã‚ŒãŸç«¯æœ«ãŒã‚ã‚Œã°ã€ãã®ç«¯æœ«ã‚’ä½¿ç”¨ã™ã‚‹
       if (document.contentType == "text/html") {
         if(id){
-          //ƒzƒXƒg§ŒÀ‚Éw’è‚³‚ê‚½’[––‚ğæ“¾‚·‚é
+          //ãƒ›ã‚¹ãƒˆåˆ¶é™ã«æŒ‡å®šã•ã‚ŒãŸç«¯æœ«ã‚’å–å¾—ã™ã‚‹
           var deviceObj = fms.core.getDeviceByLimitHost(document.location.hostname);
           if(deviceObj){
             id = deviceObj.index;
