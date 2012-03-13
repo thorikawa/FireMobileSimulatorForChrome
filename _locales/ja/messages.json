@@ -3,25 +3,41 @@
     "message": "携帯端末・スマートフォンの動作をシミュレートする開発補助ツールです"
   },
   "appName": {
-    "message": "ChromeMobileSimulator"
+    "message": "FireMobileSimulator"
   },
   "addDevice": {
     "message": "最新端末リストから端末を追加"
   },
-  "editUaList": {
-    "description": "options ualist",
-    "message": "Edit User Agents"
+  "options_general": {
+    "message": "全般"
   },
-  "options_general": { "message": "全般" },
-  "options_idno": { "message": "ID情報" },
-  "options_devices": { "message": "端末設定" },
-  "options_gps": { "message": "位置情報設定" },
-  "options_pictogram": { "message": "絵文字表示設定" },
-  "options_limithost": { "message": "ホスト制限設定" },
-  "options_add": { "message": "追加する" },
-  "options_edit": { "message": "編集する" },
-  "options_delete": { "message": "削除する" },
-  "options_clearall": { "message": "初期設定に戻す" },
+  "options_idno": {
+    "message": "ID情報"
+  },
+  "options_devices": {
+    "message": "端末設定"
+  },
+  "options_gps": {
+    "message": "位置情報設定"
+  },
+  "options_pictogram": {
+    "message": "絵文字表示設定"
+  },
+  "options_limithost": {
+    "message": "ホスト制限設定"
+  },
+  "options_add": {
+    "message": "追加する"
+  },
+  "options_edit": {
+    "message": "編集する"
+  },
+  "options_delete": {
+    "message": "削除する"
+  },
+  "options_clearall": {
+    "message": "初期設定に戻す"
+  },
   "options_general_display": {
     "message": "表示"
   },
@@ -30,6 +46,9 @@
   },
   "save": {
     "message": "保存"
+  },
+  "close": {
+    "message": "閉じる"
   },
   "device_label": {
     "message": "端末名"
@@ -90,5 +109,38 @@
   },
   "save_complete": {
     "message": "保存しました"
+  },
+  "add_device_header": {
+    "message": "新規端末追加"
+  },
+  "edit_device_header": {
+    "message": "端末編集"
+  },
+  "docomo_ser": {
+    "message": "端末製造番号"
+  },
+  "docomo_icc": {
+    "message": "FOMAカード製造番号"
+  },
+  "docomo_guid": {
+    "message": "iモードID"
+  },
+  "docomo_uid": {
+    "message": "UID"
+  },
+  "au_uid": {
+    "message": "UID"
+  },
+  "softbank_uid": {
+    "message": "UID"
+  },
+  "softbank_serial": {
+    "message": "端末製造番号"
+  },
+  "http_header_name": {
+    "message": "ヘッダー名"
+  },
+  "http_header_value": {
+    "message": "ヘッダー値"
   }
 }

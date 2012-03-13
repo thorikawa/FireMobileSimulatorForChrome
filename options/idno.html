@@ -1,41 +1,55 @@
-<form action="#">
 <h2 i18n="options_idno"></h2>
-<section class="setting group">
-  <h3 class="setting group-name">docomo</h3>
-	<div>
-		<label for="msim-textbox-docomo-uid">UID</label>
-		<input type="text" id="msim-textbox-docomo-uid" bind="msim.config.DC.uid" value="" size="30" />
+<form class="form-horizontal" action="#">
+  <fieldset>
+  <legend>docomo</legend>
+	<div class="control-group">
+		<label class="control-label" for="msim-textbox-docomo-uid" i18n="docomo_uid"></label>
+		<div class="controls">
+  		<input class="span3" type="text" id="msim-textbox-docomo-uid" bind="msim.config.DC.uid" value="" />
+  	</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="msim-textbox-docomo-ser" i18n="docomo_ser"></label>
+		<div class="controls">
+  		<input class="span3" type="text" id="msim-textbox-docomo-ser" bind="msim.config.DC.ser" value="" />
+  	</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="msim-textbox-docomo-icc" i18n="docomo_icc"></label>
+		<div class="controls">
+  		<input class="span3" type="text" id="msim-textbox-docomo-icc" bind="msim.config.DC.icc" value="" />
+  	</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="msim-textbox-docomo-guid" i18n="docomo_guid"></label>
+		<div class="controls">
+  		<input class="span3" type="text" id="msim-textbox-docomo-guid" bind="msim.config.DC.guid" value="" />
+  	</div>
+	</div>
+  
+  <legend>au</legend>
+  <div class="control-group">
+  	<label class="control-label" for="msim-textbox-au-uid" i18n="au_uid"></label>
+  	<div class="controls">
+    	<input class="span3" type="text" id="msim-textbox-au-uid" bind="msim.config.AU.uid" value="" />
+    </div>
+  </div>
+  
+  <legend>SoftBank</legend>
+	<div class="control-group">
+		<label class="control-label" for="msim-textbox-softbank-uid" i18n="softbank_uid"></label>
+		<div class="controls">
+  		<input class="span3" type="text" id="msim-textbox-softbank-uid" bind="msim.config.SB.uid" />
+  	</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="msim-textbox-softbank-serial" i18n="softbank_serial"></label>
+		<div class="controls">
+  		<input class="span3" type="text" id="msim-textbox-softbank-serial" bind="msim.config.SB.serial" />
+  	</div>
 	</div>
 	<div>
-		<label for="msim-textbox-docomo-ser">端末製造番号</label>
-		<input type="text" id="msim-textbox-docomo-ser" bind="msim.config.DC.ser" value="" size="30"/>
-	</div>
-	<div>
-		<label for="msim-textbox-docomo-icc">FOMAカード製造番号</label>
-		<input type="text" id="msim-textbox-docomo-icc" bind="msim.config.DC.icc" value="" size="30" />
-	</div>
-	<div>
-		<label for="msim-textbox-docomo-guid">iモードID</label>
-		<input type="text" id="msim-textbox-docomo-guid" bind="msim.config.DC.guid" value="" size="30"/>
-	</div>
-</section>
-
-<div class="setting group-name">au</div>
-<div class="setting group">
-	<label for="msim-textbox-au-uid">UID</label>
-	<input type="text" id="msim-textbox-au-uid" bind="msim.config.AU.uid" value="" size="30"/>
-</div>
-
-<div class="setting group-name">SoftBank</div>
-<div class="setting group">
-	<div>
-		<label for="msim-textbox-softbank-uid">UID</label>
-		<input type="text" id="msim-textbox-softbank-uid" bind="msim.config.SB.uid" value="" size="30" />
-	</div>
-	<div>
-		<label for="msim-textbox-softbank-serial">端末製造番号</label>
-		<input type="text" id="msim-textbox-softbank-serial" bind="msim.config.SB.serial" value="" size="30" />
-	</div>
-</div>
-<input type="submit"/>
+    <input type="submit"/>
+  </div>
+  </fieldset>
 </form>

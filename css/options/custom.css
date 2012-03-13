@@ -1,35 +1,19 @@
-input[type="text"] {
-  width: 220px;
-}
-
-select {
-  width: 220px;
-}
-
-label {
-  display: inline-block;
-  width: 150px;
-  text-align: left;
+body {
+    background-color: white;
+    line-height: 1.5;
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-size: 75%;
+    color: #222222;
 }
 
 .button-cell {
   text-align: center;
 }
+
 .button-in-cell {
-  font-size: 10px;
+  font-size: 11px;
 }
 
-#wrapper {
-    padding-top: 50px;
-}
-
-a {
-    color: #a9a9a9;
-    text-decoration: none;
-}
-
-
-/* override */
 #tab-container {
     top:160px;
 }

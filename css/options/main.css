@@ -94,7 +94,6 @@ body.searching #tab-container .tab.active {
 }
 
 .tab-content {
-    display: none;
     position: absolute;
     width: 840px;
     top: 0;

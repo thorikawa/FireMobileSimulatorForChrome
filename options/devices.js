@@ -16,23 +16,23 @@ fms.options.initializeDevices = function () {
         // make this block as an anonymous function to refer "i" as "id"
         var id = i;
         var tr = $("<tr>").addClass("device-row");
-        var edit = $("<div>")
+        var edit = $("<button>")
           .addClass("button-in-cell")
-          .attr("type", "button")
+          .addClass("btn")
           .text(chrome.i18n.getMessage("options_edit"))
           .click(function () {
             fms.options.editDevice(id)
-          }).button();
-        var del = $("<div>")
+          });
+        var del = $("<button>")
           .addClass("button-in-cell")
-          .attr("type", "button")
+          .addClass("btn")
           .text(chrome.i18n.getMessage("options_delete"))
           .click(function () {
             fms.options.deleteDevice(id, function () {
               // reload all data because ids are changed
               fms.options.initializeDevices();
             })
-          }).button();
+          });
         tr.append($("<td>").text(carrier + " " + device))
           .append($("<td>").addClass("button-cell").append(edit))
           .append($("<td>").addClass("button-cell").append(del));
@@ -42,6 +42,7 @@ fms.options.initializeDevices = function () {
   }
 };
 
+k = 0
 // Adds a device
 fms.options.addDevice = function() {
   fms.options.clearDeviceForm();
@@ -51,6 +52,10 @@ fms.options.addDevice = function() {
   // set global
   fms.options.action = "add";
   fms.options.deviceid = null;
+  
+  // setup modal
+  $("#modal_device_form_header").text(chrome.i18n.getMessage("add_device_header"));
+  $("#modal_device_form").modal("show");
 };
 
 // Deletes a device
@@ -119,6 +124,10 @@ fms.options.editDevice = function (id) {
   fms.options.action = "edit";
   fms.options.deviceid = id;
 
+  // setup modal
+  $("#modal_device_form_header").text(chrome.i18n.getMessage("edit_device_header"));
+  $("#modal_device_form").modal("show");
+
 };
 
 fms.options.clearAllDeviceSettings = function() {
@@ -152,13 +161,13 @@ fms.options.addExtraHeaderRow = function (headerObj) {
   tr.append($("<td>").append(headername));
   tr.append($("<td>").append(headervalue));
   tr.append($("<td>").addClass("button-cell").append(
-    $("<div>")
+    $("<button>")
       .addClass("button-in-cell")
+      .addClass("btn")
       .text(chrome.i18n.getMessage("delete_button"))
       .click(function () {
         tr.remove();
       })
-      .button()
   ));
   targetNode.append(tr);
 };

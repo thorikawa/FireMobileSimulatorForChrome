@@ -1,27 +1,35 @@
-<form action="#">
-
 <h2 i18n="options_general"></h2>
-
-<div class="setting group-name" i18n="options_general_display"></div>
-<div class="setting group">
-  <input type="checkbox" bind="msim.config.general.force-screen-width" />
-	<label style="width:auto;" for="msim-checkbox-general-force-screen-width" i18n="force_screen_width"></label>
-</div>
-
-<div class="setting group-name" i18n="options_general_quit"></div>
-<div class="setting group">
-  <input type="checkbox" bind="msim.config.general.reset-device-onquit" />
-	<label style="width:auto;" for="msim-checkbox-general-reset-device-onquit" i18n="reset_device_on_quit"></label>
-</div>
-
-<!--
-<div class="setting group-name" i18n="options_deviceselect"></div>
-<div class="setting group">
-  <input type="checkbox" bind="msim.config.tabselect.enabled" />
-	<label for="msim-checkbox-general-tabselect" i18n="tabselect"></label>
-</div>
--->
-
-<input type="submit" />
-
+<form action="#">
+  <fieldset>
+  <legend i18n="options_general_display"></legend>
+  <div class="control-group">
+    <div class="controls">
+      <label class="checkbox" for="msim-checkbox-general-force-screen-width">
+        <input type="checkbox" bind="msim.config.general.force-screen-width" />
+        <span i18n="force_screen_width" />
+    	</label>
+    </div>
+  </div>
+  
+  <legend i18n="options_general_quit"></legend>
+  <div class="control-group">
+    <div class="controls">
+    	<label class="checkbox" for="msim-checkbox-general-reset-device-onquit">
+      	<input type="checkbox" bind="msim.config.general.reset-device-onquit" />
+      	<span i18n="reset_device_on_quit" />
+    	</label>
+  	<div class="controls">
+  </div>
+  
+  <!--
+  <div class="setting group-name" i18n="options_deviceselect"></div>
+  <div class="setting group">
+    <input type="checkbox" bind="msim.config.tabselect.enabled" />
+  	<label for="msim-checkbox-general-tabselect" i18n="tabselect"></label>
+  </div>
+  -->
+  <div style="margin-top: 20px;">
+    <input type="submit" />
+  </div>
+  </fieldset>
 </form>

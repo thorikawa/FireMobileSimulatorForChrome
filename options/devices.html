@@ -1,76 +1,98 @@
 <h2 i18n="options_devices"></h2>
 <style>
-tr:nth-child(odd) {
-  background-color: #ededed;
-}
-.sec {
-  margin-top: 10px;
-  width: 80%;
-  padding: 10px;
-  border: 2px solid #cccccc;
-  -webkit-border-radius: 5px;
-}
-.well {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  background-color: #f3f3f3;
-  padding: 5px;
-  border: 2px solid #cccccc;
-  -webkit-border-radius: 5px;
-}
-.table {
+/* override bootstrap */
+.modal {
+  width: 600px;
 }
 </style>
-<table style="border:0px; width:80%;" id="msim-listbox">
-<tr><th>name</th><th></th><th></th></tr>
+<table style="width: 80%;" class="table table-striped table-condensed">
+  <thead>
+    <tr><th i18n="device_label"></th><th></th><th></th></tr>
+  </thead>
+  <tbody id="msim-listbox">
+  </tbody>
 </table>
 <div>
 	<input type="button" id="add-device-button" i18n-value="options_add" onclick="fms.options.addDevice()" accesskey="n"/>
 	<input type="button" id="clear-all-devices-button" i18n-value="options_clearall" onclick="fms.options.clearAllDeviceSettings()" accesskey="c"/>
 </div>
-<div id="device-form" class="sec">
-  <div>
-  	<label for="options-device-label" i18n="device_label" width="150" />
-  	<input type="text" id="options-device-label" width="270" />
+<div class="modal hide fade" id="modal_device_form">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">x</a>
+    <h3 id="modal_device_form_header"></h3>
   </div>
-  <div id="options-device-carrier-row">
-  	<label for="options-device-carrier" i18n="carrier" />
-  	<select id="options-device-carrierlist"></select>
+  <div class="modal-body">
+    <form class="form-horizontal" id="device-form">
+    <fieldset>
+      <div class="control-group">
+      	<label class="control-label" for="options-device-label" i18n="device_label" />
+      	<div class="controls">
+        	<input class="span4" type="text" id="options-device-label" />
+      	</div>
+      </div>
+      <div class="control-group" id="options-device-carrier-row">
+      	<label class="control-label" for="options-device-carrier" i18n="carrier" />
+      	<div class="controls">
+        	<select class="span4" id="options-device-carrierlist"></select>
+      	</div>
+      </div>
+      <div class="control-group" id="options-device-useragent-row">
+      	<label class="control-label" for="options-device-useragent" i18n="user_agent" />
+      	<div class="controls">
+          <input class="span4" type="text" id="options-device-useragent" />
+      	</div>
+      </div>
+      <div class="control-group" id="options-device-type-row">
+      	<label class="control-label" for="options-device-type" i18n="device_type" />
+      	<div class="controls">
+          <select class="span3" id="options-device-type-menupopup"></select>
+        </div>
+      </div>
+      <div class="control-group" id="options-device-screen-width-row">
+      	<label class="control-label" for="options-device-screen-width" i18n="screen_width" />
+      	<div class="controls">
+          <input class="span2" type="text" id="options-device-screen-width" />
+      	</div>
+      </div>
+      <div class="control-group" id="options-device-screen-height-row">
+      	<label class="control-label" for="options-device-screen-height" i18n="screen_height" />
+      	<div class="controls">
+        	<input class="span2" type="text" id="options-device-screen-height" />
+      	</div>
+      </div>
+      <div class="control-group" id="options-device-use-cookie-row">
+        <div class="controls">
+          <label class="checkbox">
+            <input type="checkbox" id="options-device-use-cookie" />
+            <span i18n="use_cookie" />
+          </label>
+        </div>
+      </div>
+      <div class="well">
+        <h3 i18n="options_device_extra_headers" />
+        <table class="table table-striped table-condensed">
+          <thead>
+            <tr><th i18n="http_header_name"></th><th i18n="http_header_value">value</th><th></th></tr>
+          </thead>
+          <tbody id="options-device-extra-headers-rows">
+          </tbody>
+        </table>
+        
+        <div><input type="button" id="add-extra-header-button" i18n-value="add_extra_header_row" onclick="fms.options.addExtraHeaderRow()" /></div>
+      </div>
+    </fieldset>
+    </form>
   </div>
-  <div id="options-device-useragent-row">
-  	<label for="options-device-useragent" i18n="user_agent" />
-  	<input type="text" id="options-device-useragent" />
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal" i18n="close"></a>
+    <input type="button" class="btn-primary" id="device-save-button" i18n-value="save" onclick="fms.options.saveDevice()" />
   </div>
-  <div id="options-device-type-row">
-  	<label for="options-device-type" i18n="device_type" />
-  	<select id="options-device-type-menupopup"></select>
-  </div>
-  <div id="options-device-screen-width-row">
-  	<label for="options-device-screen-width" i18n="screen_width" />
-  	<input type="text" id="options-device-screen-width" />
-  </div>
-  <div id="options-device-screen-height-row">
-  	<label for="options-device-screen-height" i18n="screen_height" />
-  	<input type="text" id="options-device-screen-height" />
-  </div>
-  <div id="options-device-use-cookie-row">
-  	<input type="checkbox" id="options-device-use-cookie" />
-  	<label i18n="use_cookie" />
-  </div>
-  <div class="well">
-    <h3 i18n="options_device_extra_headers" />
-    <table class="table" id="options-device-extra-headers-rows"></table>
-    
-    <div><input type="button" id="add-extra-header-button" i18n-value="add_extra_header_row" onclick="fms.options.addExtraHeaderRow()" /></div>
-  </div>
-  <div><input type="button" id="device-save-button" i18n-value="save" onclick="fms.options.saveDevice()" /></div>
 </div>
 
 <script type="text/javascript" charset="UTF-8" src="/options/devices.js" />
 <script type="text/javascript" charset="UTF-8">
 fms.options.initializeDevices()
 fms.options.createCarrierMenuList();
-fms.options.addDevice();
 </script>
 
 <!--
