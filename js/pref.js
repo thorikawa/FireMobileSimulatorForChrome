@@ -23,7 +23,14 @@ if(!fms) fms = {};
 fms.pref = {
 
   getPref : function (key) {
-    var value = localStorage[key];
+    var value;
+    if ("msim.current.id" == key && this.getPref("msim.config.general.reset-device-onquit")) {
+      // not persistent
+      BG = chrome.extension.getBackgroundPage();
+      value = BG.appData[key];
+    } else {
+      value = localStorage[key];
+    }
     if (value == "null") return null;
     if (value == "undefined") return undefined;
     if (typeof value == "string" && value.toUpperCase() == "TRUE") return true;
@@ -39,7 +46,22 @@ fms.pref = {
   
   setPref : function (key, value) {
     console.log("setPref["+key+"]=["+value+"]");
-    localStorage[key] = value;
+    if ("msim.current.id" == key && this.getPref("msim.config.general.reset-device-onquit")) {
+      // not persistent
+      BG = chrome.extension.getBackgroundPage();
+      BG.appData[key] = value;
+    } else {
+      // persistent
+      needToSetId = ("msim.config.general.reset-device-onquit" == key);
+      if (needToSetId) {
+        currentId = this.getPref("msim.current.id");
+        this.deletePref("msim.current.id");
+      }
+      localStorage[key] = value;
+      if (needToSetId) {
+        this.setPref("msim.current.id", currentId);
+      }
+    }
   },
   
   /**
