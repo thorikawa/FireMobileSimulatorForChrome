@@ -24,10 +24,10 @@ if (!fms) fms = firemobilesimulator;
 if (!fms.overlay) fms.overlay = {};
 
 (function (objEvent) {
-  console.log("[msim]BrowserOnLoad is fired.\n");
-    chrome.extension.sendRequest({name: "deviceInfo"}, function(deviceInfo) {
-      filter(deviceInfo);
-    });
+  console.log("[msim]BrowserOnLoad is fired.");
+  chrome.extension.sendRequest({name: "deviceInfo"}, function(deviceInfo) {
+    filter(deviceInfo);
+  });
 })();
 
 function filter (deviceInfo) {
@@ -48,12 +48,12 @@ function filter (deviceInfo) {
  * タブごとの再描画
  */
 fms.overlay.rewrite = function () {
-  console.log("[msim]rewrite tab\n");
+  console.log("[msim]rewrite tab");
   var statusPanel = document.getElementById("msim-status-panel");
   var tabselect_enabled = fms.pref.getPref("msim.config.tabselect.enabled");
   if (!tabselect_enabled) {
     // タブごとに端末選択モードでない場合は、下部ステータスバーの端末選択メニューを非表示にする
-    console.log("[msim]tabselect is not enabled\n");
+    console.log("[msim]tabselect is not enabled");
     statusPanel.setAttribute("style","visibility: collapse");
     return;
   }
