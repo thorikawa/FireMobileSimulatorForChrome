@@ -1,5 +1,5 @@
 /* ***** BEGIN LICENSE BLOCK Version: GPL 3.0 *****
- * FireMobileFimulator is a Firefox add-on that simulate web browsers of
+ * FireMobileFimulator is a Chrome Extension that simulate web browsers of
  * japanese mobile phones.
  * Copyright (C) 2012  Takahiro Horikawa <horikawa.takahiro@gmail.com>
  *
