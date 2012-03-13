@@ -25,6 +25,7 @@ fms.pref = {
   getPref : function (key) {
     var value = localStorage[key];
     if (value == "null") return null;
+    if (value == "undefined") return undefined;
     if (typeof value == "string" && value.toUpperCase() == "TRUE") return true;
     if (typeof value == "string" && value.toUpperCase() == "FALSE") return false;
     return value;
