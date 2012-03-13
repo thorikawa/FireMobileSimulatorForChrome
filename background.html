@@ -52,6 +52,9 @@
       }
       localStorage['version'] = currVersion;
     }
+
+    // update icon here because the first tab can't be caught in chrome.tabs.onActiveChanged
+    fms.core.updateIcon();
   });
 
   var dolog = true;
