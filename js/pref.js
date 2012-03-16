@@ -68,6 +68,11 @@ fms.pref = {
    * delete preference whose key completely matches the input
    */
   deletePref : function (key) {
+    if ("msim.current.id" == key && this.getPref("msim.config.general.reset-device-onquit")) {
+      // not persistent
+      BG = chrome.extension.getBackgroundPage();
+      delete BG.appData[key];
+    }
     if (localStorage[key]) {
       localStorage.removeItem(key);
     }
