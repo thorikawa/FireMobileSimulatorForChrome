@@ -45,9 +45,9 @@ function onBeforeRequest (details) {
   var useragent;
   var uid;
   var uri = details.url;
-  
+
   if (!id || !isSimulate) return;
-  
+
   if (carrier == "DC") {
     var rewriteFlag = false;
     var qs = "";
@@ -58,7 +58,7 @@ function onBeforeRequest (details) {
       var sharps = parts[1].split('#');
       var values = sharps.shift().split("&");
 
-      if (uri.scheme != "https") {
+      if (uri.indexOf('https://') !== 0) {
         // don't send uid to SSL page
         values = values.map(function (value) {
           if (value && value.toUpperCase() == "UID=NULLGWDOCOMO") {
@@ -72,6 +72,8 @@ function onBeforeRequest (details) {
       }
       qs = new Array(values.join("&")).concat(sharps).join('#');
       as = parts[0] + "?" + qs;
+    } else {
+      as = parts[0];
     }
 
     var lcsFlag = fms.pref.getPref("msim.temp.lcsflag");
@@ -93,13 +95,12 @@ function onBeforeRequest (details) {
             + "&geo=wgs84&xacc=3&alt=" + alt;
       }
       rewriteFlag = true;
-      pref.setBoolPref(
-          "msim.temp.lcsflag", false);
+      fms.pref.setPref("msim.temp.lcsflag", false);
     }
 
-    if (uri.host == "w1m.docomo.ne.jp") {
+    if (uri.indexOf("http://w1m.docomo.ne.jp") === 0) {
       var param = qs ? "?" + qs : "";
-      var path = uri.path.split("?", 2)[0];
+      var path = uri.substring(23).split("?", 2)[0];
       if (path == "/cp/iarea") {
         // TODO: Open iAREA
         // rewriteURI(details,

@@ -8,7 +8,7 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be.fms_useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -37,31 +37,87 @@ firemobilesimulator.contentHandler.docomo = {
 
     firemobilesimulator.contentHandler.common.filter(ndDocument, deviceInfo);    
     var setUtnFunction = function(e) {
-      console.log("[msim]click utn");
+      if (e.fms_utn_flag) {
+        return true;
+      }
+      if (e.fms_use) {
+        return false;
+      }
+      //console.log("[msim]click utn");
+      //console.dir(e);
+
       if (true == confirm(chrome.i18n.getMessage("utn_confirmation"))) {
-        chrome.extension.sendRequest({name: "setUtnFlag", value: true}, function () {
-          // FIXME: don't wait for response
+        chrome.runtime.sendMessage({name: "setUtnFlag", value: true}, function () {
+          var e2;
+          if (e instanceof MouseEvent) {
+            e2 = document.createEvent("MouseEvent");
+            e2.initMouseEvent(e.type, e.canBubble, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, e.relatedTarget);
+            e2.fms_utn_flag = true;
+            e2.fms_lcs_flag = e.fms_lcs_flag;
+            e.target.dispatchEvent(e2);
+            return;
+          } else if (e instanceof Event) {
+            if (e.type == 'submit') {
+              e.target.submit();
+              return;
+            }
+          }
+
+          console.log('unknown event');
+          console.dir(e);
+          return;
+
         });
       }
-      return true;
+      e.fms_use = true;
+      e.preventDefault();
+      //e.stopPropagation();
+      return false;
     };
   
     var setLcsFunction = function(e) {
-      console.log("[msim]click lcs");
-      if (true == confirm(chrome.i18n.getMessage("lcs_confirmation"))) {
-        chrome.extension.sendRequest({name: "setLcsFlag", value: true}, function () {
-          // FIXME: don't wait for response
-        });
+      if (e.fms_lcs_flag) {
         return true;
-      } else {
+      }
+      if (e.fms_use) {
         return false;
       }
+      //console.log("[msim]click lcs");
+      //console.dir(e);
+
+      if (true == confirm(chrome.i18n.getMessage("lcs_confirmation"))) {
+        chrome.runtime.sendMessage({name: "setLcsFlag", value: true}, function () {
+          var e2;
+          if (e instanceof MouseEvent) {
+            e2 = document.createEvent("MouseEvent");
+            e2.initMouseEvent(e.type, e.canBubble, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, e.relatedTarget);
+            e2.fms_utn_flag = e.fms_utn_flag;
+            e2.fms_lcs_flag = true;
+            e.target.dispatchEvent(e2);
+            return;
+          } else if (e instanceof Event) {
+            if (e.type == 'submit') {
+              e.target.submit();
+              return;
+            }
+          }
+
+          console.log('unknown event');
+          console.dir(e);
+          return false;
+
+        });
+      }
+      e.fms_use = true;
+      e.preventDefault();
+      //e.stopPropagation();
+      return false;
     };
   
-    chrome.extension.sendRequest({name: "setUtnFlag", value: false}, function () {
+    chrome.runtime.sendMessage({name: "setUtnFlag", value: false}, function () {
       // FIXME: don't wait for response
     });
-    chrome.extension.sendRequest({name: "setLcsFlag", value: false}, function () {
+    chrome.runtime.sendMessage({name: "setLcsFlag", value: false}, function () {
       // FIXME: don't wait for response
     });
   
@@ -75,7 +131,7 @@ firemobilesimulator.contentHandler.docomo = {
   
       var lcs = anchorTag.getAttribute("lcs");
       if (null != lcs) {
-        console.log("setlcs for a tag");
+        //console.log("setlcs for a tag");
         anchorTag.addEventListener("click", setLcsFunction, false);
       }
     }

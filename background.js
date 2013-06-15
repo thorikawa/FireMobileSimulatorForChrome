@@ -17,7 +17,6 @@
   }
 
   $(document).ready(function () {
-    console.log("ready");
     chrome.webRequest.onBeforeRequest.addListener(
       onBeforeRequest,
       opt_filter,
@@ -70,7 +69,7 @@
   }
   chrome.tabs.onActiveChanged.addListener(tabIsActive);
 
-  chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
+  chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     server[request.name](request, sender, sendResponse);
   });
 
@@ -114,9 +113,10 @@ var server = {
   },
   setUtnFlag: function (request, sender, sendResponse) {
     fms.pref.setPref("msim.temp.utnflag", request.value);
+    sendResponse();
   },
   setLcsFlag: function (request, sender, sendResponse) {
     fms.pref.setPref("msim.temp.lcsflag", request.value);
+    sendResponse();
   }
 };
-

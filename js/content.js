@@ -24,8 +24,8 @@ if (!fms) fms = firemobilesimulator;
 if (!fms.overlay) fms.overlay = {};
 
 (function (objEvent) {
-  console.log("[msim]BrowserOnLoad is fired.");
-  chrome.extension.sendRequest({name: "deviceInfo"}, function(deviceInfo) {
+  //console.log("[msim]BrowserOnLoad is fired.");
+  chrome.runtime.sendMessage({name: "deviceInfo"}, function(deviceInfo) {
     filter(deviceInfo);
   });
 })();
