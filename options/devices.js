@@ -304,3 +304,11 @@ fms.options.selectType1 = function (id) {
   }
 };
 
+$(document).ready( function () {
+  fms.options.initializeDevices();
+  fms.options.createCarrierMenuList();
+  $('#add-device-button').on('click', fms.options.addDevice);
+  $('#clear-all-devices-button').on('click', fms.options.clearAllDeviceSettings);
+  $('#add-extra-header-button').on('click', fms.options.addExtraHeaderRow);
+  $('#device-save-button').on('click', fms.options.saveDevice);
+});

@@ -15,6 +15,6 @@ function localizePage () {
 }
 
 function translate (messageID, args) {
-  console.log(messageID);
+  //console.log(messageID);
   return chrome.i18n.getMessage(messageID, args);
 }
