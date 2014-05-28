@@ -123,7 +123,9 @@ firemobilesimulator.mpc.docomo.prototype = {
     if (chs.length != 3) {
       return false;
     }
-    [char1, char2, char3] = chs;
+    char1 = chs[0];
+    char2 = chs[1];
+    char3 = chs[2];
     if (char1 == 0xEE
         && ((char2 == 0x98 && (char3 >= 0xBE && char3 <= 0xBF))
             || (char2 == 0x99 && (char3 >= 0x80 && char3 <= 0xBF))
